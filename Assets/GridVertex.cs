@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GridVertex : MonoBehaviour {
-
-    public int X;
-    public int Y;
+    private MachineGrid Grid;
+    private int X;
+    private int Y;
 
     public GameObject VertexMachine;
 
@@ -13,6 +13,13 @@ public class GridVertex : MonoBehaviour {
 	void Start () {
 		
 	}
+
+    public void Register(int X, int Y, MachineGrid Grid)
+    {
+        this.X = X;
+        this.Y = Y;
+        this.Grid = Grid;
+    }
 	
 	// Update is called once per frame
 	void Update () {

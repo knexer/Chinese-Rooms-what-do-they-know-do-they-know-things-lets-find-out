@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GridCell : MonoBehaviour {
-    public MachineGrid Grid;
-    public int X;
-    public int Y;
+    private MachineGrid Grid;
+    private int X;
+    private int Y;
 
     public GameObject CellMachine;
 
 	// Use this for initialization
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    }
+
+    public void Register(int X, int Y, MachineGrid Grid)
+    {
+        this.X = X;
+        this.Y = Y;
+        this.Grid = Grid;
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }
