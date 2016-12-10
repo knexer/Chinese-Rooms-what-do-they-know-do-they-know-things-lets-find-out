@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GridVertex : MonoBehaviour {
 
+    public int X;
+    public int Y;
+
+    public GameObject VertexMachine;
+
 	// Use this for initialization
 	void Start () {
 		
