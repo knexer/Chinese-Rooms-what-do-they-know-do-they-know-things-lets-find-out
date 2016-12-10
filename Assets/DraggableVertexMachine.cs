@@ -24,7 +24,5 @@ public class DraggableVertexMachine : MonoBehaviour
         {
             transform.position = closestVertexPosition;
         }
-
-        Debug.Log("FUCK");
     }
 }
