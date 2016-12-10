@@ -7,7 +7,8 @@ public class TickController : MonoBehaviour {
     public static TickController Obj;
 
     public delegate void TickEventHandler(float lengthOfTickSeconds);
-    public static event TickEventHandler TickEvent;
+    public static event TickEventHandler MoveTickEvent;
+    public static event TickEventHandler ManipulateTickEvent;
 
     public delegate void ResetTabletsEventHandler();
     public static event ResetTabletsEventHandler ResetTabletsEvent;
@@ -29,8 +30,10 @@ public class TickController : MonoBehaviour {
     void Update() {
         if (speedIndex >= 0) {
             if (Time.time - lastTickTimeSeconds >= 1 / TicksPerSecond[newSpeedIndex]) {
-                if (TickEvent != null)
-                    TickEvent(1 / TicksPerSecond[speedIndex]);
+                if (ManipulateTickEvent != null)
+                    ManipulateTickEvent(1 / TicksPerSecond[speedIndex]);
+                if (MoveTickEvent != null)
+                    MoveTickEvent(1 / TicksPerSecond[speedIndex]);
                 this.lastTickTimeSeconds = Time.time;
                 speedIndex = newSpeedIndex;
             }
