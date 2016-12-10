@@ -51,8 +51,19 @@ public class MachineGrid : MonoBehaviour {
         return GridVertices[xPosition, yPosition].GetComponent<GridVertex>();
     }
 
+    public GridCell getClosestCell(Vector3 position)
+    {
+        Vector3 cellSize = GridCellPrefab.GetComponent<BoxCollider2D>().size;
+
+        Vector3 relativePosition = position - transform.position;
+        int xPosition = (int)Mathf.Clamp(relativePosition.x / cellSize.x, 0, GridCells.GetLength(0) - 1);
+        int yPosition = (int)Mathf.Clamp(relativePosition.y / cellSize.y, 0, GridCells.GetLength(1) - 1);
+
+        return GridCells[xPosition, yPosition].GetComponent<GridCell>();
+    }
+
     // Use this for initialization
-	void Start () {
+    void Start () {
 		
 	}
 	
