@@ -12,7 +12,7 @@ public class GridCell : MonoBehaviour {
 
     public CellMachine CellMachine {
         get { return cellMachine; }
-        set { cellMachine = value; cellMachine.GridCell = this; } }
+        set { cellMachine = value; if (cellMachine != null) cellMachine.GridCell = this; } }
     public CellMachine cellMachine;
 
     // Use this for initialization
