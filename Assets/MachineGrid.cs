@@ -17,12 +17,15 @@ public class MachineGrid : MonoBehaviour {
         GridCells = new GameObject[Width, Height];
         GridVertices = new GameObject[Width + 1, Height + 1];
 
+        Vector3 cellSize = GridCellPrefab.GetComponent<BoxCollider2D>().size;
+
         for (int x = 0; x < GridCells.GetLength(0); x++)
         {
             for (int y = 0; y < GridCells.GetLength(1); y++)
             {
                 GridCells[x, y] = Instantiate(GridCellPrefab);
                 GridCells[x, y].GetComponent<GridCell>().Register(x, y, this);
+                GridCells[x, y].transform.position = transform.position + cellSize / 2 + new Vector3(x * cellSize.x, y * cellSize.y);
             }
         }
 
@@ -32,6 +35,7 @@ public class MachineGrid : MonoBehaviour {
             {
                 GridVertices[x, y] = Instantiate(GridVertexPrefab);
                 GridVertices[x, y].GetComponent<GridVertex>().Register(x, y, this);
+                GridVertices[x, y].transform.position += new Vector3(x * cellSize.x, y * cellSize.y);
             }
         }
     }
