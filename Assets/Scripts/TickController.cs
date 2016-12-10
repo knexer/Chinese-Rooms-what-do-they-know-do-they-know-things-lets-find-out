@@ -14,6 +14,7 @@ public class TickController : MonoBehaviour {
 
     public float[] TicksPerSecond;
 
+    private int newSpeedIndex = -1;
     private int speedIndex = -1;
     private float lastTickTimeSeconds = 0;
 
@@ -26,11 +27,15 @@ public class TickController : MonoBehaviour {
     }
 
     void Update() {
-        if (speedIndex >= 0 
-            && Time.time - lastTickTimeSeconds >= 1 / TicksPerSecond[speedIndex]
-            && TickEvent != null)
-        {
-            TickEvent(1 / TicksPerSecond[speedIndex]);
+        if (speedIndex >= 0) {
+            if (Time.time - lastTickTimeSeconds >= 1 / TicksPerSecond[newSpeedIndex]) {
+                if (TickEvent != null)
+                    TickEvent(1 / TicksPerSecond[speedIndex]);
+                this.lastTickTimeSeconds = Time.time;
+                speedIndex = newSpeedIndex;
+            }
+        } else if (newSpeedIndex >= 0) {
+            speedIndex = newSpeedIndex;
         }
     }
 
@@ -39,8 +44,7 @@ public class TickController : MonoBehaviour {
     }
 
     public void SetSpeed(int speed) {
-        speedIndex = Mathf.Clamp(speed - 1, 0, GetMaxSpeed());
-        lastTickTimeSeconds = Time.time;
+        newSpeedIndex = Mathf.Clamp(speed - 1, 0, GetMaxSpeed());
     }
 
     public void ResetTablets() {
