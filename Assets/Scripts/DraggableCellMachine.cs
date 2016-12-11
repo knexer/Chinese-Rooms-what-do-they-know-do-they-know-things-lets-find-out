@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DraggableCellMachine : MonoBehaviour
 {
-    public float distanceThreshold = 0.2;
+    public float distanceThreshold = 0.2f;
 
     private MachineGrid grid;
 
