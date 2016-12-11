@@ -6,16 +6,16 @@ using System.Linq;
 /** Tablet is the input to the room. It's a 4x4 grid. */
 public class Tablet : MonoBehaviour {
     public float cellDistance;
-    public GameObject TabletPiece;
+    public TabletCell TabletPiece;
 
     public Transform TabletCellContainer;
 
     public Mover.Direction MovementDirection;
 
-	private GameObject TopLeft;
-	private GameObject TopRight;
-	private GameObject BottomLeft;
-	private GameObject BottomRight;
+	private TabletCell TopLeft;
+	private TabletCell TopRight;
+	private TabletCell BottomLeft;
+	private TabletCell BottomRight;
 
     private MachineGrid Grid;
 
@@ -39,7 +39,7 @@ public class Tablet : MonoBehaviour {
     }
 
     /** Create a new tablet cell at the relative position of x, y. */
-	private GameObject NewTablet(float x, 
+	private TabletCell NewTablet(float x, 
 								 float y, 
  						     	 TabletCell.Colors color = TabletCell.Colors.None,
 		                         TabletCell.Symbols symbol = TabletCell.Symbols.Eye) {
@@ -58,7 +58,7 @@ public class Tablet : MonoBehaviour {
     }
 
     /** Create a new table at the relative position of x, y. */
-	private GameObject NewTablet(int x, int y) {
+	private TabletCell NewTablet(int x, int y) {
         return NewTablet((float) x, (float) y);
     }
 
@@ -102,7 +102,7 @@ public class Tablet : MonoBehaviour {
                 gridVertexX += 2 * (int)direction.x;
                 gridVertexY += 2 * (int)direction.y;
 
-                GameObject temp = TopRight;
+                TabletCell temp = TopRight;
                 TopRight = BottomRight;
                 BottomRight = BottomLeft;
                 BottomLeft = TopLeft;
@@ -116,7 +116,7 @@ public class Tablet : MonoBehaviour {
                 gridVertexX += 2 * (int)direction.x;
                 gridVertexY += 2 * (int)direction.y;
 
-                GameObject temp = TopRight;
+                TabletCell temp = TopRight;
                 TopRight = TopLeft;
                 TopLeft = BottomLeft;
                 BottomLeft = BottomRight;
