@@ -11,8 +11,9 @@ public class GridCell : MonoBehaviour {
     public CellMachine StartingCellMachine;
 
     public CellMachine CellMachine {
-        get { return cellMachine; }
-        set { cellMachine = value; if (cellMachine != null) cellMachine.GridCell = this; } }
+		get { return cellMachine; }
+		set { cellMachine = value; }
+	}
     public CellMachine cellMachine;
 
     // Use this for initialization
@@ -27,7 +28,7 @@ public class GridCell : MonoBehaviour {
         this.Grid = Grid;
     }
     
-    public GameObject GetInput() {
+    public TabletCell GetInput() {
         return Grid.GetInputAt(X, Y);
     }
 }

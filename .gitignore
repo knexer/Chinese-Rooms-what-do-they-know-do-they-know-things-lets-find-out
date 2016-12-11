@@ -28,3 +28,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Git merge files
+*.orig
+
+# MAC finder files
+*.DS_Store

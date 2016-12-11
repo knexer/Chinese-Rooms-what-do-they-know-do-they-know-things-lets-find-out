@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GridVertex : MonoBehaviour {
-    private MachineGrid Grid;
-    private int X;
-    private int Y;
+    [HideInInspector]
+    public MachineGrid Grid { get; private set; }
+    [HideInInspector]
+    public int X { get; private set; }
+    [HideInInspector]
+    public int Y { get; private set; }
 
     public VertexMachine StartingVertexMachine;
 
