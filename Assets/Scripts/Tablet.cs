@@ -8,7 +8,7 @@ public class Tablet : MonoBehaviour {
     public float cellDistance;
     public GameObject TabletPiece;
 
-  public Transform TabletCellContainer;
+    public Transform TabletCellContainer;
 
     public Mover.Direction MovementDirection;
 
