@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TabletCell : MonoBehaviour
 {
-    public tk2dSpriteAnimator tabletAnimator;
+    public tk2dSpriteAnimator tabletSymbol;
+    public tk2dSpriteAnimator tabletGlow;
 
     public enum Colors
     {
@@ -17,10 +18,10 @@ public class TabletCell : MonoBehaviour
     {
         Eye,
         Snake,
-        Dream
+        Dream,
+        None
     }
 
-    private Color color;
     private Symbols symbol;
 
     public Colors Color;
@@ -32,14 +33,15 @@ public class TabletCell : MonoBehaviour
 
     // Use this for initialization
     void Start()
-    {
+    {        
         SetSymbol(Symbol);
+        SetGlow(Colors.None);
     }
 
     // Update is called once per frame
     void Update()
-    {
-
+    {      
+      SetGlow(Color);
     }
 
     private void SetSymbol(Symbols symbol)
@@ -47,16 +49,44 @@ public class TabletCell : MonoBehaviour
         switch (symbol)
         {
             case Symbols.Eye:
-                tabletAnimator.SetFrame(0);
+                tabletSymbol.gameObject.SetActive(true);
+                tabletSymbol.SetFrame(0);
+                tabletGlow.SetFrame(0);
                 break;
 
             case Symbols.Snake:
-                tabletAnimator.SetFrame(1);
+                tabletSymbol.gameObject.SetActive(true);
+                tabletSymbol.SetFrame(1);
+                tabletGlow.SetFrame(1);
                 break;
 
             case Symbols.Dream:
-                tabletAnimator.SetFrame(2);
+                tabletSymbol.gameObject.SetActive(true);
+                tabletSymbol.SetFrame(2);
+                tabletGlow.SetFrame(2);
                 break;
+            case Symbols.None:
+                tabletSymbol.gameObject.SetActive(false);
+                break;
+        }
+    }
+
+    private void SetGlow (Colors glow) {
+        switch (glow) 
+        {
+          case Colors.Blue:
+              tabletGlow.gameObject.SetActive(true);
+              tabletGlow.Sprite.color = UnityEngine.Color.blue;
+              break;
+
+          case Colors.Green:
+              tabletGlow.gameObject.SetActive(true);
+              tabletGlow.Sprite.color = UnityEngine.Color.green;
+              break;
+
+          case Colors.None:
+              tabletGlow.gameObject.SetActive(false);
+              break;
         }
     }
 }
