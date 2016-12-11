@@ -18,13 +18,15 @@ public class Tablet : MonoBehaviour {
 
     private MachineGrid Grid;
 
-    /** gridX/Y refers to the grid position of the top left tablet piece. */
-    public int gridX;
-    public int gridY;
+    /** gridVertexX/Y refers to the grid position of the top left tablet piece. */
+    public int gridVertexX;
+    public int gridVertexY;
 
+    public int gridCellX { get { return gridVertexX - 1; } }
+    public int gridCellY { get { return gridVertexY - 1; } }
     // Use this for initialization
     void Start() {
-        transform.position = FindObjectOfType<MachineGrid>().getVertexWorldPosition(gridX, gridY);
+        transform.position = FindObjectOfType<MachineGrid>().getVertexWorldPosition(gridVertexX, gridVertexY);
         TopLeft = NewTablet(-1, 1);
         TopRight = NewTablet(1, 1);
         BottomLeft = NewTablet(-1, -1);
@@ -69,11 +71,11 @@ public class Tablet : MonoBehaviour {
         Vector2 direction = MovementDirection.ToUnitVector();
 
         // Check for pins
-        if (NoFrontPins(gridX, gridY, direction))
+        if (NoFrontPins(gridVertexX, gridVertexY, direction))
         {
             // Do the move in the grid
-            gridX += (int)direction.x;
-            gridY += (int)direction.y;
+            gridVertexX += (int)direction.x;
+            gridVertexY += (int)direction.y;
 
             // Animate the move
             direction.Scale(FindObjectOfType<MachineGrid>().GetCellSizeWorldSpace());
@@ -87,17 +89,17 @@ public class Tablet : MonoBehaviour {
         }
     }
 
-    private bool NoFrontPins(int gridX, int gridY, Vector2 direction)
+    private bool NoFrontPins(int gridVertexX, int gridVertexY, Vector2 direction)
     {
 
-        return !PinAtPosition(gridX, gridY, direction, 1, -1)
-            && !PinAtPosition(gridX, gridY, direction, 1, 0)
-            && !PinAtPosition(gridX, gridY, direction, 1, 1);
+        return !PinAtPosition(gridVertexX, gridVertexY, direction, 1, -1)
+            && !PinAtPosition(gridVertexX, gridVertexY, direction, 1, 0)
+            && !PinAtPosition(gridVertexX, gridVertexY, direction, 1, 1);
     }
 
-    private bool PinAtPosition(int gridX, int gridY, Vector2 direction, int parallelOffset, int perpendicularOffset)
+    private bool PinAtPosition(int gridVertexX, int gridVertexY, Vector2 direction, int parallelOffset, int perpendicularOffset)
     {
-        Vector2 gridPosition = new Vector2(gridX, gridY);
+        Vector2 gridPosition = new Vector2(gridVertexX, gridVertexY);
         Vector2 offset = new Vector2(perpendicularOffset, parallelOffset);
         Vector2 newGridPosition = gridPosition + (Vector2) (Quaternion.AngleAxis(Vector2.Angle(Vector2.up, direction), Vector3.forward) * offset);
 
@@ -134,8 +136,8 @@ public class Tablet : MonoBehaviour {
 
     /** Gets the piece that is on position x,y of the room floor. */
 	public TabletCell GetTabletPieceByFactoryPosition(int x, int y) {
-        int tabletX = x - gridX;
-        int tabletY = y - gridY;
+        int tabletX = x - gridCellX;
+        int tabletY = y - gridCellY;
 		if (tabletX == 0 && tabletY == 0) {
 			return BottomLeft.GetComponent<TabletCell>();
 		} else if (tabletX == 0 && tabletY == 1) {

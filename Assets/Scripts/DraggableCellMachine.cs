@@ -28,7 +28,7 @@ public class DraggableCellMachine : MonoBehaviour
             && closestCell.CellMachine != null
             && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f)
         {
-            if (closestCell.CellMachine == GetComponent<VertexMachine>())
+            if (closestCell.CellMachine == GetComponent<CellMachine>())
             {
                 closestCell.CellMachine = null;
             }
