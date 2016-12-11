@@ -29,11 +29,14 @@ public class Mover : VertexMachine {
 
     protected override void Manipulate(float tickTime)
     {
-        // is there a tile over us?
-        if (GridVertex.Grid.CurrentInput.gridX == this.GridVertex.X
-            && GridVertex.Grid.CurrentInput.gridY == this.GridVertex.Y)
+        if (GridVertex.Grid.CurrentInput != null)
         {
-            GridVertex.Grid.CurrentInput.MovementDirection = facing;
+            // is there a tile over us?
+            if (GridVertex.Grid.CurrentInput.gridX == this.GridVertex.X
+                && GridVertex.Grid.CurrentInput.gridY == this.GridVertex.Y)
+            {
+                GridVertex.Grid.CurrentInput.MovementDirection = facing;
+            }
         }
     }
 
