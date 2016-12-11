@@ -31,6 +31,10 @@ sysinfo.txt
 
 # Git merge files
 *.orig
+*.BACKUP.*
+*.REMOTE.*
+*.LOCAL.*
+*.BASE.*
 
 # MAC finder files
 *.DS_Store
