@@ -7,6 +7,7 @@ public class MachineGrid : MonoBehaviour {
     public int Height;
     public GameObject GridCellPrefab;
     public GameObject GridVertexPrefab;
+    public Tablet CurrentInput;
 
     [HideInInspector]
     public GameObject[,] GridCells;
