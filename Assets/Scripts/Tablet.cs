@@ -86,7 +86,6 @@ public class Tablet : MonoBehaviour {
         else
         {
             // Do either a rotation or a bounceback
-            // TODO(taylor): or a little of each
             List<Vector2> offsetBlacklist = new List<Vector2>();
             offsetBlacklist.Add(new Vector2(0, 0));
             offsetBlacklist.Add(new Vector2(0, 1));
@@ -99,20 +98,45 @@ public class Tablet : MonoBehaviour {
             {
                 // Start a rotation anticlockwise
                 Debug.Log("Anticlockwise rotation starting.");
-            }
-
-            if (PinAtPosition(gridVertexX, gridVertexY, direction, 1, 1)
+                StartCoroutine(DoRotation(direction, lengthOfTickSeconds, new Vector2(-1, 1), 90));
+                gridVertexX += 2 * (int)direction.x;
+                gridVertexY += 2 * (int)direction.y;
+            } else if (PinAtPosition(gridVertexX, gridVertexY, direction, 1, 1)
                 && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridVertexX, gridVertexY, direction, (int)vector.x, (int)-vector.y)))
             {
                 // Start a rotation clockwise
                 Debug.Log("Clockwise rotation starting.");
+                StartCoroutine(DoRotation(direction, lengthOfTickSeconds, new Vector2(1, 1), -90));
+                gridVertexX += 2 * (int)direction.x;
+                gridVertexY += 2 * (int)direction.y;
+
+            } else
+            {
+                // There's a pin in the way, but still at least one pin in front of us; bounce back.
+                // TODO(taylor): animate a partial swing in some cases.
+                Debug.Log("Bouncing back the way we came.");
             }
         }
     }
 
+    private IEnumerator DoRotation(Vector2 direction, float lengthOfTickSeconds, Vector2 offset, float angle)
+    {
+        Vector2 gridPosition = new Vector2(gridVertexX, gridVertexY);
+        Vector2 newGridPosition = gridPosition + (Vector2)(Quaternion.AngleAxis(Vector2.Angle(Vector2.up, direction), Vector3.forward) * offset);
+        Vector2 origin = Grid.getVertexWorldPosition((int)newGridPosition.x, (int)newGridPosition.y);
+
+        float startTime = Time.time;
+        while (Time.time < startTime + lengthOfTickSeconds)
+        {
+            transform.RotateAround(origin, Vector3.forward, Time.deltaTime / lengthOfTickSeconds * angle);
+            yield return null;
+        }
+
+        yield break;
+    }
+
     private bool NoFrontPins(int gridVertexX, int gridVertexY, Vector2 direction)
     {
-
         return !PinAtPosition(gridVertexX, gridVertexY, direction, 1, -1)
             && !PinAtPosition(gridVertexX, gridVertexY, direction, 1, 0)
             && !PinAtPosition(gridVertexX, gridVertexY, direction, 1, 1);
