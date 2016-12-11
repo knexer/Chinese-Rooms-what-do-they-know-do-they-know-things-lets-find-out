@@ -54,7 +54,6 @@ public class Tablet : MonoBehaviour {
         // Do the move in the grid
         gridX += (int)direction.x;
         gridY += (int)direction.y;
-        
 
         // Animate the move
         direction.Scale(FindObjectOfType<MachineGrid>().GridCellPrefab.GetComponent<BoxCollider2D>().size);
