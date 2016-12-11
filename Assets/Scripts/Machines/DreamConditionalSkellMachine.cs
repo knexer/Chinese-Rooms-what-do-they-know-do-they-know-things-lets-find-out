@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DreamConditionalSkellMachine : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+public class DreamConditionalSkellMachine : ConditionalCellMachine {
+	public override void Manipulate(float tickDelta) {
+		TabletCell tabletCell = GridCell.GetInput ();
+		if (tabletCell == null) {
+			return;
+		}
 	}
 }
