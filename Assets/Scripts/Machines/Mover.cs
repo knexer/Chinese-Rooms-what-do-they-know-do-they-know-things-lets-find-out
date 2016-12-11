@@ -32,8 +32,8 @@ public class Mover : VertexMachine {
         if (GridVertex.Grid.CurrentInput != null)
         {
             // is there a tile over us?
-            if (GridVertex.Grid.CurrentInput.gridX == this.GridVertex.X
-                && GridVertex.Grid.CurrentInput.gridY == this.GridVertex.Y)
+            if (GridVertex.Grid.CurrentInput.gridVertexX == this.GridVertex.X
+                && GridVertex.Grid.CurrentInput.gridVertexY == this.GridVertex.Y)
             {
                 GridVertex.Grid.CurrentInput.MovementDirection = facing;
             }

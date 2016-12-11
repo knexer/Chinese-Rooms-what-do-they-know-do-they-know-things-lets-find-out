@@ -62,14 +62,14 @@ public class DraggableCellMachine : DraggableMachine
         dragging = true;
 
         // remove from whatever it's attached to
-        if (grid != null) {
-            GridCell closestCell = grid.getClosestCell(transform.position);
-            if (closestCell != null
-                && closestCell.CellMachine != null
-                && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f) {
-                if (closestCell.CellMachine == GetComponent<VertexMachine>()) {
-                    closestCell.CellMachine = null;
-                }
+        GridCell closestCell = grid.getClosestCell(transform.position);
+        if (closestCell != null
+            && closestCell.CellMachine != null
+            && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f)
+        {
+            if (closestCell.CellMachine == GetComponent<CellMachine>())
+            {
+                closestCell.CellMachine = null;
             }
         }
     }
