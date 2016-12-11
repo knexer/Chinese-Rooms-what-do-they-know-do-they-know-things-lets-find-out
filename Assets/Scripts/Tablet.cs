@@ -22,6 +22,7 @@ public class Tablet : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        transform.position = FindObjectOfType<MachineGrid>().getVertexWorldPosition(gridX, gridY);
         TopLeft = NewTablet(-1, 1);
         TopRight = NewTablet(1, 1);
         BottomLeft = NewTablet(-1, -1);
@@ -68,7 +69,7 @@ public class Tablet : MonoBehaviour {
         gridY += (int)direction.y;
 
         // Animate the move
-        direction.Scale(FindObjectOfType<MachineGrid>().GridCellPrefab.GetComponent<BoxCollider2D>().size);
+        direction.Scale(FindObjectOfType<MachineGrid>().GetCellSizeWorldSpace());
 
         StartCoroutine(DoMove(direction, lengthOfTickSeconds));
     }

@@ -49,9 +49,17 @@ public class MachineGrid : MonoBehaviour {
         }
     }
 
-    public GridVertex getClosestVertex(Vector3 position)
+    public Vector2 GetCellSizeWorldSpace()
     {
         Vector3 cellSize = GridCellPrefab.GetComponent<BoxCollider2D>().size;
+        cellSize.Scale(transform.FindChild("ScaleContainer").transform.lossyScale);
+
+        return cellSize;
+    }
+
+    public GridVertex getClosestVertex(Vector3 position)
+    {
+        Vector2 cellSize = GetCellSizeWorldSpace();
 
         Vector3 relativePosition = position - transform.position;
         int xPosition = (int)Mathf.Clamp(relativePosition.x / cellSize.x + 0.5f, 0, GridVertices.GetLength(0) - 1);
@@ -62,13 +70,20 @@ public class MachineGrid : MonoBehaviour {
 
     public GridCell getClosestCell(Vector3 position)
     {
-        Vector3 cellSize = GridCellPrefab.GetComponent<BoxCollider2D>().size;
+        Vector2 cellSize = GetCellSizeWorldSpace();
 
         Vector3 relativePosition = position - transform.position;
         int xPosition = (int)Mathf.Clamp(relativePosition.x / cellSize.x, 0, GridCells.GetLength(0) - 1);
         int yPosition = (int)Mathf.Clamp(relativePosition.y / cellSize.y, 0, GridCells.GetLength(1) - 1);
 
         return GridCells[xPosition, yPosition].GetComponent<GridCell>();
+    }
+
+    public Vector2 getVertexWorldPosition(int x, int y)
+    {
+        Vector2 cellSize = GetCellSizeWorldSpace();
+
+        return new Vector2(transform.position.x + x * cellSize.x, transform.position.y + y * cellSize.y);
     }
 
     public TabletCell GetInputAt(int x, int y) {
