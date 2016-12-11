@@ -5,12 +5,12 @@ using UnityEngine;
 /** Tablet is the input to the room. It's a 4x4 grid. */
 public class Tablet : MonoBehaviour {
     public float cellDistance;
-    public GameObject TabletPiece;
+    public TabletCell TabletPiece;
 
-    private GameObject TopLeft;
-    private GameObject TopRight;
-    private GameObject BottomLeft;
-    private GameObject BottomRight;
+    private TabletCell TopLeft;
+    private TabletCell TopRight;
+    private TabletCell BottomLeft;
+    private TabletCell BottomRight;
 
     /** gridX/Y refers to the grid position of the top left tablet piece. */
     public int gridX;
@@ -24,8 +24,8 @@ public class Tablet : MonoBehaviour {
         BottomRight = NewTablet(1, -1);
     }
 
-    /** Create a new table at the relative position of x, y. */
-    private GameObject NewTablet(float x, float y) {
+    /** Create a new tablet cell at the relative position of x, y. */
+    private TabletCell NewTablet(float x, float y) {
         var tablet = Instantiate(TabletPiece, transform, true);
         tablet.transform.position = new Vector3(x * cellDistance, y * cellDistance, 0);
         print("Added tablet piece at " + x + ", " + y);
@@ -33,7 +33,7 @@ public class Tablet : MonoBehaviour {
     }
 
     /** Create a new table at the relative position of x, y. */
-    private GameObject NewTablet(int x, int y) {
+    private TabletCell NewTablet(int x, int y) {
         return NewTablet((float) x, (float) y);
     }
 
@@ -43,17 +43,19 @@ public class Tablet : MonoBehaviour {
 	}
 
     /** Gets the piece that is on position x,y of the room floor. */
-    public GameObject GetTabletPieceByFactoryPosition(int x, int y) {
+    public TabletCell GetTabletPieceByFactoryPosition(int x, int y) {
         int tabletX = x - gridX;
         int tabletY = y - gridY;
-        if (tabletX == 0 && tabletY == 0) {
-            return BottomLeft;
-        } else if (tabletX == 0 && tabletY == 1) {
-            return TopLeft;
-        } else if (tabletX == 1 && tabletY == 0) {
-            return BottomRight;
-        } else {
-            return TopRight;
-        }
+		if (tabletX == 0 && tabletY == 0) {
+			return BottomLeft;
+		} else if (tabletX == 0 && tabletY == 1) {
+			return TopLeft;
+		} else if (tabletX == 1 && tabletY == 0) {
+			return BottomRight;
+		} else if (tabletX == 1 && tabletY == 1) {
+			return TopRight;
+		} else {
+			return null;
+		}
     }
 }
