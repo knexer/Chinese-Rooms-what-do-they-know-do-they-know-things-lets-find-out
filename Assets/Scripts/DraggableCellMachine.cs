@@ -45,6 +45,7 @@ public class DraggableCellMachine : DraggableMachine
                 && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f)
             {
                 closestCell.CellMachine = GetComponent<CellMachine>();
+				closestCell.CellMachine.OnPlace ();
             }
             else
             {
@@ -65,6 +66,7 @@ public class DraggableCellMachine : DraggableMachine
                 && closestCell.CellMachine != null
                 && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f) {
                 if (closestCell.CellMachine == GetComponent<CellMachine>()) {
+					closestCell.CellMachine.OnRemove ();
                     closestCell.CellMachine = null;
                 }
             }

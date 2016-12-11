@@ -133,7 +133,7 @@ public class Tablet : MonoBehaviour {
     private IEnumerator DoRotation(Vector2 direction, float lengthOfTickSeconds, Vector2 offset, float angle)
     {
         Vector2 gridPosition = new Vector2(gridVertexX, gridVertexY);
-        Vector2 newGridPosition = gridPosition + (Vector2)(Quaternion.AngleAxis(Vector2.Angle(Vector2.up, direction), Vector3.forward) * offset);
+        Vector2 newGridPosition = gridPosition + (Vector2)(Quaternion.AngleAxis(AngleFromTo(direction, Vector2.up), Vector3.forward) * offset);
         Vector2 origin = Grid.getVertexWorldPosition((int)newGridPosition.x, (int)newGridPosition.y);
 
         float startTime = Time.time;
@@ -157,7 +157,7 @@ public class Tablet : MonoBehaviour {
     {
         Vector2 gridPosition = new Vector2(gridVertexX, gridVertexY);
         Vector2 offset = new Vector2(perpendicularOffset, parallelOffset);
-        Vector2 newGridPosition = gridPosition + (Vector2) (Quaternion.AngleAxis(Vector2.Angle(Vector2.up, direction), Vector3.forward) * offset);
+        Vector2 newGridPosition = gridPosition + (Vector2) (Quaternion.AngleAxis(AngleFromTo(direction, Vector2.up), Vector3.forward) * offset);
 
         // out of bounds check
         if (newGridPosition.x < 0
@@ -176,6 +176,15 @@ public class Tablet : MonoBehaviour {
         }
 
         return machineAtPosition.GetComponent<PinMachine>() != null;
+    }
+
+    private float AngleFromTo(Vector2 from, Vector2 to)
+    {
+        float angle = Vector2.Angle(from, to);
+        if (Vector3.Cross(from, to).z > 0)
+            angle = 360 - angle;
+
+        return angle;
     }
 
     IEnumerator DoMove(Vector2 delta, float lengthOfTickSeconds)

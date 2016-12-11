@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EyeConditionalCellMachine : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+public class EyeConditionalCellMachine : ConditionalCellMachine {
+	public override void Manipulate(float tickDelta) {
+		TabletCell tabletCell = GridCell.GetInput ();
+		if (tabletCell == null) {
+			return;
+		}
 	}
 }
