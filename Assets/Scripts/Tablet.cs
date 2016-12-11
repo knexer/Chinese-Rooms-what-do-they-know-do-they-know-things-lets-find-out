@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /** Tablet is the input to the room. It's a 4x4 grid. */
 public class Tablet : MonoBehaviour {
@@ -86,6 +87,26 @@ public class Tablet : MonoBehaviour {
         {
             // Do either a rotation or a bounceback
             // TODO(taylor): or a little of each
+            List<Vector2> offsetBlacklist = new List<Vector2>();
+            offsetBlacklist.Add(new Vector2(0, 0));
+            offsetBlacklist.Add(new Vector2(0, 1));
+            offsetBlacklist.Add(new Vector2(1, 0));
+            offsetBlacklist.Add(new Vector2(1, 1));
+            offsetBlacklist.Add(new Vector2(2, 0));
+            offsetBlacklist.Add(new Vector2(2, 1));
+            if (PinAtPosition(gridX, gridY, direction, 1, -1)
+                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridX, gridY, direction, (int)vector.x, (int)vector.y)))
+            {
+                // Start a rotation anticlockwise
+                Debug.Log("Anticlockwise rotation starting.");
+            }
+
+            if (PinAtPosition(gridX, gridY, direction, 1, 1)
+                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridX, gridY, direction, (int)vector.x, (int)-vector.y)))
+            {
+                // Start a rotation clockwise
+                Debug.Log("Clockwise rotation starting.");
+            }
         }
     }
 
