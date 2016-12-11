@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VertexMachine : MonoBehaviour
+public abstract class VertexMachine : MonoBehaviour
 {
-
     public GridVertex GridVertex { get; set; }
 
     // Use this for initialization
@@ -19,8 +18,5 @@ public class VertexMachine : MonoBehaviour
 
     }
 
-    private void Manipulate(float tickTime)
-    {
-
-    }
+    protected abstract void Manipulate(float tickTime);
 }

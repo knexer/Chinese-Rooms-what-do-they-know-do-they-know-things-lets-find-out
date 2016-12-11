@@ -64,7 +64,7 @@ public class MachineGrid : MonoBehaviour {
     }
 
     public GameObject GetInputAt(int x, int y) {
-        return CurrentInput.GetTabletPieceByFactoryPosition(x, y);
+        return CurrentInput.GetTabletPieceByFactoryPosition(x, y).gameObject;
     }
 
     // Use this for initialization

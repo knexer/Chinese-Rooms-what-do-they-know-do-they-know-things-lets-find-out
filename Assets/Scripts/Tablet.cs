@@ -7,6 +7,8 @@ public class Tablet : MonoBehaviour {
     public float cellDistance;
     public TabletCell TabletPiece;
 
+    public Mover.Direction MovementDirection;
+
     private TabletCell TopLeft;
     private TabletCell TopRight;
     private TabletCell BottomLeft;
@@ -24,6 +26,7 @@ public class Tablet : MonoBehaviour {
         BottomRight = NewTablet(1, -1);
 
         FindObjectOfType<MachineGrid>().CurrentInput = this;
+        TickController.MoveTickEvent += TriggerMove;
     }
 
     /** Create a new tablet cell at the relative position of x, y. */
@@ -43,6 +46,26 @@ public class Tablet : MonoBehaviour {
     void Update () {
 		
 	}
+
+    void TriggerMove(float lengthOfTickSeconds)
+    {
+        Vector2 direction = MovementDirection.ToUnitVector();
+        direction.Scale(FindObjectOfType<MachineGrid>().GridCellPrefab.GetComponent<BoxCollider2D>().size);
+
+        StartCoroutine(DoMove(direction, lengthOfTickSeconds));
+    }
+
+    IEnumerator DoMove(Vector2 delta, float lengthOfTickSeconds)
+    {
+        Vector2 from = transform.position;
+        float startTime = Time.time;
+        while (Time.time < startTime + lengthOfTickSeconds)
+        {
+            transform.position = Vector2.Lerp(from, from + delta, (Time.time - startTime) / lengthOfTickSeconds);
+            yield return null;
+        }
+        transform.position = from + delta;
+    }
 
     /** Gets the piece that is on position x,y of the room floor. */
     public TabletCell GetTabletPieceByFactoryPosition(int x, int y) {
