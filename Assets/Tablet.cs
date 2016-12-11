@@ -22,6 +22,8 @@ public class Tablet : MonoBehaviour {
         TopRight = NewTablet(1, 1);
         BottomLeft = NewTablet(-1, -1);
         BottomRight = NewTablet(1, -1);
+
+        FindObjectOfType<MachineGrid>().CurrentInput = this;
     }
 
     /** Create a new table at the relative position of x, y. */
