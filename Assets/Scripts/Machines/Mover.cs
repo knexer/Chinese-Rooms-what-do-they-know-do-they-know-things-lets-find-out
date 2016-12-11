@@ -8,7 +8,8 @@ public class Mover : VertexMachine {
     private SpriteRenderer sprite;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
+        base.Start();
         sprite = GetComponent<SpriteRenderer>();
 	}
 
