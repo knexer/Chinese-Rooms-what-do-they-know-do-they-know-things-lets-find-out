@@ -54,8 +54,10 @@ public class Tablet : MonoBehaviour {
             return TopLeft;
         } else if (tabletX == 1 && tabletY == 0) {
             return BottomRight;
-        } else {
+        } else if (tabletX == 1 && tabletY == 1) {
             return TopRight;
+        } else {
+            return null;
         }
     }
 }
