@@ -7,6 +7,8 @@ public class MachineGrid : MonoBehaviour {
     public int Height;
     public GameObject GridCellPrefab;
     public GameObject GridVertexPrefab;
+
+    public Transform GridContainer;  
     public Tablet CurrentInput;
 
     [HideInInspector]
@@ -26,7 +28,10 @@ public class MachineGrid : MonoBehaviour {
             {
                 GridCells[x, y] = Instantiate(GridCellPrefab);
                 GridCells[x, y].GetComponent<GridCell>().Register(x, y, this);
-                GridCells[x, y].transform.position = transform.position + cellSize / 2 + new Vector3(x * cellSize.x, y * cellSize.y);
+                
+                GridCells[x, y].transform.parent = GridContainer;
+                GridCells[x, y].transform.localPosition = cellSize / 2 + new Vector3(x * cellSize.x, y * cellSize.y);
+                GridCells[x, y].transform.localScale = Vector3.one;
             }
         }
 
@@ -36,7 +41,10 @@ public class MachineGrid : MonoBehaviour {
             {
                 GridVertices[x, y] = Instantiate(GridVertexPrefab);
                 GridVertices[x, y].GetComponent<GridVertex>().Register(x, y, this);
-                GridVertices[x, y].transform.position += new Vector3(x * cellSize.x, y * cellSize.y);
+                
+                GridVertices[x, y].transform.parent = GridContainer;
+                GridVertices[x, y].transform.localPosition = new Vector3(x * cellSize.x, y * cellSize.y);
+                GridVertices[x, y].transform.localScale = Vector3.one;
             }
         }
     }
