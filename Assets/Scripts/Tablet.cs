@@ -51,6 +51,12 @@ public class Tablet : MonoBehaviour {
     void TriggerMove(float lengthOfTickSeconds)
     {
         Vector2 direction = MovementDirection.ToUnitVector();
+        // Do the move in the grid
+        gridX += (int)direction.x;
+        gridY += (int)direction.y;
+        
+
+        // Animate the move
         direction.Scale(FindObjectOfType<MachineGrid>().GridCellPrefab.GetComponent<BoxCollider2D>().size);
 
         StartCoroutine(DoMove(direction, lengthOfTickSeconds));
