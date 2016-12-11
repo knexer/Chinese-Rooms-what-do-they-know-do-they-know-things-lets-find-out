@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ToggleColorCellMachine : CellMachine {
+public class ToggleOnOffCellMachine : CellMachine {
 	public override void Manipulate(float tickDelta) {
 		TabletCell tabletCell = GetTabletCell ();
 		if (tabletCell == null) {
 			return;
 		}
-		if (tabletCell.Color == TabletCell.Colors.Blue) {
+		if (tabletCell.Color == TabletCell.Colors.None) {
 			tabletCell.Color = TabletCell.Colors.Green;
-		}
-		if (tabletCell.Color == TabletCell.Colors.Green) {
-			tabletCell.Color = TabletCell.Colors.Blue;
+		} else {
+			tabletCell.Color = TabletCell.Colors.None;
 		}
 	}
 }

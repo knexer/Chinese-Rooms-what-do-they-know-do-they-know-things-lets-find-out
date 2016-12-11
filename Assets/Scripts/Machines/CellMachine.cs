@@ -22,7 +22,7 @@ public abstract class CellMachine : MonoBehaviour {
 		this.grid = grid;
 	}
 
-    protected abstract void Manipulate(float tickDelta);
+    public abstract void Manipulate(float tickDelta);
 
 	protected TabletCell GetTabletCell() {
 		return grid.CurrentInput.GetTabletPieceByFactoryPosition (x, y);

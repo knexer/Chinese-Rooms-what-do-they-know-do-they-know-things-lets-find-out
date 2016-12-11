@@ -30,9 +30,15 @@ public class Tablet : MonoBehaviour {
     }
 
     /** Create a new tablet cell at the relative position of x, y. */
-    private GameObject NewTablet(float x, float y) {
+	private GameObject NewTablet(float x, 
+								 float y, 
+ 						     	 TabletCell.Colors color = TabletCell.Colors.None,
+		                         TabletCell.Symbols symbol = TabletCell.Symbols.Eye) {
         var tablet = Instantiate(TabletPiece, transform, true);
 		// TODO(emmax): set values
+		tablet.GetComponent<TabletCell>().Color = color;
+		tablet.GetComponent<TabletCell>().Symbol = symbol;
+
         tablet.transform.position = new Vector3(x * cellDistance, y * cellDistance, 0);
         print("Added tablet piece at " + x + ", " + y);
         return tablet;

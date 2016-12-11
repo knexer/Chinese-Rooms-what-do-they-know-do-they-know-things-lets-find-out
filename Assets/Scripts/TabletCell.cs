@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TabletCell : MonoBehaviour {
-	public GameObject blah;
-
-
 	public enum Colors {
 		None,
 		Green,
@@ -18,8 +15,8 @@ public class TabletCell : MonoBehaviour {
 		Dream
 	}
 
-	public Colors color;
-	public Symbols symbol;
+	public Colors Color;
+	public Symbols Symbol;
 
 	// Use this for initialization
 	void Start () {
