@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DraggableVertexMachine : MonoBehaviour
+public class DraggableVertexMachine : DraggableMachine
 {
     public float distanceThreshold = Mathf.Infinity;
 
@@ -20,31 +21,20 @@ public class DraggableVertexMachine : MonoBehaviour
 
     private void OnMouseDown()
     {
-        dragging = true;
-
-        // remove from whatever it's attached to
-        GridVertex closestVertex = grid.getClosestVertex(transform.position);
-        if (closestVertex != null
-            && closestVertex.VertexMachine != null
-            && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f)
-        {
-            if (closestVertex.VertexMachine == GetComponent<VertexMachine>())
-            {
-                closestVertex.VertexMachine = null;
-            }
-        }
+        StartDrag();
     }
 
-    private void OnMouseDrag()
+    private void Update()
     {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector3(transform.position.x, transform.position.y, DraggableVertexMachine.DRAG_Z_DEPTH);
-        Vector3 closestVertexPosition = grid.getClosestVertex(transform.position).transform.position;
+        if (dragging) {
+            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = new Vector3(transform.position.x, transform.position.y, DraggableVertexMachine.DRAG_Z_DEPTH);
+            Vector3 closestVertexPosition = grid.getClosestVertex(transform.position).transform.position;
 
-        if (Vector2.Distance(transform.position, closestVertexPosition) < distanceThreshold)
-        {
-            closestVertexPosition.z = 0.0f;
-            transform.position = closestVertexPosition;
+            if (Vector2.Distance(transform.position, closestVertexPosition) < distanceThreshold) {
+                closestVertexPosition.z = 0.0f;
+                transform.position = closestVertexPosition;
+            }
         }
     }
 
@@ -63,7 +53,21 @@ public class DraggableVertexMachine : MonoBehaviour
             }
             else
             {
-                // TODO put it back on the shelf
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
+    public override void StartDrag() {
+        dragging = true;
+
+        // remove from whatever it's attached to
+        GridVertex closestVertex = grid.getClosestVertex(transform.position);
+        if (closestVertex != null
+            && closestVertex.VertexMachine != null
+            && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f) {
+            if (closestVertex.VertexMachine == GetComponent<VertexMachine>()) {
+                closestVertex.VertexMachine = null;
             }
         }
     }

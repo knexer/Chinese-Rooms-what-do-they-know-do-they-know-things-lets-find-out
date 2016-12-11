@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DraggableCellMachine : MonoBehaviour
+public class DraggableCellMachine : DraggableMachine
 {
     public float distanceThreshold = 0.2f;
     
@@ -20,31 +21,20 @@ public class DraggableCellMachine : MonoBehaviour
 
     private void OnMouseDown()
     {
-        dragging = true;
-
-        // remove from whatever it's attached to
-        GridCell closestCell = grid.getClosestCell(transform.position);
-        if (closestCell != null
-            && closestCell.CellMachine != null
-            && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f)
-        {
-            if (closestCell.CellMachine == GetComponent<VertexMachine>())
-            {
-                closestCell.CellMachine = null;
-            }
-        }
+        StartDrag();
     }
 
-    private void OnMouseDrag()
+    private void Update()
     {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector3(transform.position.x, transform.position.y, DraggableCellMachine.DRAG_Z_DEPTH);
-        Vector3 closestCellPosition = grid.getClosestCell(transform.position).transform.position;
+        if (dragging) {
+            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = new Vector3(transform.position.x, transform.position.y, DraggableCellMachine.DRAG_Z_DEPTH);
+            Vector3 closestCellPosition = grid.getClosestCell(transform.position).transform.position;
 
-        if (Vector2.Distance(transform.position, closestCellPosition) < distanceThreshold)
-        {
-            closestCellPosition.z = 0.0f;
-            transform.position = closestCellPosition;
+            if (Vector2.Distance(transform.position, closestCellPosition) < distanceThreshold) {
+                closestCellPosition.z = 0.0f;
+                transform.position = closestCellPosition;
+            }
         }
     }
 
@@ -63,7 +53,23 @@ public class DraggableCellMachine : MonoBehaviour
             }
             else
             {
-                // TODO put it back on the shelf
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
+    public override void StartDrag() {
+        dragging = true;
+
+        // remove from whatever it's attached to
+        if (grid != null) {
+            GridCell closestCell = grid.getClosestCell(transform.position);
+            if (closestCell != null
+                && closestCell.CellMachine != null
+                && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f) {
+                if (closestCell.CellMachine == GetComponent<VertexMachine>()) {
+                    closestCell.CellMachine = null;
+                }
             }
         }
     }
