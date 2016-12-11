@@ -19,11 +19,6 @@ public class DraggableVertexMachine : DraggableMachine
         grid = FindObjectOfType<MachineGrid>();
     }
 
-    private void OnMouseDown()
-    {
-        StartDrag();
-    }
-
     private void Update()
     {
         if (dragging) {
@@ -38,7 +33,7 @@ public class DraggableVertexMachine : DraggableMachine
         }
     }
 
-    private void OnMouseUp()
+    private void OnMouseUpAsButton()
     {
         if (dragging)
         {
@@ -55,6 +50,8 @@ public class DraggableVertexMachine : DraggableMachine
             {
                 Destroy(this.gameObject);
             }
+        } else {
+            StartDrag();
         }
     }
 
