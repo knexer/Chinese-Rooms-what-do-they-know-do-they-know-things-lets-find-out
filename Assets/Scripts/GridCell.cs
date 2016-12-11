@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GridCell : MonoBehaviour {
-    private MachineGrid Grid;
-    private int X;
-    private int Y;
+    public MachineGrid Grid { get; private set; }
+    public int X { get; private set; }
+    public int Y { get; private set; }
     
     public CellMachine StartingCellMachine;
 
@@ -28,4 +28,7 @@ public class GridCell : MonoBehaviour {
         this.Grid = Grid;
     }
     
+    public GameObject GetInput() {
+        return Grid.GetInputAt(X, Y);
+    }
 }
