@@ -94,15 +94,15 @@ public class Tablet : MonoBehaviour {
             offsetBlacklist.Add(new Vector2(1, 1));
             offsetBlacklist.Add(new Vector2(2, 0));
             offsetBlacklist.Add(new Vector2(2, 1));
-            if (PinAtPosition(gridX, gridY, direction, 1, -1)
-                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridX, gridY, direction, (int)vector.x, (int)vector.y)))
+            if (PinAtPosition(gridVertexX, gridVertexY, direction, 1, -1)
+                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridVertexX, gridVertexY, direction, (int)vector.x, (int)vector.y)))
             {
                 // Start a rotation anticlockwise
                 Debug.Log("Anticlockwise rotation starting.");
             }
 
-            if (PinAtPosition(gridX, gridY, direction, 1, 1)
-                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridX, gridY, direction, (int)vector.x, (int)-vector.y)))
+            if (PinAtPosition(gridVertexX, gridVertexY, direction, 1, 1)
+                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridVertexX, gridVertexY, direction, (int)vector.x, (int)-vector.y)))
             {
                 // Start a rotation clockwise
                 Debug.Log("Clockwise rotation starting.");
