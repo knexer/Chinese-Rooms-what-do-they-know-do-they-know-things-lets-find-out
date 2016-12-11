@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GridCell : MonoBehaviour {
+    [HideInInspector]
     public MachineGrid Grid { get; private set; }
+    [HideInInspector]
     public int X { get; private set; }
+    [HideInInspector]
     public int Y { get; private set; }
     
     public CellMachine StartingCellMachine;
 
     public CellMachine CellMachine {
 		get { return cellMachine; }
-		set { cellMachine = value; cellMachine.Register (X, Y, Grid); }
+		set { cellMachine = value; if (cellMachine != null) cellMachine.GridCell = this; }
 	}
     public CellMachine cellMachine;
 

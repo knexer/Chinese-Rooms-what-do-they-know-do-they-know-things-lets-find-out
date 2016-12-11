@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SetSnakeSymbolCellMachine : CellMachine {
 	public override void Manipulate(float tickDelta) {
-		TabletCell tabletCell = GetTabletCell ();
+		TabletCell tabletCell = GridCell.GetInput ();
 		if (tabletCell == null) {
 			return;
 		}

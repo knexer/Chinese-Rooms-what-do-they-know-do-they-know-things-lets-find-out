@@ -12,11 +12,5 @@ public abstract class VertexMachine : MonoBehaviour
         TickController.ManipulateTickEvent += Manipulate;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     protected abstract void Manipulate(float tickTime);
 }

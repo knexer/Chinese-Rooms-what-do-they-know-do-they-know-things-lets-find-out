@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class CellMachine : MonoBehaviour {
-	private MachineGrid grid;
-	private int x;
-	private int y;
-    
+
+    public GridCell GridCell { get; set; }
+
 	void Start () {
         TickController.ManipulateTickEvent += Manipulate;
 	}
@@ -15,16 +14,5 @@ public abstract class CellMachine : MonoBehaviour {
         TickController.ManipulateTickEvent -= Manipulate;
     }
 
-	public void Register(int x, int y, MachineGrid grid)
-	{
-		this.x = x;
-		this.y = y;
-		this.grid = grid;
-	}
-
     public abstract void Manipulate(float tickDelta);
-
-	protected TabletCell GetTabletCell() {
-		return grid.CurrentInput.GetTabletPieceByFactoryPosition (x, y);
-	}
 }
