@@ -28,7 +28,7 @@ public class GridCell : MonoBehaviour {
         this.Grid = Grid;
     }
     
-    public GameObject GetInput() {
+    public TabletCell GetInput() {
         return Grid.GetInputAt(X, Y);
     }
 }
