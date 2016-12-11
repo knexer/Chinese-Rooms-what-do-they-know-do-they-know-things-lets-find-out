@@ -16,6 +16,8 @@ public class Tablet : MonoBehaviour {
 	private GameObject BottomLeft;
 	private GameObject BottomRight;
 
+    private MachineGrid Grid;
+
     /** gridX/Y refers to the grid position of the top left tablet piece. */
     public int gridX;
     public int gridY;
@@ -28,7 +30,8 @@ public class Tablet : MonoBehaviour {
         BottomLeft = NewTablet(-1, -1);
         BottomRight = NewTablet(1, -1);
 
-        FindObjectOfType<MachineGrid>().CurrentInput = this;
+        Grid = FindObjectOfType<MachineGrid>();
+        Grid.CurrentInput = this;
         TickController.MoveTickEvent += TriggerMove;
     }
 
@@ -64,14 +67,57 @@ public class Tablet : MonoBehaviour {
     void TriggerMove(float lengthOfTickSeconds)
     {
         Vector2 direction = MovementDirection.ToUnitVector();
-        // Do the move in the grid
-        gridX += (int)direction.x;
-        gridY += (int)direction.y;
 
-        // Animate the move
-        direction.Scale(FindObjectOfType<MachineGrid>().GetCellSizeWorldSpace());
+        // Check for pins
+        if (NoFrontPins(gridX, gridY, direction))
+        {
+            // Do the move in the grid
+            gridX += (int)direction.x;
+            gridY += (int)direction.y;
 
-        StartCoroutine(DoMove(direction, lengthOfTickSeconds));
+            // Animate the move
+            direction.Scale(FindObjectOfType<MachineGrid>().GetCellSizeWorldSpace());
+
+            StartCoroutine(DoMove(direction, lengthOfTickSeconds));
+        }
+        else
+        {
+            // Do either a rotation or a bounceback
+            // TODO(taylor): or a little of each
+        }
+    }
+
+    private bool NoFrontPins(int gridX, int gridY, Vector2 direction)
+    {
+
+        return !PinAtPosition(gridX, gridY, direction, 1, -1)
+            && !PinAtPosition(gridX, gridY, direction, 1, 0)
+            && !PinAtPosition(gridX, gridY, direction, 1, 1);
+    }
+
+    private bool PinAtPosition(int gridX, int gridY, Vector2 direction, int parallelOffset, int perpendicularOffset)
+    {
+        Vector2 gridPosition = new Vector2(gridX, gridY);
+        Vector2 offset = new Vector2(perpendicularOffset, parallelOffset);
+        Vector2 newGridPosition = gridPosition + (Vector2) (Quaternion.AngleAxis(Vector2.Angle(Vector2.up, direction), Vector3.forward) * offset);
+
+        // out of bounds check
+        if (newGridPosition.x < 0
+            || newGridPosition.x > Grid.GridVertices.GetLength(0) - 1
+            || newGridPosition.y < 0
+            || newGridPosition.y > Grid.GridVertices.GetLength(1) - 1)
+        {
+            return false;
+        }
+
+        VertexMachine machineAtPosition = Grid.GridVertices[(int)newGridPosition.x, (int)newGridPosition.y].GetComponent<GridVertex>().VertexMachine;
+
+        if (machineAtPosition == null)
+        {
+            return false;
+        }
+
+        return machineAtPosition.GetComponent<PinMachine>() != null;
     }
 
     IEnumerator DoMove(Vector2 delta, float lengthOfTickSeconds)
