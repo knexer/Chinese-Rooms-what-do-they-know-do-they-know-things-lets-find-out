@@ -19,11 +19,6 @@ public class DraggableCellMachine : DraggableMachine
         grid = FindObjectOfType<MachineGrid>();
     }
 
-    private void OnMouseDown()
-    {
-        StartDrag();
-    }
-
     private void Update()
     {
         if (dragging) {
@@ -38,7 +33,7 @@ public class DraggableCellMachine : DraggableMachine
         }
     }
 
-    private void OnMouseUp()
+    private void OnMouseUpAsButton()
     {
         if (dragging)
         {
@@ -55,6 +50,8 @@ public class DraggableCellMachine : DraggableMachine
             {
                 Destroy(this.gameObject);
             }
+        } else {
+            StartDrag();
         }
     }
 
@@ -62,14 +59,14 @@ public class DraggableCellMachine : DraggableMachine
         dragging = true;
 
         // remove from whatever it's attached to
-        GridCell closestCell = grid.getClosestCell(transform.position);
-        if (closestCell != null
-            && closestCell.CellMachine != null
-            && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f)
-        {
-            if (closestCell.CellMachine == GetComponent<CellMachine>())
-            {
-                closestCell.CellMachine = null;
+        if (grid != null) {
+            GridCell closestCell = grid.getClosestCell(transform.position);
+            if (closestCell != null
+                && closestCell.CellMachine != null
+                && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f) {
+                if (closestCell.CellMachine == GetComponent<CellMachine>()) {
+                    closestCell.CellMachine = null;
+                }
             }
         }
     }
