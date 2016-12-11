@@ -47,7 +47,7 @@ public class TickController : MonoBehaviour {
     }
 
     public void SetSpeed(int speed) {
-        newSpeedIndex = Mathf.Clamp(speed - 1, 0, GetMaxSpeed());
+        newSpeedIndex = Mathf.Clamp(speed - 1, -1, GetMaxSpeed());
     }
 
     public void ResetTablets() {
