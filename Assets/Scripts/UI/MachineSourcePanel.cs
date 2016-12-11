@@ -6,11 +6,10 @@ public class MachineSourcePanel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		foreach (MachineSource prefab in Level.Obj.availableMachines) {
+            MachineSource instance = Instantiate(prefab);
+            instance.transform.SetParent(this.transform);
+            instance.transform.localScale = Vector3.one;
+        }
 	}
 }
