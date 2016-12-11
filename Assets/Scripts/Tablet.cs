@@ -101,6 +101,12 @@ public class Tablet : MonoBehaviour {
                 StartCoroutine(DoRotation(direction, lengthOfTickSeconds, new Vector2(-1, 1), 90));
                 gridVertexX += 2 * (int)direction.x;
                 gridVertexY += 2 * (int)direction.y;
+
+                GameObject temp = TopRight;
+                TopRight = BottomRight;
+                BottomRight = BottomLeft;
+                BottomLeft = TopLeft;
+                TopLeft = temp;
             } else if (PinAtPosition(gridVertexX, gridVertexY, direction, 1, 1)
                 && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridVertexX, gridVertexY, direction, (int)vector.x, (int)-vector.y)))
             {
@@ -110,6 +116,11 @@ public class Tablet : MonoBehaviour {
                 gridVertexX += 2 * (int)direction.x;
                 gridVertexY += 2 * (int)direction.y;
 
+                GameObject temp = TopRight;
+                TopRight = TopLeft;
+                TopLeft = BottomLeft;
+                BottomLeft = BottomRight;
+                BottomRight = temp;
             } else
             {
                 // There's a pin in the way, but still at least one pin in front of us; bounce back.
