@@ -7,6 +7,8 @@ public class Tablet : MonoBehaviour {
     public float cellDistance;
     public GameObject TabletPiece;
 
+  public Transform TabletCellContainer;
+
     public Mover.Direction MovementDirection;
 
 	private GameObject TopLeft;
@@ -36,10 +38,13 @@ public class Tablet : MonoBehaviour {
 		                         TabletCell.Symbols symbol = TabletCell.Symbols.Eye) {
         var tablet = Instantiate(TabletPiece, transform, true);
 		// TODO(emmax): set values
+
 		tablet.GetComponent<TabletCell>().Color = color;
 		tablet.GetComponent<TabletCell>().Symbol = symbol;
 
-        tablet.transform.position = new Vector3(x * cellDistance, y * cellDistance, 0);
+        tablet.transform.parent = TabletCellContainer;
+        tablet.transform.localPosition = new Vector3(x * cellDistance, y * cellDistance, 0);        
+
         print("Added tablet piece at " + x + ", " + y);
         return tablet;
     }

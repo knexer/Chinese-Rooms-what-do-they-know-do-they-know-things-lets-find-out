@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TabletCell : MonoBehaviour {
+  public tk2dSpriteAnimator tabletAnimator;
+
 	public enum Colors {
 		None,
 		Green,
@@ -20,11 +22,27 @@ public class TabletCell : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+    SetSymbol(Symbol);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+  private void SetSymbol (Symbols symbol) {
+    switch (symbol) {
+    case Symbols.Eye:
+      tabletAnimator.SetFrame(0);
+      break;
+
+    case Symbols.Snake:
+      tabletAnimator.SetFrame(1);
+      break;
+
+    case Symbols.Dream:
+      tabletAnimator.SetFrame(2);
+      break;
+    }
+  }
 }
