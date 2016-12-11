@@ -6,6 +6,8 @@ public class DraggableVertexMachine : MonoBehaviour
 {
     public float distanceThreshold = Mathf.Infinity;
 
+    private const float DRAG_Z_DEPTH = -300.0f;
+
     private MachineGrid grid;
 
     private bool dragging;
@@ -36,11 +38,12 @@ public class DraggableVertexMachine : MonoBehaviour
     private void OnMouseDrag()
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        transform.position = new Vector3(transform.position.x, transform.position.y, DraggableVertexMachine.DRAG_Z_DEPTH);
         Vector3 closestVertexPosition = grid.getClosestVertex(transform.position).transform.position;
 
         if (Vector2.Distance(transform.position, closestVertexPosition) < distanceThreshold)
         {
+            closestVertexPosition.z = 0.0f;
             transform.position = closestVertexPosition;
         }
     }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class DraggableCellMachine : MonoBehaviour
 {
     public float distanceThreshold = 0.2f;
+    
+    private const float DRAG_Z_DEPTH = -300.0f;
 
     private MachineGrid grid;
 
@@ -36,11 +38,12 @@ public class DraggableCellMachine : MonoBehaviour
     private void OnMouseDrag()
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        transform.position = new Vector3(transform.position.x, transform.position.y, DraggableCellMachine.DRAG_Z_DEPTH);
         Vector3 closestCellPosition = grid.getClosestCell(transform.position).transform.position;
 
         if (Vector2.Distance(transform.position, closestCellPosition) < distanceThreshold)
         {
+            closestCellPosition.z = 0.0f;
             transform.position = closestCellPosition;
         }
     }
