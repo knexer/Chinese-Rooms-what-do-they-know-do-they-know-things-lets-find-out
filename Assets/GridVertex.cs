@@ -7,11 +7,18 @@ public class GridVertex : MonoBehaviour {
     private int X;
     private int Y;
 
-    public GameObject VertexMachine;
+    public VertexMachine StartingVertexMachine;
+
+    public VertexMachine VertexMachine
+    {
+        get { return vertexMachine; }
+        set { vertexMachine = value; if (vertexMachine != null) vertexMachine.GridVertex = this; }
+    }
+    public VertexMachine vertexMachine;
 
 	// Use this for initialization
 	void Start () {
-		
+        this.VertexMachine = StartingVertexMachine;
 	}
 
     public void Register(int X, int Y, MachineGrid Grid)

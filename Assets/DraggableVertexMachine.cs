@@ -8,10 +8,29 @@ public class DraggableVertexMachine : MonoBehaviour
 
     private MachineGrid grid;
 
+    private bool dragging;
+
     // Use this for initialization
     void Start()
     {
         grid = FindObjectOfType<MachineGrid>();
+    }
+
+    private void OnMouseDown()
+    {
+        dragging = true;
+
+        // remove from whatever it's attached to
+        GridVertex closestVertex = grid.getClosestVertex(transform.position);
+        if (closestVertex != null
+            && closestVertex.VertexMachine != null
+            && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f)
+        {
+            if (closestVertex.VertexMachine == GetComponent<VertexMachine>())
+            {
+                closestVertex.VertexMachine = null;
+            }
+        }
     }
 
     private void OnMouseDrag()
@@ -23,6 +42,26 @@ public class DraggableVertexMachine : MonoBehaviour
         if (Vector2.Distance(transform.position, closestVertexPosition) < distanceThreshold)
         {
             transform.position = closestVertexPosition;
+        }
+    }
+
+    private void OnMouseUp()
+    {
+        if (dragging)
+        {
+            dragging = false;
+            // place yoself
+            GridVertex closestVertex = grid.getClosestVertex(transform.position);
+            if (closestVertex != null
+                && closestVertex.VertexMachine == null
+                && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f)
+            {
+                closestVertex.VertexMachine = GetComponent<VertexMachine>();
+            }
+            else
+            {
+                // TODO put it back on the shelf
+            }
         }
     }
 }
