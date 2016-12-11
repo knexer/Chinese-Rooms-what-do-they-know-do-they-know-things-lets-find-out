@@ -44,6 +44,7 @@ public class Tablet : MonoBehaviour {
 
         tablet.transform.parent = TabletCellContainer;
         tablet.transform.localPosition = new Vector3(x * cellDistance, y * cellDistance, 0);        
+        tablet.transform.localScale = Vector3.one;
 
         print("Added tablet piece at " + x + ", " + y);
         return tablet;
