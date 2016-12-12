@@ -67,11 +67,11 @@ public class Tablet : MonoBehaviour {
         TopRight = NewTablet(1, 1);
         BottomLeft = NewTablet(-1, -1);
         BottomRight = NewTablet(1, -1);
-        TickController.OutOfBoundEvent += Stop;
-        Stop();
+        TickController.OutOfBoundEvent += () => TickController.Obj.SetSpeed(-1);
+        InterruptMove();
     }
 
-    private void Stop()
+    private void InterruptMove()
     {
         moveStopped = true;
     }
@@ -102,12 +102,6 @@ public class Tablet : MonoBehaviour {
 
     void TriggerMove(float lengthOfTickSeconds)
     {
-
-        if (moveStopped)
-        {
-            return;
-        }
-
         Vector2 direction = MovementDirection.ToUnitVector();
 
         // Check for pins
