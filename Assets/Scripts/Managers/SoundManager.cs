@@ -18,12 +18,12 @@ public class SoundManager : MonoBehaviour {
     ContitionalFailed,
     PickupMachine,
     PlaceDownMachine,
-    StartTheMachine,
-    TestCasesPassed,
-    TestCasesFailed,
-    MachineHasFinished,
-    ClickOnTabletQuad,
-    ToggleBetweenInputs,
+    StartTheMachine, // Not yet placed.
+    TestCasesPassed, // Not yet placed.
+    TestCasesFailed, // Not yet placed.
+    MachineHasFinished, // Not yet placed.
+    ClickOnTabletQuad, // Not yet placed.
+    ToggleBetweenInputs, // Not yet placed.
     MachineDestroyed,
     RotateMover
   }
