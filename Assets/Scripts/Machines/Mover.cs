@@ -18,6 +18,10 @@ public class Mover : VertexMachine {
 	private Conditionals BottomLeft;
 	private Conditionals BottomRight;
 
+	// This is used to determine whether to show a sound
+	// effect during CanMove.
+	private bool meetsConditions;
+
     private Direction facing = Direction.DOWN;
 
     private MoverTypes moverType;
@@ -50,11 +54,17 @@ public class Mover : VertexMachine {
 		// Set to default arrow
 		UpdateImage();
 	}
-    
+
+    protected override void OnDestroy()
+    {
+        TickController.ManipulateTickEvent -= Manipulate;
+    }
+
     // Update is called once per frame
     void OnMouseOver () {
         if (Input.GetKeyUp(KeyCode.R))
         {
+            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.RotateMover);
             rotateClockwise();
         }
     }
@@ -67,11 +77,12 @@ public class Mover : VertexMachine {
 
     protected override void Manipulate(float tickTime)
     {
-		if (GridVertex.Grid.CurrentInput != null && CanMove())
+		if (GridVertex.Grid.CurrentInput != null)
         {
             // is there a tile over us?
             if (GridVertex.Grid.CurrentInput.gridVertexX == this.GridVertex.X
-                && GridVertex.Grid.CurrentInput.gridVertexY == this.GridVertex.Y)
+                && GridVertex.Grid.CurrentInput.gridVertexY == this.GridVertex.Y
+				&& CanMove())
             {
                 GridVertex.Grid.CurrentInput.MovementDirection = facing;
             }
@@ -85,6 +96,7 @@ public class Mover : VertexMachine {
     }
 
 	private bool CanMove() {
+		meetsConditions = false;
 		GridCell[] cells = GridVertex.GetSurroundingCells ();
 		for (int i = 0; i < 4; i++) {
 			CellMachine machine = cells [i].CellMachine;
@@ -95,7 +107,11 @@ public class Mover : VertexMachine {
 
 		if ((TopLeft == Conditionals.False) || (TopRight == Conditionals.False) ||
 			(BottomLeft == Conditionals.False) || (BottomRight == Conditionals.False)) {
+			SoundManager.Instance.PlaySound(SoundManager.SoundTypes.ContitionalFailed);
 			return false;
+		}
+		if (meetsConditions) {
+			SoundManager.Instance.PlaySound (SoundManager.SoundTypes.ConditionalMet);
 		}
 		return true;
 	}
@@ -155,15 +171,19 @@ public class Mover : VertexMachine {
 	public void MeetConditional(int gridX, int gridY) {
 		GridCell[] cells = GridVertex.GetSurroundingCells ();
 		if (cells [0].X == gridX && cells [0].Y == gridY) {
+			meetsConditions = true;
 			TopLeft = Conditionals.True;
 		}
 		if (cells [1].X == gridX && cells [1].Y == gridY) {
+			meetsConditions = true;
 			TopRight = Conditionals.True;
 		}
 		if (cells [2].X == gridX && cells [2].Y == gridY) {
+			meetsConditions = true;
 			BottomLeft = Conditionals.True;
 		}
 		if (cells [3].X == gridX && cells [3].Y == gridY) {
+			meetsConditions = true;
 			BottomRight = Conditionals.True;
 		}
 		UpdateImage ();

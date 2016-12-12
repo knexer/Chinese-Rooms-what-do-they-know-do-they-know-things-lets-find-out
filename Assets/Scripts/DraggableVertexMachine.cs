@@ -14,7 +14,7 @@ public class DraggableVertexMachine : DraggableMachine
     private bool dragging;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         grid = FindObjectOfType<MachineGrid>();
     }
@@ -47,10 +47,11 @@ public class DraggableVertexMachine : DraggableMachine
                 closestVertex.VertexMachine = GetComponent<VertexMachine>();
         				closestVertex.VertexMachine.OnPlace (); 
 
-                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.GridSnap);
+                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PlaceDownMachine);
             }
             else
             {
+                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.MachineDestroyed);
                 Destroy(this.gameObject);                
             }
         } else {
@@ -61,7 +62,7 @@ public class DraggableVertexMachine : DraggableMachine
     public override void StartDrag() {
         dragging = true;
         
-        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.ItemGrab);
+        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PickupMachine);
 
         // remove from whatever it's attached to
         GridVertex closestVertex = grid.getClosestVertex(transform.position);

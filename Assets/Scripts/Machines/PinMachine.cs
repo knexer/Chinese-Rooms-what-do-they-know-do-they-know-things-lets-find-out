@@ -9,9 +9,14 @@ public class PinMachine : VertexMachine {
     protected override void Start () {
 		TickController.ManipulateTickEvent += Manipulate;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    protected override void OnDestroy()
+    {
+        TickController.ManipulateTickEvent -= Manipulate;
+    }
+
+    // Update is called once per frame
+    void Update () {
 
     }
 

@@ -9,8 +9,10 @@ public class ToggleOnOffCellMachine : CellMachine {
 			return;
 		}
 		if (tabletCell.Color == TabletCell.Colors.None) {
+			SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedGlow);
 			tabletCell.Color = TabletCell.Colors.Green;
 		} else {
+			SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedGlow);
 			tabletCell.Color = TabletCell.Colors.None;
 		}
 	}

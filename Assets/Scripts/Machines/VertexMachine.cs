@@ -8,10 +8,12 @@ public abstract class VertexMachine : MonoBehaviour
 
     // Use this for initialization
 	protected abstract void Start();
+    protected abstract void OnDestroy();
 
     protected abstract void Manipulate(float tickTime);
 
 	public abstract void OnPlace ();
 
 	public abstract void OnRemove ();
+
 }
