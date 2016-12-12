@@ -12,10 +12,10 @@ public class SetGlow : MonoBehaviour {
     if (GlowSprite != null) {
       switch (GlowColor) {
       case TabletCell.Colors.Blue:
-        GlowSprite.color = Color.blue;
+        GlowSprite.color = Globals.Instance.BlueGlow;
         break;
       case TabletCell.Colors.Green:
-        GlowSprite.color = Color.green;
+        GlowSprite.color = Globals.Instance.GreenGlow;
         break;
       default:
         GlowSprite.color = Color.white;
