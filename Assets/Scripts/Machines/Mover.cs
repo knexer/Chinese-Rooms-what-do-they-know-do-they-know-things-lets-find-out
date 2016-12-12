@@ -50,7 +50,12 @@ public class Mover : VertexMachine {
 		// Set to default arrow
 		UpdateImage();
 	}
-    
+
+    protected override void OnDestroy()
+    {
+        TickController.ManipulateTickEvent -= Manipulate;
+    }
+
     // Update is called once per frame
     void OnMouseOver () {
         if (Input.GetKeyUp(KeyCode.R))
@@ -95,8 +100,10 @@ public class Mover : VertexMachine {
 
 		if ((TopLeft == Conditionals.False) || (TopRight == Conditionals.False) ||
 			(BottomLeft == Conditionals.False) || (BottomRight == Conditionals.False)) {
+			SoundManager.Instance.PlaySound(SoundManager.SoundTypes.ContitionalFailed);
 			return false;
 		}
+		SoundManager.Instance.PlaySound (SoundManager.SoundTypes.ConditionalMet);
 		return true;
 	}
 

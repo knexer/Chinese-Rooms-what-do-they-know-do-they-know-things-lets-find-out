@@ -8,6 +8,7 @@ public class MachineGrid : MonoBehaviour {
     public GameObject GridCellPrefab;
     public GameObject GridVertexPrefab;
     public GameObject EndVertexPrefab;
+    public GameObject OutOfBoundsVertexPrefab;
 
     public Transform GridContainer;  
     public Tablet CurrentInput;
@@ -17,7 +18,8 @@ public class MachineGrid : MonoBehaviour {
     [HideInInspector]
     public GameObject[,] GridVertices;
 
-    private void Awake() {
+    private void Awake()
+    {
         GridCells = new GameObject[Width, Height];
         GridVertices = new GameObject[Width + 1, Height + 1];
 
@@ -29,7 +31,7 @@ public class MachineGrid : MonoBehaviour {
             {
                 GridCells[x, y] = Instantiate(GridCellPrefab);
                 GridCells[x, y].GetComponent<GridCell>().Register(x, y, this);
-                
+
                 GridCells[x, y].transform.parent = GridContainer;
                 GridCells[x, y].transform.localPosition = cellSize / 2 + new Vector3(x * cellSize.x, y * cellSize.y);
                 GridCells[x, y].transform.localScale = Vector3.one;
@@ -42,7 +44,7 @@ public class MachineGrid : MonoBehaviour {
             {
                 GridVertices[x, y] = Instantiate(GridVertexPrefab);
                 GridVertices[x, y].GetComponent<GridVertex>().Register(x, y, this);
-                
+
                 GridVertices[x, y].transform.parent = GridContainer;
                 GridVertices[x, y].transform.localPosition = new Vector3(x * cellSize.x, y * cellSize.y);
                 GridVertices[x, y].transform.localScale = Vector3.one;
@@ -52,7 +54,23 @@ public class MachineGrid : MonoBehaviour {
         GameObject EndVertexMachine = Instantiate(EndVertexPrefab);
         GridVertex upperRightVertex = GridVertices[GridVertices.GetLength(0) - 2, GridVertices.GetLength(1) - 2].GetComponent<GridVertex>();
         upperRightVertex.VertexMachine = EndVertexMachine.GetComponent<VertexMachine>();
+        Vector3 position = upperRightVertex.transform.position;
+        position.z = 0.0f;
         EndVertexPrefab.transform.position = upperRightVertex.transform.position;
+
+
+        for (int x = 0; x < GridVertices.GetLength(0); x++)
+        {
+            for (int y = 0; y < GridVertices.GetLength(1); y++)
+            {
+                if (x == 0 || x == GridVertices.GetLength(0)-1 || y == 0 || y == GridVertices.GetLength(1)-1)
+                {
+                    GameObject OutOfBoundsVertexMachine = Instantiate(OutOfBoundsVertexPrefab);
+                    GridVertex edge = GridVertices[x, y].GetComponent<GridVertex>();
+                    edge.VertexMachine = OutOfBoundsVertexMachine.GetComponent<VertexMachine>();
+                }
+            }
+        }
     }
 
     public Vector2 GetCellSizeWorldSpace()

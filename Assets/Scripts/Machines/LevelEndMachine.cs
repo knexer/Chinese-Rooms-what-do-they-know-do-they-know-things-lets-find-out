@@ -37,7 +37,7 @@ public class LevelEndMachine : VertexMachine
         TickController.ManipulateTickEvent += Manipulate;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
         TickController.ManipulateTickEvent -= Manipulate;
     }

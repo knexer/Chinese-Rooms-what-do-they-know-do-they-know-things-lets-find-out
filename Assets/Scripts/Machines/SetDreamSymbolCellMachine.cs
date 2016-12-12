@@ -8,6 +8,7 @@ public class SetDreamSymbolCellMachine : CellMachine {
 		if (tabletCell == null) {
 			return;
 		}
+		SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedSymbol);
 		tabletCell.Symbol = TabletCell.Symbols.Dream;
 	}
 
