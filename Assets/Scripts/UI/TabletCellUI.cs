@@ -19,13 +19,24 @@ public class TabletCellUI : MonoBehaviour, IPointerClickHandler {
     public Image symbolBaseTarget;
     public Image symbolFillTarget;
 
+    public bool isUserControlled = true;
+    
+    public TabletCell.Symbols Symbol { get { return symbol; } }
+    public TabletCell.Colors Color { get { return color; } }
+
     private TabletCell.Symbols symbol;
     private TabletCell.Colors color;
 
     // Use this for initialization
-    void Start () {
+    void Awake() {
         symbol = TabletCell.Symbols.Dream;
         color = TabletCell.Colors.None;
+        UpdateImages();
+    }
+
+    public void SetState(TabletCell.Symbols symbol, TabletCell.Colors color) {
+        this.symbol = symbol;
+        this.color = color;
         UpdateImages();
     }
 
@@ -65,6 +76,11 @@ public class TabletCellUI : MonoBehaviour, IPointerClickHandler {
     }
 
     public void OnPointerClick(PointerEventData eventData) {
+        if (!isUserControlled)
+            return;
+
+        BlackBoxButton.Obj.HideOutput();
+
         if (TabletCellModeToggle.CurrentCellMode == TabletCellModeToggle.CellMode.Color) {
             switch(color) {
                 case TabletCell.Colors.None:

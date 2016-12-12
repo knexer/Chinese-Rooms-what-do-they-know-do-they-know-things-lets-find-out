@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LevelOne : Level {
 
-    public override Tablet Evaluate(Tablet input) {
-        return Instantiate(input);
+    public override TabletState Evaluate(TabletState input) {
+        return input;
     }
 }

@@ -18,5 +18,5 @@ public abstract class Level : MonoBehaviour {
         Obj = this;
     }
 
-    public abstract Tablet Evaluate(Tablet input);
+    public abstract TabletState Evaluate(TabletState input);
 }

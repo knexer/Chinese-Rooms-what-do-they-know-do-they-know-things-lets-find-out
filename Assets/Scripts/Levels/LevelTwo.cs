@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class LevelTwo : Level {
 
-    public override Tablet Evaluate(Tablet input) {
-        Tablet output = Instantiate(input);
-        return output;
+    public override TabletState Evaluate(TabletState input) {
+        return input;
     }
 }
