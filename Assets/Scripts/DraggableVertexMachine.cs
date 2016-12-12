@@ -11,7 +11,9 @@ public class DraggableVertexMachine : DraggableMachine
 
     private MachineGrid grid;
 
-    private bool dragging;
+    public bool dragging { get; private set; }
+
+    private bool wasDraggingLastFrame;
 
     // Use this for initialization
     void Awake()
@@ -31,31 +33,33 @@ public class DraggableVertexMachine : DraggableMachine
                 transform.position = closestVertexPosition;                
             }
         }
+
+        if (wasDraggingLastFrame && Input.GetMouseButtonUp(0))
+        {
+            StopDrag();
+        }
+
+        wasDraggingLastFrame = dragging;
     }
 
-    private void OnMouseUpAsButton()
+    private void StopDrag()
     {
-        if (dragging)
+        dragging = false;
+        // place yoself
+        GridVertex closestVertex = grid.getClosestVertex(transform.position);
+        if (closestVertex != null
+            && closestVertex.VertexMachine == null
+            && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f)
         {
-            dragging = false;
-            // place yoself
-            GridVertex closestVertex = grid.getClosestVertex(transform.position);
-            if (closestVertex != null
-                && closestVertex.VertexMachine == null
-                && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f)
-            {
-                closestVertex.VertexMachine = GetComponent<VertexMachine>();
-        				closestVertex.VertexMachine.OnPlace (); 
+            closestVertex.VertexMachine = GetComponent<VertexMachine>();
+            closestVertex.VertexMachine.OnPlace();
 
-                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PlaceDownMachine);
-            }
-            else
-            {
-                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.MachineDestroyed);
-                Destroy(this.gameObject);                
-            }
-        } else {
-            StartDrag();
+            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PlaceDownMachine);
+        }
+        else
+        {
+            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.MachineDestroyed);
+            Destroy(this.gameObject);
         }
     }
 
