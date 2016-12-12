@@ -24,7 +24,8 @@ public class SoundManager : MonoBehaviour {
     MachineHasFinished,
     ClickOnTabletQuad,
     ToggleBetweenInputs,
-    MachineDestroyed
+    MachineDestroyed,
+    RotateMover
   }
 
   [Serializable]

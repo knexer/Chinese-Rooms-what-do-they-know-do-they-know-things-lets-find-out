@@ -60,6 +60,7 @@ public class Mover : VertexMachine {
     void OnMouseOver () {
         if (Input.GetKeyUp(KeyCode.R))
         {
+            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.RotateMover);
             rotateClockwise();
         }
     }
