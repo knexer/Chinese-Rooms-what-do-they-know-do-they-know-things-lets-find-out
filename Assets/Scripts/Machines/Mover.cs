@@ -29,8 +29,7 @@ public class Mover : VertexMachine {
 		BottomLeft = Conditionals.None;
 		BottomRight = Conditionals.None;
 
-		// Set to default arrow
-		UpdateImage();
+		sprite = GetComponent<SpriteRenderer>();
 	}
 
     // Update is called once per frame
@@ -56,9 +55,9 @@ public class Mover : VertexMachine {
                 && GridVertex.Grid.CurrentInput.gridVertexY == this.GridVertex.Y)
             {
                 GridVertex.Grid.CurrentInput.MovementDirection = facing;
-				UnmeetAllConditionals ();
             }
         }
+		UnmeetAllConditionals ();
     }
 
     public enum Direction
@@ -159,6 +158,17 @@ public class Mover : VertexMachine {
 			BottomRight = Conditionals.False;
 		}
 		UpdateImage ();
+	}
+
+	public void OnPlace() {
+		GridCell[] cells = GridVertex.GetSurroundingCells ();
+		for (int i = 0; i < 4; i++) {
+			cells [i].CellMachine.OnPlace ();
+		}
+	}
+
+	public void OnRemove() {
+		RemoveAllConditionals ();
 	}
 }
 

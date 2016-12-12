@@ -45,6 +45,7 @@ public class DraggableVertexMachine : DraggableMachine
                 && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f)
             {
                 closestVertex.VertexMachine = GetComponent<VertexMachine>();
+				closestVertex.VertexMachine.OnPlace ();
             }
             else
             {
@@ -64,6 +65,7 @@ public class DraggableVertexMachine : DraggableMachine
             && closestVertex.VertexMachine != null
             && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f) {
             if (closestVertex.VertexMachine == GetComponent<VertexMachine>()) {
+				closestVertex.VertexMachine.OnRemove ();
                 closestVertex.VertexMachine = null;
             }
         }

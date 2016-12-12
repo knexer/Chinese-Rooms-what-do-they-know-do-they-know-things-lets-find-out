@@ -35,6 +35,10 @@ public class GridCell : MonoBehaviour {
         return Grid.GetInputAt(X, Y);
     }
 
+	public GridVertex GetTabletCenter() {
+		return Grid.GetTabletCenter ();
+	}
+
 	public GridVertex[] GetSurroundingVertices() {
 		GridVertex[] vertices = new GridVertex[4];
 		vertices [0] = Grid.GridVertices [X, Y + 1].GetComponent<GridVertex>(); // Top left.

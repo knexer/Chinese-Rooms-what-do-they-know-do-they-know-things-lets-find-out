@@ -8,5 +8,8 @@ public class SnakeConditionalCellMachine : ConditionalCellMachine {
 		if (tabletCell == null) {
 			return;
 		}
+		if (tabletCell.Symbol == TabletCell.Symbols.Snake) {
+			OnMeetsCondition ();
+		}
 	}
 }

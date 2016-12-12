@@ -8,5 +8,8 @@ public class DreamConditionalSkellMachine : ConditionalCellMachine {
 		if (tabletCell == null) {
 			return;
 		}
+		if (tabletCell.Symbol == TabletCell.Symbols.Dream) {
+			OnMeetsCondition ();
+		}
 	}
 }

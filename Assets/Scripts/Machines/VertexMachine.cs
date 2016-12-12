@@ -13,4 +13,10 @@ public abstract class VertexMachine : MonoBehaviour
     }
 
     protected abstract void Manipulate(float tickTime);
+
+	public void OnPlace() {
+	}
+
+	public void OnRemove() {
+	}
 }

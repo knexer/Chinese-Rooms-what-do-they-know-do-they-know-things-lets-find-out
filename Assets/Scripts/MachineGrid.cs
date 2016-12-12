@@ -90,6 +90,10 @@ public class MachineGrid : MonoBehaviour {
         return CurrentInput.GetTabletPieceByFactoryPosition(x, y);
     }
 
+	public GridVertex GetTabletCenter() {
+		return GridVertices [CurrentInput.gridVertexX, CurrentInput.gridVertexY].GetComponent<GridVertex>();
+	}
+
     // Use this for initialization
     void Start () {
 		

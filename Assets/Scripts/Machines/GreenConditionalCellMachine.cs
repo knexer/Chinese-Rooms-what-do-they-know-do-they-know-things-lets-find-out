@@ -8,5 +8,8 @@ public class GreenConditionalCellMachine : ConditionalCellMachine {
 		if (tabletCell == null) {
 			return;
 		}
+		if (tabletCell.Color == TabletCell.Colors.Green) {
+			OnMeetsCondition ();
+		}
 	}
 }
