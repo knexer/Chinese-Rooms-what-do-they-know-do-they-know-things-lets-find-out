@@ -25,6 +25,14 @@ public class TabletState {
         equality_state &= BottomRight.Equals(other.BottomRight);
         return equality_state;
     }
+
+    public void RotateCounterclockwise() {
+        TabletCellState temp = TopLeft;
+        TopLeft = TopRight;
+        TopRight = BottomRight;
+        BottomRight = BottomLeft;
+        BottomLeft = temp;
+    }
 }
 
 public class TabletCellState {

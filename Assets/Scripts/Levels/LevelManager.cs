@@ -6,8 +6,7 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour {
 
     public static LevelManager Obj { get; private set; }
-
-	[HideInInspector]
+    
     public Level[] levels;
     public string youWinScene;
 
