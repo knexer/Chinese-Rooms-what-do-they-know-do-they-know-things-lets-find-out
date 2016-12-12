@@ -51,6 +51,7 @@ public class DraggableVertexMachine : DraggableMachine
             }
             else
             {
+                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.MachineDestroyed);
                 Destroy(this.gameObject);                
             }
         } else {
