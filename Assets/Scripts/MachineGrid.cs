@@ -71,6 +71,7 @@ public class MachineGrid : MonoBehaviour {
                 }
             }
         }
+        print(" Assigned Vertex at 0, 0: " + GridVertices[0, 0].GetComponent<GridVertex>().VertexMachine);
     }
 
     public Vector2 GetCellSizeWorldSpace()

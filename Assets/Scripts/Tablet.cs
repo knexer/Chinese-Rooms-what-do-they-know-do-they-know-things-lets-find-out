@@ -19,6 +19,8 @@ public class Tablet : MonoBehaviour {
 
     private MachineGrid Grid;
 
+    private bool moveStopped = false;
+
     /** gridVertexX/Y refers to the grid position of the top left tablet piece. */
     public int startGridVertexX;
     public int startGridVertexY;
@@ -64,6 +66,12 @@ public class Tablet : MonoBehaviour {
         TopRight = NewTablet(1, 1);
         BottomLeft = NewTablet(-1, -1);
         BottomRight = NewTablet(1, -1);
+        TickController.OutOfBoundEvent += Stop;
+    }
+
+    private void Stop()
+    {
+        moveStopped = true;
     }
 
     /** Create a new tablet cell at the relative position of x, y. */
@@ -92,6 +100,12 @@ public class Tablet : MonoBehaviour {
 
     void TriggerMove(float lengthOfTickSeconds)
     {
+
+        if (moveStopped)
+        {
+            return;
+        }
+
         Vector2 direction = MovementDirection.ToUnitVector();
 
         // Check for pins
