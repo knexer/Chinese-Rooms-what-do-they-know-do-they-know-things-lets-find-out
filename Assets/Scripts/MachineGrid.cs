@@ -7,6 +7,7 @@ public class MachineGrid : MonoBehaviour {
     public int Height;
     public GameObject GridCellPrefab;
     public GameObject GridVertexPrefab;
+    public GameObject EndVertexPrefab;
 
     public Transform GridContainer;  
     public Tablet CurrentInput;
@@ -47,6 +48,11 @@ public class MachineGrid : MonoBehaviour {
                 GridVertices[x, y].transform.localScale = Vector3.one;
             }
         }
+
+        GameObject EndVertexMachine = Instantiate(EndVertexPrefab);
+        GridVertex upperRightVertex = GridVertices[GridVertices.GetLength(0) - 2, GridVertices.GetLength(1) - 2].GetComponent<GridVertex>();
+        upperRightVertex.VertexMachine = EndVertexMachine.GetComponent<VertexMachine>();
+        EndVertexPrefab.transform.position = upperRightVertex.transform.position;
     }
 
     public Vector2 GetCellSizeWorldSpace()

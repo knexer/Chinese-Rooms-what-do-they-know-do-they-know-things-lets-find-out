@@ -17,7 +17,7 @@ public class GridVertex : MonoBehaviour {
         get { return vertexMachine; }
         set { vertexMachine = value; if (vertexMachine != null) vertexMachine.GridVertex = this; }
     }
-    public VertexMachine vertexMachine;
+    private VertexMachine vertexMachine;
 
 	// Use this for initialization
 	void Start () {
