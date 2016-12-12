@@ -14,7 +14,7 @@ public class DraggableVertexMachine : DraggableMachine
     private bool dragging;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         grid = FindObjectOfType<MachineGrid>();
     }
