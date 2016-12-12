@@ -14,4 +14,6 @@ public class SetSnakeSymbolCellMachine : CellMachine {
 	public override void OnPlace() {}
 
 	public override void OnRemove() {}
+
+	public override void CheckCondition() {}
 }

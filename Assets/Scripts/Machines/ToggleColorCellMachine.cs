@@ -19,4 +19,6 @@ public class ToggleColorCellMachine : CellMachine {
 	public override void OnPlace() {}
 
 	public override void OnRemove() {}
+
+	public override void CheckCondition() {}
 }

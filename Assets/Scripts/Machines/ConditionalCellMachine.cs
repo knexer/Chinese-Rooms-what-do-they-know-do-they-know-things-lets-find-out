@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ConditionalCellMachine : CellMachine {
+	public override void Manipulate(float tickDelta) {
+	}
+
 	public void OnMeetsCondition() {
 		VertexMachine inputMachine = GridCell.GetTabletCenter ().VertexMachine;
 		if (inputMachine != null && inputMachine.GetType () == typeof(Mover)) {
@@ -12,7 +15,6 @@ public abstract class ConditionalCellMachine : CellMachine {
 	}
 
 	public override void OnPlace() {
-		Debug.Log ("Cell on place.");
 		GridVertex[] vertices = GridCell.GetSurroundingVertices ();
 		for (int i = 0; i < 4; i++) {
 			VertexMachine machine = vertices [i].VertexMachine;
@@ -24,7 +26,6 @@ public abstract class ConditionalCellMachine : CellMachine {
 	}
 
 	public override void OnRemove() {
-		Debug.Log ("Cell on remove");
 		GridVertex[] vertices = GridCell.GetSurroundingVertices ();
 		for (int i = 0; i < 4; i++) {
 			VertexMachine machine = vertices [i].VertexMachine;

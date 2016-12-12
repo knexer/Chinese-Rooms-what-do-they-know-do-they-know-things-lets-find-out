@@ -15,4 +15,6 @@ public class TurnOffCellMachine : CellMachine {
 	}
 
 	public override void OnRemove() {}
+
+	public override void CheckCondition() {}
 }

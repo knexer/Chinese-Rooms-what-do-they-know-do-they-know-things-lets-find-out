@@ -19,4 +19,6 @@ public abstract class CellMachine : MonoBehaviour {
 	public abstract void OnPlace ();
 
 	public abstract void OnRemove ();
+
+	public abstract void CheckCondition();
 }

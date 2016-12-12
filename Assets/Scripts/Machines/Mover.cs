@@ -85,8 +85,17 @@ public class Mover : VertexMachine {
     }
 
 	private bool CanMove() {
+		GridCell[] cells = GridVertex.GetSurroundingCells ();
+		for (int i = 0; i < 4; i++) {
+			CellMachine machine = cells [i].CellMachine;
+			if (machine != null) {
+				Debug.Log ("Check conditions");
+				machine.CheckCondition ();
+			}
+		}
+
 		if ((TopLeft == Conditionals.False) || (TopRight == Conditionals.False) ||
-			(BottomLeft == Conditionals.False) || (TopRight == Conditionals.False)) {
+			(BottomLeft == Conditionals.False) || (BottomRight == Conditionals.False)) {
 			return false;
 		}
 		return true;
@@ -94,14 +103,10 @@ public class Mover : VertexMachine {
 
 	private void UpdateImage() {
 		if ((TopLeft == Conditionals.None) && (TopRight == Conditionals.None) &&
-			(BottomLeft == Conditionals.None) && (TopRight == Conditionals.None)) {
+			(BottomLeft == Conditionals.None) && (BottomRight == Conditionals.None)) {
 			MoverType = MoverTypes.Default;
-		} else if ((TopLeft == Conditionals.False) || (TopRight == Conditionals.False) ||
-			(BottomLeft == Conditionals.False) || (TopRight == Conditionals.False)) {
-			// Set as unfulfilled conditional arrow.
-			MoverType = MoverTypes.Conditional;
 		} else {
-			// Set as fulfilled conditional arrow.
+			// Set as conditional arrow.
 			MoverType = MoverTypes.Conditional;
 		}
 	}
@@ -149,6 +154,7 @@ public class Mover : VertexMachine {
 	}
 
 	public void MeetConditional(int gridX, int gridY) {
+		Debug.Log ("Met a condition!");
 		GridCell[] cells = GridVertex.GetSurroundingCells ();
 		if (cells [0].X == gridX && cells [0].Y == gridY) {
 			TopLeft = Conditionals.True;
@@ -186,7 +192,7 @@ public class Mover : VertexMachine {
 		for (int i = 0; i < 4; i++) {
 			CellMachine machine = cells [i].CellMachine;
 			if (machine != null) {
-				cells [i].CellMachine.OnPlace ();
+				machine.OnPlace ();
 			}
 		}
 	}
