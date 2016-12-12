@@ -29,8 +29,10 @@ public class TickController : MonoBehaviour {
     private float lastTickTimeSeconds = 0;
 
     void Awake() {
-        if (Obj != null)
-            Destroy(Obj);
+        if (Obj != null) {
+            Destroy(this);
+            return;
+        }
 
         Obj = this;
         OutOfBoundEvent += Pause;
@@ -49,6 +51,10 @@ public class TickController : MonoBehaviour {
         } else if (newSpeedIndex >= 0) {
             speedIndex = newSpeedIndex;
         }
+    }
+
+    void OnLevelWasLoaded() {
+        SetSpeed(0);
     }
 
     public int GetMaxSpeed() {
