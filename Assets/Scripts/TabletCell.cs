@@ -96,4 +96,9 @@ public class TabletCell : MonoBehaviour
               break;
         }
     }
+
+    public bool Equals(TabletCell other)
+    {
+        return other.Color == Color && other.Symbol == Symbol;
+    }
 }

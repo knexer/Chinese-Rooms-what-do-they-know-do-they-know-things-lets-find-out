@@ -226,4 +226,13 @@ public class Tablet : MonoBehaviour {
 			return null;
 		}
     }
+
+    public bool Equals(Tablet other)
+    {
+        bool equality_state = TopLeft.Equals(other.TopLeft);
+        equality_state &= TopRight.Equals(other.TopRight);
+        equality_state &= BottomLeft.Equals(other.BottomLeft);
+        equality_state &= BottomRight.Equals(other.BottomRight);
+        return equality_state;
+    }
 }
