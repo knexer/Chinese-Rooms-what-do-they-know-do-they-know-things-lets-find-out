@@ -2,15 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OutOfBoundsVertexMachine : MonoBehaviour {
+public class OutOfBoundsVertexMachine : VertexMachine
+{
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    protected override void Start()
+    {
+        return;
+    }
+
+    protected override void Manipulate(float tickTime)
+    {
+        TickController.Obj.TriggerOutOfBounds();
+    }
+
+    public override void OnPlace()
+    {
+        return;
+    }
+
+    public override void OnRemove()
+    {
+        return;
+    }
 }
