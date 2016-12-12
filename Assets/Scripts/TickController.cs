@@ -24,7 +24,10 @@ public class TickController : MonoBehaviour {
         {
             Destroy(this);
         }
-        Obj = this;
+        else
+        {
+            Obj = this;
+        }
     }
 
     void Update() {
