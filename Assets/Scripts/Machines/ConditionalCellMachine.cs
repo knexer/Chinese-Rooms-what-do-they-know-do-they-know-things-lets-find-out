@@ -3,18 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ConditionalCellMachine : CellMachine {
-	//public override void OnPlace() {
-		// GridCell.GetSurroundingVertices();
-		// Get Conditional and normal movers
-		// Change all normal movers to conditional.
-		// For all conditional, add new condition.
+	public void OnMeetsCondition() {
+		VertexMachine inputMachine = GridCell.GetTabletCenter ().VertexMachine;
+		if (inputMachine != null && inputMachine.GetType () == typeof(Mover)) {
+			Mover moveMachine = (Mover) inputMachine;
+			moveMachine.MeetConditional (GridCell.X, GridCell.Y);
+		}
+	}
 
-		// Change all movers to conditional movers.
-	//}
+	public void OnPlace() {
+		GridVertex[] vertices = GridCell.GetSurroundingVertices ();
+		for (int i = 0; i < 4; i++) {
+			VertexMachine machine = vertices [i].VertexMachine;
+			if (machine != null && machine.GetType () == typeof(Mover)) {
+				Mover moveMachine = (Mover) machine;
+				moveMachine.AddConditional (GridCell.X, GridCell.Y);
+			}
+		}
+	}
 
-	//public override void OnRemove() {
-		// GridCell.GetSurroundingVertices();
-		// Get Conditional movers
-		// For all conditional movers, remove condition.
-	//}
+	public void OnRemove() {
+		GridVertex[] vertices = GridCell.GetSurroundingVertices ();
+		for (int i = 0; i < 4; i++) {
+			VertexMachine machine = vertices [i].VertexMachine;
+			if (machine != null && machine.GetType () == typeof(Mover)) {
+				Mover moveMachine = (Mover) machine;
+				moveMachine.RemoveConditional (GridCell.X, GridCell.Y);
+			}
+		}
+	}
 }

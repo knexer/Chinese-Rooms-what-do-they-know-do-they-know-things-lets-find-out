@@ -8,5 +8,8 @@ public class EyeConditionalCellMachine : ConditionalCellMachine {
 		if (tabletCell == null) {
 			return;
 		}
+		if (tabletCell.Symbol == TabletCell.Symbols.Eye) {
+			OnMeetsCondition ();
+		}
 	}
 }

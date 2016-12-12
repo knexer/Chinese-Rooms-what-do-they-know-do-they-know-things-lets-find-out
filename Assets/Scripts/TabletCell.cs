@@ -23,8 +23,15 @@ public class TabletCell : MonoBehaviour
     }
 
     private Symbols symbol;
+    private Colors color;
 
-    public Colors Color;
+
+    public Colors Color
+    {
+        get { return color; }
+        set { SetGlow(value); color = value; }
+    }
+
     public Symbols Symbol
     {
         get { return symbol; }

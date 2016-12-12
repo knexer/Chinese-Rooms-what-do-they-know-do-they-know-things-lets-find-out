@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mover : VertexMachine {
-	public enum Conditionals
+public class Mover : VertexMachine {  
+  public tk2dSpriteAnimator moverAnimator;
+
+  public enum Conditionals
 	{
 		None,
 		False,
@@ -19,9 +21,28 @@ public class Mover : VertexMachine {
     private Direction facing = Direction.DOWN;
     private SpriteRenderer sprite;
 
+  private MoverTypes moverType;
+
+  public MoverTypes MoverType {
+    get {
+      return moverType;
+    }
+    set {
+      moverType = value;
+      SetMoverSprite(moverType);
+    }
+  }
+
+  public enum MoverTypes {
+    Default,
+    Conditional
+  }
+
 	// Use this for initialization
 	protected void Start () {
         base.Start();
+
+    MoverType = MoverTypes.Default;
 
 		// Initialize conditionals.
 		TopLeft = Conditionals.None;
@@ -32,7 +53,7 @@ public class Mover : VertexMachine {
 		// Set to default arrow
 		UpdateImage();
 	}
-
+    
     // Update is called once per frame
     void OnMouseOver () {
         if (Input.GetKeyUp(KeyCode.R))
@@ -56,9 +77,9 @@ public class Mover : VertexMachine {
                 && GridVertex.Grid.CurrentInput.gridVertexY == this.GridVertex.Y)
             {
                 GridVertex.Grid.CurrentInput.MovementDirection = facing;
-				UnmeetAllConditionals ();
             }
         }
+		UnmeetAllConditionals ();
     }
 
     public enum Direction
@@ -160,6 +181,29 @@ public class Mover : VertexMachine {
 		}
 		UpdateImage ();
 	}
+
+	public void OnPlace() {
+		GridCell[] cells = GridVertex.GetSurroundingCells ();
+		for (int i = 0; i < 4; i++) {
+			cells [i].CellMachine.OnPlace ();
+		}
+	}
+
+	public void OnRemove() {
+		RemoveAllConditionals ();
+	}
+
+  private void SetMoverSprite (MoverTypes type) {
+    switch (type) {
+    case MoverTypes.Conditional:
+      moverAnimator.SetFrame(1);
+      break;
+
+    default:
+      moverAnimator.SetFrame(0);     
+      break;
+    }
+  }
 }
 
 public static class DirectionExtensions
