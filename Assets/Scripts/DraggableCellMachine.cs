@@ -47,7 +47,7 @@ public class DraggableCellMachine : DraggableMachine
                 closestCell.CellMachine = GetComponent<CellMachine>();
 				        closestCell.CellMachine.OnPlace ();
 
-                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.GridSnap);
+                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PlaceDownMachine);
             }
             else
             {
@@ -61,7 +61,7 @@ public class DraggableCellMachine : DraggableMachine
     public override void StartDrag() {
         dragging = true;
 
-        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.ItemGrab);
+        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PickupMachine);
 
         // remove from whatever it's attached to
         if (grid != null) {

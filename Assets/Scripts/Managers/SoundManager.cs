@@ -12,9 +12,18 @@ public class SoundManager : MonoBehaviour {
   public static SoundManager Instance { get; private set; }
 
   public enum SoundTypes {
-    ItemGrab,
-    GridSnap,
-    Click
+    StampAppliedSymbol,
+    StampAppliedGlow,
+    ConditionalMet,
+    ContitionalFailed,
+    PickupMachine,
+    PlaceDownMachine,
+    StartTheMachine,
+    TestCasesPassed,
+    TestCasesFailed,
+    MachineHasFinished,
+    ClickOnTabletQuad,
+    ToggleBetweenInputs
   }
 
   [Serializable]
