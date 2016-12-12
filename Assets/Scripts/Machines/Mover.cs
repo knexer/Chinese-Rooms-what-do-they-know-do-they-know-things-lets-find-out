@@ -186,4 +186,21 @@ public static class DirectionExtensions
 
         return new Vector2(x, y);
     }
+
+    public static Mover.Direction Clockwise(this Mover.Direction direction)
+    {
+        switch(direction)
+        {
+            case Mover.Direction.UP:
+                return Mover.Direction.RIGHT;
+            case Mover.Direction.RIGHT:
+                return Mover.Direction.DOWN;
+            case Mover.Direction.DOWN:
+                return Mover.Direction.LEFT;
+            case Mover.Direction.LEFT:
+                return Mover.Direction.UP;
+            default:
+                throw new ArgumentException("OMGWTFBBQ");
+        }
+    }
 }
