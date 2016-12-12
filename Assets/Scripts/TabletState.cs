@@ -9,6 +9,15 @@ public class TabletState {
     public TabletCellState BottomLeft;
     public TabletCellState BottomRight;
 
+    public TabletState() { }
+
+    public TabletState(TabletState other) {
+        this.TopLeft = other.TopLeft;
+        this.TopRight = other.TopRight;
+        this.BottomLeft = other.BottomLeft;
+        this.BottomRight = other.BottomRight;
+    }
+
     public bool Equals(TabletState other) {
         bool equality_state = TopLeft.Equals(other.TopLeft);
         equality_state &= TopRight.Equals(other.TopRight);
@@ -21,6 +30,13 @@ public class TabletState {
 public class TabletCellState {
     public TabletCell.Colors Color;
     public TabletCell.Symbols Symbol;
+
+    public TabletCellState() { }
+
+    public TabletCellState(TabletCellState other) {
+        this.Color = other.Color;
+        this.Symbol = other.Symbol;
+    }
 
     public bool Equals(TabletCellState other) {
         return other.Color == Color && other.Symbol == Symbol;

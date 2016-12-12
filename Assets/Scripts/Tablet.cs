@@ -70,7 +70,7 @@ public class Tablet : MonoBehaviour {
         TickController.OutOfBoundEvent += () => TickController.Obj.SetSpeed(-1);
         InterruptMove();
     }
-
+    
     private void InterruptMove()
     {
         moveStopped = true;
@@ -277,6 +277,15 @@ public class Tablet : MonoBehaviour {
 			return null;
 		}
     }
+
+	public TabletCell[] GetAllPieces() {
+		TabletCell[] tablets = new TabletCell[4];
+		tablets [0] = TopLeft;
+		tablets [1] = TopRight;
+		tablets [2] = BottomLeft;
+		tablets [3] = BottomRight;
+		return tablets;
+	}
 
     public bool Equals(Tablet other)
     {
