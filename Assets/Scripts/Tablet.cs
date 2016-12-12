@@ -139,11 +139,20 @@ public class Tablet : MonoBehaviour {
         Vector2 origin = Grid.getVertexWorldPosition((int)newGridPosition.x, (int)newGridPosition.y);
 
         float startTime = Time.time;
+        Vector2 originalPosition = transform.position;
+        Quaternion originalRotation = transform.rotation;
         while (Time.time < startTime + lengthOfTickSeconds)
         {
-            transform.RotateAround(origin, Vector3.forward, Time.deltaTime / lengthOfTickSeconds * angle);
             yield return null;
+            transform.position = originalPosition;
+            transform.rotation = originalRotation;
+            transform.RotateAround(origin, Vector3.forward, (Time.time - startTime) / lengthOfTickSeconds * angle);
         }
+
+        // set position and rotation to correct for drift
+        Vector2 newPosition = gridPosition + direction * 2;
+        transform.position = Grid.getVertexWorldPosition((int)newPosition.x, (int)newPosition.y);
+        transform.rotation = originalRotation * Quaternion.AngleAxis(angle, Vector3.forward);
 
         yield break;
     }
