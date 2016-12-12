@@ -28,7 +28,7 @@ public class DraggableCellMachine : DraggableMachine
 
             if (Vector2.Distance(transform.position, closestCellPosition) < distanceThreshold) {
                 closestCellPosition.z = 0.0f;
-                transform.position = closestCellPosition;
+                transform.position = closestCellPosition;                
             }
         }
     }
@@ -45,7 +45,9 @@ public class DraggableCellMachine : DraggableMachine
                 && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f)
             {
                 closestCell.CellMachine = GetComponent<CellMachine>();
-				closestCell.CellMachine.OnPlace ();
+				        closestCell.CellMachine.OnPlace ();
+
+                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.GridSnap);
             }
             else
             {
@@ -58,6 +60,8 @@ public class DraggableCellMachine : DraggableMachine
 
     public override void StartDrag() {
         dragging = true;
+
+        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.ItemGrab);
 
         // remove from whatever it's attached to
         if (grid != null) {

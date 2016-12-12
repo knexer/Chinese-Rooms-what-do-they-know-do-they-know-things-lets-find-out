@@ -28,7 +28,7 @@ public class DraggableVertexMachine : DraggableMachine
 
             if (Vector2.Distance(transform.position, closestVertexPosition) < distanceThreshold) {
                 closestVertexPosition.z = 0.0f;
-                transform.position = closestVertexPosition;
+                transform.position = closestVertexPosition;                
             }
         }
     }
@@ -45,11 +45,13 @@ public class DraggableVertexMachine : DraggableMachine
                 && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f)
             {
                 closestVertex.VertexMachine = GetComponent<VertexMachine>();
-				closestVertex.VertexMachine.OnPlace ();
+        				closestVertex.VertexMachine.OnPlace (); 
+
+                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.GridSnap);
             }
             else
             {
-                Destroy(this.gameObject);
+                Destroy(this.gameObject);                
             }
         } else {
             StartDrag();
@@ -58,6 +60,8 @@ public class DraggableVertexMachine : DraggableMachine
 
     public override void StartDrag() {
         dragging = true;
+        
+        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.ItemGrab);
 
         // remove from whatever it's attached to
         GridVertex closestVertex = grid.getClosestVertex(transform.position);
