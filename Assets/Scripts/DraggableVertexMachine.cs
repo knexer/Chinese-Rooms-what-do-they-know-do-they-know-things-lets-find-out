@@ -42,6 +42,11 @@ public class DraggableVertexMachine : DraggableMachine
         wasDraggingLastFrame = dragging;
     }
 
+    private void OnMouseDown()
+    {
+        StartDrag();
+    }
+
     private void StopDrag()
     {
         dragging = false;

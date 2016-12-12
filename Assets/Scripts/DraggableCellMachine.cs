@@ -42,6 +42,11 @@ public class DraggableCellMachine : DraggableMachine
         }
     }
 
+    private void OnMouseDown()
+    {
+        StartDrag();
+    }
+
     /// <summary>
     /// Place the item if you can, destroy it if you can't.
     /// </summary>
