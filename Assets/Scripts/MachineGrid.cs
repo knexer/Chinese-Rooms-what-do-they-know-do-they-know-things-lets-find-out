@@ -56,7 +56,7 @@ public class MachineGrid : MonoBehaviour {
         upperRightVertex.VertexMachine = EndVertexMachine.GetComponent<VertexMachine>();
         Vector3 position = upperRightVertex.transform.position;
         position.z = 0.0f;
-        EndVertexPrefab.transform.position = upperRightVertex.transform.position;
+        EndVertexPrefab.transform.position = position;
 
 
         for (int x = 0; x < GridVertices.GetLength(0); x++)
