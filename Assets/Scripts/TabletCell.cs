@@ -18,8 +18,7 @@ public class TabletCell : MonoBehaviour
     {
         Eye,
         Snake,
-        Dream,
-        None
+        Dream
     }
 
     private Symbols symbol;
@@ -71,9 +70,6 @@ public class TabletCell : MonoBehaviour
                 tabletSymbol.gameObject.SetActive(true);
                 tabletSymbol.SetFrame(2);
                 tabletGlow.SetFrame(2);
-                break;
-            case Symbols.None:
-                tabletSymbol.gameObject.SetActive(false);
                 break;
         }
     }
