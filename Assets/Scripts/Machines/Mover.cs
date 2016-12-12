@@ -69,6 +69,15 @@ public class Mover : VertexMachine {
         }
     }
 
+    private void OnMouseOver()
+    {
+        if (Input.GetKeyUp(KeyCode.R) && !gameObject.GetComponent<DraggableVertexMachine>().dragging)
+        {
+            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.RotateMover);
+            rotateClockwise();
+        }
+    }
+
     public void rotateClockwise()
     {
         facing = (Direction)(((int)facing + 1) % 4);
