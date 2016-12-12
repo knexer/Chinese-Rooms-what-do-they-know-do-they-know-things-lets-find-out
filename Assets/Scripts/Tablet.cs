@@ -89,8 +89,8 @@ public class Tablet : MonoBehaviour {
         if (NoFrontPins(gridVertexX, gridVertexY, direction))
         {
             // Do the move in the grid
-            gridVertexX += (int)direction.x;
-            gridVertexY += (int)direction.y;
+            gridVertexX += Mathf.RoundToInt(direction.x);
+            gridVertexY += Mathf.RoundToInt(direction.y);
 
             // Animate the move
             direction.Scale(FindObjectOfType<MachineGrid>().GetCellSizeWorldSpace());
@@ -108,13 +108,13 @@ public class Tablet : MonoBehaviour {
             offsetBlacklist.Add(new Vector2(2, 0));
             offsetBlacklist.Add(new Vector2(2, 1));
             if (PinAtPosition(gridVertexX, gridVertexY, direction, 1, -1)
-                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridVertexX, gridVertexY, direction, (int)vector.x, (int)vector.y)))
+                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridVertexX, gridVertexY, direction, Mathf.RoundToInt(vector.x), Mathf.RoundToInt(vector.y))))
             {
                 // Start a rotation anticlockwise
                 Debug.Log("Anticlockwise rotation starting.");
                 StartCoroutine(DoRotation(direction, lengthOfTickSeconds, new Vector2(-1, 1), 90));
-                gridVertexX += 2 * (int)direction.x;
-                gridVertexY += 2 * (int)direction.y;
+                gridVertexX += 2 * Mathf.RoundToInt(direction.x);
+                gridVertexY += 2 * Mathf.RoundToInt(direction.y);
 
                 TabletCell temp = TopRight;
                 TopRight = BottomRight;
@@ -122,13 +122,13 @@ public class Tablet : MonoBehaviour {
                 BottomLeft = TopLeft;
                 TopLeft = temp;
             } else if (PinAtPosition(gridVertexX, gridVertexY, direction, 1, 1)
-                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridVertexX, gridVertexY, direction, (int)vector.x, (int)-vector.y)))
+                && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridVertexX, gridVertexY, direction, Mathf.RoundToInt(vector.x), Mathf.RoundToInt(-vector.y))))
             {
                 // Start a rotation clockwise
                 Debug.Log("Clockwise rotation starting.");
                 StartCoroutine(DoRotation(direction, lengthOfTickSeconds, new Vector2(1, 1), -90));
-                gridVertexX += 2 * (int)direction.x;
-                gridVertexY += 2 * (int)direction.y;
+                gridVertexX += 2 * Mathf.RoundToInt(direction.x);
+                gridVertexY += 2 * Mathf.RoundToInt(direction.y);
 
                 TabletCell temp = TopRight;
                 TopRight = TopLeft;
@@ -150,8 +150,8 @@ public class Tablet : MonoBehaviour {
     {
         Vector2 gridPosition = new Vector2(gridVertexX, gridVertexY);
         Vector2 newGridPosition = gridPosition + (Vector2)(Quaternion.AngleAxis(AngleFromTo(direction, Vector2.up), Vector3.forward) * offset);
-        Vector2 origin = Grid.getVertexWorldPosition((int)newGridPosition.x, (int)newGridPosition.y);
-
+        Vector2 origin = Grid.getVertexWorldPosition(Mathf.RoundToInt(newGridPosition.x), Mathf.RoundToInt(newGridPosition.y));
+        
         float startTime = Time.time;
         Vector2 originalPosition = transform.position;
         Quaternion originalRotation = transform.rotation;
@@ -165,7 +165,7 @@ public class Tablet : MonoBehaviour {
 
         // set position and rotation to correct for drift
         Vector2 newPosition = gridPosition + direction * 2;
-        transform.position = Grid.getVertexWorldPosition((int)newPosition.x, (int)newPosition.y);
+        transform.position = Grid.getVertexWorldPosition(Mathf.RoundToInt(newPosition.x), Mathf.RoundToInt(newPosition.y));
         transform.rotation = originalRotation * Quaternion.AngleAxis(angle, Vector3.forward);
 
         yield break;
@@ -184,6 +184,12 @@ public class Tablet : MonoBehaviour {
         Vector2 offset = new Vector2(perpendicularOffset, parallelOffset);
         Vector2 newGridPosition = gridPosition + (Vector2) (Quaternion.AngleAxis(AngleFromTo(direction, Vector2.up), Vector3.forward) * offset);
 
+        //Debug.Log("===================");
+        //Debug.Log("Direction:" + direction);
+        //Debug.Log("Offset:" + offset);
+        //Debug.Log("Grid Position:" + gridPosition);
+        //Debug.Log("New Grid position: " + newGridPosition);
+
         // out of bounds check
         if (newGridPosition.x < 0
             || newGridPosition.x > Grid.GridVertices.GetLength(0) - 1
@@ -193,7 +199,7 @@ public class Tablet : MonoBehaviour {
             return false;
         }
 
-        VertexMachine machineAtPosition = Grid.GridVertices[(int)newGridPosition.x, (int)newGridPosition.y].GetComponent<GridVertex>().VertexMachine;
+        VertexMachine machineAtPosition = Grid.GridVertices[Mathf.RoundToInt(newGridPosition.x), Mathf.RoundToInt(newGridPosition.y)].GetComponent<GridVertex>().VertexMachine;
 
         if (machineAtPosition == null)
         {
