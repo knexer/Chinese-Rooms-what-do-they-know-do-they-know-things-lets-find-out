@@ -39,14 +39,17 @@ public class TickController : MonoBehaviour {
     }
 
     void Update() {
-        speedIndex = newSpeedIndex;
         if (speedIndex >= 0) {
-            if (Time.time - lastTickTimeSeconds >= 1 / TicksPerSecond[speedIndex]) {
-                if (ManipulateTickEvent != null)
-                    ManipulateTickEvent(1 / TicksPerSecond[speedIndex]);
-                if (MoveTickEvent != null)
-                    MoveTickEvent(1 / TicksPerSecond[speedIndex]);
-                this.lastTickTimeSeconds = Time.time;
+            if (Time.time - lastTickTimeSeconds >= 1 / TicksPerSecond[speedIndex]){
+                speedIndex = newSpeedIndex;
+                if (speedIndex >= 0)
+                {
+                    if (ManipulateTickEvent != null)
+                        ManipulateTickEvent(1 / TicksPerSecond[speedIndex]);
+                    if (MoveTickEvent != null)
+                        MoveTickEvent(1 / TicksPerSecond[speedIndex]);
+                    this.lastTickTimeSeconds = Time.time;
+                }
             }
         } else if (newSpeedIndex >= 0) {
             speedIndex = newSpeedIndex;
