@@ -79,12 +79,12 @@ public class TabletCell : MonoBehaviour
         {
           case Colors.Blue:
               tabletGlow.gameObject.SetActive(true);
-              tabletGlow.Sprite.color = UnityEngine.Color.blue;
+              tabletGlow.Sprite.color = Globals.Instance.BlueGlow;
               break;
 
           case Colors.Green:
               tabletGlow.gameObject.SetActive(true);
-              tabletGlow.Sprite.color = UnityEngine.Color.green;
+              tabletGlow.Sprite.color = Globals.Instance.GreenGlow;
               break;
 
           case Colors.None:
