@@ -10,7 +10,8 @@ public class Tablet : MonoBehaviour {
 
     public Transform TabletCellContainer;
 
-    public Mover.Direction MovementDirection;
+    [HideInInspector]
+    public Mover.Direction MovementDirection = Mover.Direction.UP;
 
 	private TabletCell TopLeft;
 	private TabletCell TopRight;
@@ -49,6 +50,8 @@ public class Tablet : MonoBehaviour {
     }
 
     private void Reset() {
+        MovementDirection = Mover.Direction.UP;
+
         gridVertexX = startGridVertexX;
         gridVertexY = startGridVertexY;
         transform.position = FindObjectOfType<MachineGrid>().getVertexWorldPosition(gridVertexX, gridVertexY);
