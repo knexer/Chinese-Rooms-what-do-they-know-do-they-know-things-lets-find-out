@@ -23,7 +23,8 @@ public class SoundManager : MonoBehaviour {
     TestCasesFailed,
     MachineHasFinished,
     ClickOnTabletQuad,
-    ToggleBetweenInputs
+    ToggleBetweenInputs,
+    MachineDestroyed
   }
 
   [Serializable]
