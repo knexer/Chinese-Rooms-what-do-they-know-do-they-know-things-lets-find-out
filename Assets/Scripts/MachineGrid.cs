@@ -52,7 +52,10 @@ public class MachineGrid : MonoBehaviour {
         GameObject EndVertexMachine = Instantiate(EndVertexPrefab);
         GridVertex upperRightVertex = GridVertices[GridVertices.GetLength(0) - 2, GridVertices.GetLength(1) - 2].GetComponent<GridVertex>();
         upperRightVertex.VertexMachine = EndVertexMachine.GetComponent<VertexMachine>();
-        EndVertexPrefab.transform.position = upperRightVertex.transform.position;
+        Vector3 position = upperRightVertex.transform.position;
+        position.z = 0.0f;
+
+        EndVertexPrefab.transform.position = position;
     }
 
     public Vector2 GetCellSizeWorldSpace()
