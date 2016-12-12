@@ -8,6 +8,7 @@ public class TurnOffCellMachine : CellMachine {
 		if (tabletCell == null) {
 			return;
 		}
+		SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedGlow);
 		tabletCell.Color = TabletCell.Colors.None;
 	}
 

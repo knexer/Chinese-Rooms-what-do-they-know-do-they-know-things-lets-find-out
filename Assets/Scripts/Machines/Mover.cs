@@ -100,8 +100,10 @@ public class Mover : VertexMachine {
 
 		if ((TopLeft == Conditionals.False) || (TopRight == Conditionals.False) ||
 			(BottomLeft == Conditionals.False) || (BottomRight == Conditionals.False)) {
+			SoundManager.Instance.PlaySound(SoundManager.SoundTypes.ContitionalFailed);
 			return false;
 		}
+		SoundManager.Instance.PlaySound (SoundManager.SoundTypes.ConditionalMet);
 		return true;
 	}
 

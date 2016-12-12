@@ -9,9 +9,11 @@ public class ToggleColorCellMachine : CellMachine {
 			return;
 		}
 		if (tabletCell.Color == TabletCell.Colors.Blue) {
+			SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedGlow);
 			tabletCell.Color = TabletCell.Colors.Green;
 		}
 		if (tabletCell.Color == TabletCell.Colors.Green) {
+			SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedGlow);
 			tabletCell.Color = TabletCell.Colors.Blue;
 		}
 	}
