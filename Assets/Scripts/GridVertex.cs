@@ -10,8 +10,6 @@ public class GridVertex : MonoBehaviour {
     [HideInInspector]
     public int Y { get; private set; }
 
-    public VertexMachine StartingVertexMachine;
-
     public VertexMachine VertexMachine
     {
         get { return vertexMachine; }
@@ -21,7 +19,7 @@ public class GridVertex : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        this.VertexMachine = StartingVertexMachine;
+
 	}
 
     public void Register(int X, int Y, MachineGrid Grid)
