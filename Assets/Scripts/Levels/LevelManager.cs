@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour {
 
     public static LevelManager Obj { get; private set; }
 
+	[HideInInspector]
     public Level[] levels;
     public string youWinScene;
 
@@ -35,4 +36,8 @@ public class LevelManager : MonoBehaviour {
             Instantiate(levels[levelIndex]);
         }
     }
+
+	public void ResetLevel() {
+		// Reset the Tablet
+	}
 }

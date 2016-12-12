@@ -270,6 +270,15 @@ public class Tablet : MonoBehaviour {
 		}
     }
 
+	public TabletCell[] GetAllPieces() {
+		TabletCell[] tablets = new TabletCell[4];
+		tablets [0] = TopLeft;
+		tablets [1] = TopRight;
+		tablets [2] = BottomLeft;
+		tablets [3] = BottomRight;
+		return tablets;
+	}
+
     public bool Equals(Tablet other)
     {
         bool equality_state = TopLeft.Equals(other.TopLeft);
