@@ -36,7 +36,6 @@ public class TickController : MonoBehaviour {
         else
         {
             Obj = this;
-            OutOfBoundEvent += Pause;
         }
     }
 
@@ -66,10 +65,5 @@ public class TickController : MonoBehaviour {
     public void ResetTablets() {
         if (ResetTabletsEvent != null)
             ResetTabletsEvent();
-    }
-
-    public void Pause()
-    {
-        SetSpeed(0);
     }
 }
