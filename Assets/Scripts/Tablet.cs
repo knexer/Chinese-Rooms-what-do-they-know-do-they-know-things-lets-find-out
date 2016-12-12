@@ -126,6 +126,8 @@ public class Tablet : MonoBehaviour {
                 // There's a pin in the way, but still at least one pin in front of us; bounce back.
                 // TODO(taylor): animate a partial swing in some cases.
                 Debug.Log("Bouncing back the way we came.");
+                MovementDirection = MovementDirection.Clockwise().Clockwise();
+                TriggerMove(lengthOfTickSeconds);
             }
         }
     }
