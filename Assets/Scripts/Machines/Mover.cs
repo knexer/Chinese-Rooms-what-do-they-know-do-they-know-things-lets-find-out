@@ -89,7 +89,6 @@ public class Mover : VertexMachine {
 		for (int i = 0; i < 4; i++) {
 			CellMachine machine = cells [i].CellMachine;
 			if (machine != null) {
-				Debug.Log ("Check conditions");
 				machine.CheckCondition ();
 			}
 		}
@@ -154,7 +153,6 @@ public class Mover : VertexMachine {
 	}
 
 	public void MeetConditional(int gridX, int gridY) {
-		Debug.Log ("Met a condition!");
 		GridCell[] cells = GridVertex.GetSurroundingCells ();
 		if (cells [0].X == gridX && cells [0].Y == gridY) {
 			TopLeft = Conditionals.True;
