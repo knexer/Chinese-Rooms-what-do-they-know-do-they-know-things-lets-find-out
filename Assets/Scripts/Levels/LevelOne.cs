@@ -6,6 +6,6 @@ using UnityEngine;
 public class LevelOne : Level {
 
     public override TabletState Evaluate(TabletState input) {
-        return input;
+        return new TabletState(input);
     }
 }
