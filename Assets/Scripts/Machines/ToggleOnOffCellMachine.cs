@@ -14,4 +14,8 @@ public class ToggleOnOffCellMachine : CellMachine {
 			tabletCell.Color = TabletCell.Colors.None;
 		}
 	}
+
+	public override void OnPlace() {}
+
+	public override void OnRemove() {}
 }

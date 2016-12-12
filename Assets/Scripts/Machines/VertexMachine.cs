@@ -7,16 +7,11 @@ public abstract class VertexMachine : MonoBehaviour
     public GridVertex GridVertex { get; set; }
 
     // Use this for initialization
-    protected void Start()
-    {
-        TickController.ManipulateTickEvent += Manipulate;
-    }
+	protected abstract void Start();
 
     protected abstract void Manipulate(float tickTime);
 
-	public void OnPlace() {
-	}
+	public abstract void OnPlace ();
 
-	public void OnRemove() {
-	}
+	public abstract void OnRemove ();
 }

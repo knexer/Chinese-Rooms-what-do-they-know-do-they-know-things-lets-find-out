@@ -10,4 +10,8 @@ public class SetSnakeSymbolCellMachine : CellMachine {
 		}
 		tabletCell.Symbol = TabletCell.Symbols.Snake;
 	}
+
+	public override void OnPlace() {}
+
+	public override void OnRemove() {}
 }

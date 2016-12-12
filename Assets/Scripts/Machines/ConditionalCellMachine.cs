@@ -11,7 +11,8 @@ public abstract class ConditionalCellMachine : CellMachine {
 		}
 	}
 
-	public void OnPlace() {
+	public override void OnPlace() {
+		Debug.Log ("Cell on place.");
 		GridVertex[] vertices = GridCell.GetSurroundingVertices ();
 		for (int i = 0; i < 4; i++) {
 			VertexMachine machine = vertices [i].VertexMachine;
@@ -22,7 +23,8 @@ public abstract class ConditionalCellMachine : CellMachine {
 		}
 	}
 
-	public void OnRemove() {
+	public override void OnRemove() {
+		Debug.Log ("Cell on remove");
 		GridVertex[] vertices = GridCell.GetSurroundingVertices ();
 		for (int i = 0; i < 4; i++) {
 			VertexMachine machine = vertices [i].VertexMachine;

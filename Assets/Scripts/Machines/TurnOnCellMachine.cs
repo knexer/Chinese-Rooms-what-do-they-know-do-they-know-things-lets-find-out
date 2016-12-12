@@ -10,4 +10,8 @@ public class TurnOnCellMachine : CellMachine {
 		}
 		tabletCell.Color = TabletCell.Colors.Green;
 	}
+
+	public override void OnPlace() {}
+
+	public override void OnRemove() {}
 }

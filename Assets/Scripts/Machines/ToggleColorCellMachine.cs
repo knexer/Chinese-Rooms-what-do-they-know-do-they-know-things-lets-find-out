@@ -15,4 +15,8 @@ public class ToggleColorCellMachine : CellMachine {
 			tabletCell.Color = TabletCell.Colors.Blue;
 		}
 	}
+
+	public override void OnPlace() {}
+
+	public override void OnRemove() {}
 }

@@ -16,9 +16,7 @@ public abstract class CellMachine : MonoBehaviour {
 
     public abstract void Manipulate(float tickDelta);
 
-	public void OnPlace() {
-	}
+	public abstract void OnPlace ();
 
-	public void OnRemove() {
-	}
+	public abstract void OnRemove ();
 }

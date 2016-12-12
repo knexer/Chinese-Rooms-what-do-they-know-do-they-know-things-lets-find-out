@@ -6,8 +6,8 @@ using UnityEngine;
 public class PinMachine : VertexMachine {
 
     // Use this for initialization
-    void Start () {
-		
+    protected override void Start () {
+		TickController.ManipulateTickEvent += Manipulate;
 	}
 	
 	// Update is called once per frame
@@ -19,4 +19,9 @@ public class PinMachine : VertexMachine {
     {
         // no-op
     }
+
+	public override void OnPlace() {
+	}
+
+	public override void OnRemove() {}
 }

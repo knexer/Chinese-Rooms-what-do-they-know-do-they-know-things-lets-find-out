@@ -19,30 +19,27 @@ public class Mover : VertexMachine {
 	private Conditionals BottomRight;
 
     private Direction facing = Direction.DOWN;
-    private SpriteRenderer sprite;
 
-  private MoverTypes moverType;
+    private MoverTypes moverType;
 
-  public MoverTypes MoverType {
-    get {
-      return moverType;
+    public MoverTypes MoverType {
+      get {
+        return moverType;
+      }
+      set {
+        moverType = value;
+        SetMoverSprite(moverType);
+      }
     }
-    set {
-      moverType = value;
-      SetMoverSprite(moverType);
-    }
-  }
 
-  public enum MoverTypes {
-    Default,
-    Conditional
-  }
+    public enum MoverTypes {
+      Default,
+      Conditional
+    }
 
 	// Use this for initialization
-	protected void Start () {
-        base.Start();
-
-    MoverType = MoverTypes.Default;
+	protected override void Start () {
+		TickController.ManipulateTickEvent += Manipulate;
 
 		// Initialize conditionals.
 		TopLeft = Conditionals.None;
@@ -98,12 +95,14 @@ public class Mover : VertexMachine {
 	private void UpdateImage() {
 		if ((TopLeft == Conditionals.None) && (TopRight == Conditionals.None) &&
 			(BottomLeft == Conditionals.None) && (TopRight == Conditionals.None)) {
-			sprite = GetComponent<SpriteRenderer>();
+			MoverType = MoverTypes.Default;
 		} else if ((TopLeft == Conditionals.False) || (TopRight == Conditionals.False) ||
 			(BottomLeft == Conditionals.False) || (TopRight == Conditionals.False)) {
 			// Set as unfulfilled conditional arrow.
+			MoverType = MoverTypes.Conditional;
 		} else {
 			// Set as fulfilled conditional arrow.
+			MoverType = MoverTypes.Conditional;
 		}
 	}
 
@@ -182,28 +181,31 @@ public class Mover : VertexMachine {
 		UpdateImage ();
 	}
 
-	public void OnPlace() {
+	public override void OnPlace() {
 		GridCell[] cells = GridVertex.GetSurroundingCells ();
 		for (int i = 0; i < 4; i++) {
-			cells [i].CellMachine.OnPlace ();
+			CellMachine machine = cells [i].CellMachine;
+			if (machine != null) {
+				cells [i].CellMachine.OnPlace ();
+			}
 		}
 	}
 
-	public void OnRemove() {
+	public override void OnRemove() {
 		RemoveAllConditionals ();
 	}
 
-  private void SetMoverSprite (MoverTypes type) {
-    switch (type) {
-    case MoverTypes.Conditional:
-      moverAnimator.SetFrame(1);
-      break;
+  	private void SetMoverSprite (MoverTypes type) {
+    	switch (type) {
+    		case MoverTypes.Conditional:
+     		  moverAnimator.SetFrame(1);
+      		  break;
 
-    default:
-      moverAnimator.SetFrame(0);     
-      break;
-    }
-  }
+    		default:
+      	  	  moverAnimator.SetFrame(0);     
+      		  break;
+    	}
+  	}
 }
 
 public static class DirectionExtensions

@@ -10,4 +10,8 @@ public class SetDreamSymbolCellMachine : CellMachine {
 		}
 		tabletCell.Symbol = TabletCell.Symbols.Dream;
 	}
+
+	public override void OnPlace() {}
+
+	public override void OnRemove() {}
 }

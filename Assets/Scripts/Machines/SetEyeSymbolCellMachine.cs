@@ -10,4 +10,8 @@ public class SetEyeSymbolCellMachine : CellMachine {
 		}
 		tabletCell.Symbol = TabletCell.Symbols.Eye;
 	}
+
+	public override void OnPlace() {}
+
+	public override void OnRemove() {}
 }

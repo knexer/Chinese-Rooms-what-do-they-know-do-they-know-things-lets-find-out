@@ -10,4 +10,9 @@ public class TurnOffCellMachine : CellMachine {
 		}
 		tabletCell.Color = TabletCell.Colors.None;
 	}
+
+	public override void OnPlace() {
+	}
+
+	public override void OnRemove() {}
 }
