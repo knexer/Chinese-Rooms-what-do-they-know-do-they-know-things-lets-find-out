@@ -27,8 +27,8 @@ public class LevelEndMachine : VertexMachine
         if (GridVertex.Grid.CurrentInput.gridVertexX == GridVertex.X
             && GridVertex.Grid.CurrentInput.gridVertexY == GridVertex.Y)
         {
-            // TODO complete the level.
-            Debug.Log("Level is done!!");
+            // TODO just reset the thing, don't load the next level.
+            LevelManager.Obj.LoadNextLevel();
         }
     }
 

@@ -30,14 +30,10 @@ public class TickController : MonoBehaviour {
 
     void Awake() {
         if (Obj != null)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Obj = this;
-            OutOfBoundEvent += Pause;
-        }
+            Destroy(Obj);
+
+        Obj = this;
+        OutOfBoundEvent += Pause;
     }
 
     void Update() {
@@ -71,5 +67,9 @@ public class TickController : MonoBehaviour {
     public void Pause()
     {
         SetSpeed(0);
+    }
+
+    void OnDestroy() {
+        OutOfBoundEvent -= Pause;
     }
 }

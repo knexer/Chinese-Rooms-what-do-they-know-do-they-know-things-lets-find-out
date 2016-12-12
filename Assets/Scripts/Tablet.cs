@@ -20,22 +20,50 @@ public class Tablet : MonoBehaviour {
     private MachineGrid Grid;
 
     /** gridVertexX/Y refers to the grid position of the top left tablet piece. */
+    public int startGridVertexX;
+    public int startGridVertexY;
+
+    [HideInInspector]
     public int gridVertexX;
+    [HideInInspector]
     public int gridVertexY;
 
     public int gridCellX { get { return gridVertexX - 1; } }
     public int gridCellY { get { return gridVertexY - 1; } }
     // Use this for initialization
     void Start() {
-        transform.position = FindObjectOfType<MachineGrid>().getVertexWorldPosition(gridVertexX, gridVertexY);
-        TopLeft = NewTablet(-1, 1);
-        TopRight = NewTablet(1, 1);
-        BottomLeft = NewTablet(-1, -1);
-        BottomRight = NewTablet(1, -1);
+        Reset();
 
         Grid = FindObjectOfType<MachineGrid>();
         Grid.CurrentInput = this;
         TickController.MoveTickEvent += TriggerMove;
+        TickController.ResetTabletsEvent += Reset;
+    }
+
+    void OnDestroy() {
+        TickController.MoveTickEvent -= TriggerMove;
+        TickController.ResetTabletsEvent -= Reset;
+    }
+
+    private void Reset() {
+        gridVertexX = startGridVertexX;
+        gridVertexY = startGridVertexY;
+        transform.position = FindObjectOfType<MachineGrid>().getVertexWorldPosition(gridVertexX, gridVertexY);
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+
+        if (TopLeft != null)
+            Destroy(TopLeft.gameObject);
+        if (TopRight != null)
+            Destroy(TopRight.gameObject);
+        if (BottomLeft != null)
+            Destroy(BottomLeft.gameObject);
+        if (BottomRight != null)
+            Destroy(BottomRight.gameObject);
+
+        TopLeft = NewTablet(-1, 1);
+        TopRight = NewTablet(1, 1);
+        BottomLeft = NewTablet(-1, -1);
+        BottomRight = NewTablet(1, -1);
     }
 
     /** Create a new tablet cell at the relative position of x, y. */
@@ -61,11 +89,6 @@ public class Tablet : MonoBehaviour {
 	private TabletCell NewTablet(int x, int y) {
         return NewTablet((float) x, (float) y);
     }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 
     void TriggerMove(float lengthOfTickSeconds)
     {

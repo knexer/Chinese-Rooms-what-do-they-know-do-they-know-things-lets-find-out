@@ -11,9 +11,8 @@ public abstract class Level : MonoBehaviour {
 
     void Awake() {
         if (Obj != null) {
-            Debug.LogError("Multiple Levels!  Destroying second");
-            Destroy(this);
-            return;
+            Debug.Log("Multiple Levels!  Destroying first");
+            Destroy(Obj);
         }
 
         Obj = this;

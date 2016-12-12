@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour {
     public static LevelManager Obj { get; private set; }
 
     public Level[] levels;
+    public string youWinScene;
 
     private int levelIndex = 0;
 
@@ -22,12 +23,16 @@ public class LevelManager : MonoBehaviour {
         Obj = this;
 
         DontDestroyOnLoad(this.gameObject);
-        LoadNextLevel();
-	}
+        Instantiate(levels[levelIndex]);
+    }
 	
 	public void LoadNextLevel() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        Instantiate(levels[levelIndex]);
         levelIndex++;
+        if (levelIndex >= levels.Length) {
+            SceneManager.LoadScene(youWinScene);
+        } else {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Instantiate(levels[levelIndex]);
+        }
     }
 }
