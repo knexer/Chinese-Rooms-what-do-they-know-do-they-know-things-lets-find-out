@@ -35,6 +35,7 @@ public class Tablet : MonoBehaviour {
     // Use this for initialization
     void Start() {
         Reset();
+        moveStopped = false;
 
         Grid = FindObjectOfType<MachineGrid>();
         Grid.CurrentInput = this;
@@ -67,6 +68,7 @@ public class Tablet : MonoBehaviour {
         BottomLeft = NewTablet(-1, -1);
         BottomRight = NewTablet(1, -1);
         TickController.OutOfBoundEvent += Stop;
+        Stop();
     }
 
     private void Stop()
@@ -171,6 +173,7 @@ public class Tablet : MonoBehaviour {
 
     private IEnumerator DoRotation(Vector2 direction, float lengthOfTickSeconds, Vector2 offset, float angle)
     {
+        moveStopped = false;
         Vector2 gridPosition = new Vector2(gridVertexX, gridVertexY);
         Vector2 newGridPosition = gridPosition + (Vector2)(Quaternion.AngleAxis(AngleFromTo(direction, Vector2.up), Vector3.forward) * offset);
         Vector2 origin = Grid.getVertexWorldPosition(Mathf.RoundToInt(newGridPosition.x), Mathf.RoundToInt(newGridPosition.y));
@@ -181,6 +184,11 @@ public class Tablet : MonoBehaviour {
         while (Time.time < startTime + lengthOfTickSeconds)
         {
             yield return null;
+            if (moveStopped)
+            {
+                moveStopped = false;
+                yield break;
+            }
             transform.position = originalPosition;
             transform.rotation = originalRotation;
             transform.RotateAround(origin, Vector3.forward, (Time.time - startTime) / lengthOfTickSeconds * angle);
@@ -243,12 +251,18 @@ public class Tablet : MonoBehaviour {
 
     IEnumerator DoMove(Vector2 delta, float lengthOfTickSeconds)
     {
+        moveStopped = false;
         Vector2 from = transform.position;
         float startTime = Time.time;
         while (Time.time < startTime + lengthOfTickSeconds)
         {
             transform.position = Vector2.Lerp(from, from + delta, (Time.time - startTime) / lengthOfTickSeconds);
             yield return null;
+            if (moveStopped)
+            {
+                moveStopped = false;
+                yield break;
+            }
         }
         transform.position = from + delta;
     }
