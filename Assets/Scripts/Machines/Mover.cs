@@ -54,11 +54,17 @@ public class Mover : VertexMachine {
 		// Set to default arrow
 		UpdateImage();
 	}
-    
+
+    protected override void OnDestroy()
+    {
+        TickController.ManipulateTickEvent -= Manipulate;
+    }
+
     // Update is called once per frame
     void OnMouseOver () {
         if (Input.GetKeyUp(KeyCode.R))
         {
+            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.RotateMover);
             rotateClockwise();
         }
     }

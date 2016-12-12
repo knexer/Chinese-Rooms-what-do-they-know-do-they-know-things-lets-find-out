@@ -14,7 +14,7 @@ public class DraggableVertexMachine : DraggableMachine
     private bool dragging;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         grid = FindObjectOfType<MachineGrid>();
     }
@@ -51,6 +51,7 @@ public class DraggableVertexMachine : DraggableMachine
             }
             else
             {
+                SoundManager.Instance.PlaySound(SoundManager.SoundTypes.MachineDestroyed);
                 Destroy(this.gameObject);                
             }
         } else {

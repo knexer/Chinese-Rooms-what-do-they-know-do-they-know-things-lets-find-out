@@ -13,6 +13,15 @@ public class TickController : MonoBehaviour {
     public delegate void ResetTabletsEventHandler();
     public static event ResetTabletsEventHandler ResetTabletsEvent;
 
+    public delegate void SignalHandler();
+    public static event SignalHandler OutOfBoundEvent;
+
+    public void TriggerOutOfBounds()
+    {
+        OutOfBoundEvent();
+    }
+
+
     public float[] TicksPerSecond;
 
     private int newSpeedIndex = -1;
@@ -27,6 +36,7 @@ public class TickController : MonoBehaviour {
         else
         {
             Obj = this;
+            OutOfBoundEvent += Pause;
         }
     }
 
@@ -56,5 +66,10 @@ public class TickController : MonoBehaviour {
     public void ResetTablets() {
         if (ResetTabletsEvent != null)
             ResetTabletsEvent();
+    }
+
+    public void Pause()
+    {
+        SetSpeed(0);
     }
 }
