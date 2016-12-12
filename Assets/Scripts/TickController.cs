@@ -1,9 +1,8 @@
-﻿using System.Collections;
+﻿﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TickController : MonoBehaviour
-{
+public class TickController : MonoBehaviour {
 
     public static TickController Obj;
 
@@ -29,51 +28,48 @@ public class TickController : MonoBehaviour
     private int speedIndex = -1;
     private float lastTickTimeSeconds = 0;
 
-    void Awake()
-    {
+    void Awake() {
         if (Obj != null)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Obj = this;
-        }
+            Destroy(Obj);
+
+        Obj = this;
+        OutOfBoundEvent += Pause;
     }
 
-    void Update()
-    {
+    void Update() {
         speedIndex = newSpeedIndex;
-        if (speedIndex >= 0)
-        {
-            if (Time.time - lastTickTimeSeconds >= 1 / TicksPerSecond[speedIndex])
-            {
+        if (speedIndex >= 0) {
+            if (Time.time - lastTickTimeSeconds >= 1 / TicksPerSecond[speedIndex]) {
                 if (ManipulateTickEvent != null)
                     ManipulateTickEvent(1 / TicksPerSecond[speedIndex]);
                 if (MoveTickEvent != null)
                     MoveTickEvent(1 / TicksPerSecond[speedIndex]);
                 this.lastTickTimeSeconds = Time.time;
             }
-        }
-        else if (newSpeedIndex >= 0)
-        {
+        } else if (newSpeedIndex >= 0) {
             speedIndex = newSpeedIndex;
         }
     }
 
-    public int GetMaxSpeed()
-    {
+    public int GetMaxSpeed() {
         return TicksPerSecond.Length;
     }
 
-    public void SetSpeed(int speed)
-    {
+    public void SetSpeed(int speed) {
         newSpeedIndex = Mathf.Clamp(speed - 1, -1, GetMaxSpeed());
     }
 
-    public void ResetTablets()
-    {
+    public void ResetTablets() {
         if (ResetTabletsEvent != null)
             ResetTabletsEvent();
+    }
+
+    public void Pause()
+    {
+        SetSpeed(0);
+    }
+
+    void OnDestroy() {
+        OutOfBoundEvent -= Pause;
     }
 }
