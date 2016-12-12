@@ -17,13 +17,6 @@ public class LevelEndMachine : VertexMachine
 
     protected override void Manipulate(float tickTime)
     {
-        Debug.Log("Manipulating.");
-        Debug.Log(this.GetInstanceID());
-        if (GridVertex == null)
-        {
-            Debug.Log("fuuu");
-            return;
-        }
         if (GridVertex.Grid.CurrentInput.gridVertexX == GridVertex.X
             && GridVertex.Grid.CurrentInput.gridVertexY == GridVertex.Y)
         {

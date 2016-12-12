@@ -10,8 +10,6 @@ public class GridCell : MonoBehaviour {
     public int X { get; private set; }
     [HideInInspector]
     public int Y { get; private set; }
-    
-    public CellMachine StartingCellMachine;
 
     public CellMachine CellMachine {
 		get { return cellMachine; }
@@ -21,7 +19,7 @@ public class GridCell : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        this.CellMachine = this.StartingCellMachine;
+
     }
 
     public void Register(int X, int Y, MachineGrid Grid)
