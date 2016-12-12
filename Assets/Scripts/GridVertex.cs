@@ -35,4 +35,13 @@ public class GridVertex : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	public GridCell[] GetSurroundingCells() {
+		GridCell[] cells = new GridCell[4];
+		cells [0] = Grid.GridCells [X - 1, Y].GetComponent<GridCell>(); // Top left.
+		cells [1] = Grid.GridCells [X, Y].GetComponent<GridCell>(); // Top right.
+		cells [2] = Grid.GridCells [X - 1, Y - 1].GetComponent<GridCell>(); // Bottom left.
+		cells [3] = Grid.GridCells [X, Y - 1].GetComponent<GridCell>(); // Bottom right.
+		return cells;
+	}
 }
