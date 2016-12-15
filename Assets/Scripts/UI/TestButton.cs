@@ -23,10 +23,7 @@ public class TestButton : MonoBehaviour {
 		StartCoroutine (WaitEnumerator ());
 	}
 
-    private void TestFailed()
-    {
-        Debug.Log("Input failed tests!");
-    }
+    public static event Action TestFailed;
 
 	private IEnumerator WaitEnumerator() {
 		Debug.Log("We are now starting tests.");
@@ -41,6 +38,7 @@ public class TestButton : MonoBehaviour {
 				tablets[j].Symbol = (TabletSymbol)UnityEngine.Random.Range(0, Enum.GetValues(typeof(TabletSymbol)).Length);
 			}
             ITablet input = new RawTablet().SetState(MachineGrid.Obj.Input);
+            GlobalInput.InputTablet = input;
 
             TickController.Obj.Mode = TickController.TimeState.MaximumWarp;
 
@@ -63,7 +61,7 @@ public class TestButton : MonoBehaviour {
                     if (previousStates.Contains(currentState))
                     {
                         Debug.Log("Cycle detected.");
-                        TestFailed();
+                        if (TestFailed != null) TestFailed();
                         yield break;
                     }
                     else
@@ -76,7 +74,7 @@ public class TestButton : MonoBehaviour {
 
             if (!MachineGrid.Obj.Input.TabletEquals(Level.Obj.Evaluate(input))) {
                 Debug.Log("Output doesn't equal expected output.");
-                TestFailed();
+                if (TestFailed != null) TestFailed();
                 yield break;
             }
 		}
