@@ -22,7 +22,7 @@ public class Mover : VertexMachine {
 	// effect during CanMove.
 	private bool meetsConditions;
 
-    private Direction facing = Direction.DOWN;
+    private Direction facing = Direction.RIGHT;
 
     private MoverTypes moverType;
 

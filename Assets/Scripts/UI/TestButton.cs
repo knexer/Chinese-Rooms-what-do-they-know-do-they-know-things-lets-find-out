@@ -23,6 +23,11 @@ public class TestButton : MonoBehaviour {
 		StartCoroutine (WaitEnumerator ());
 	}
 
+    private void TestFailed()
+    {
+        Debug.Log("Input failed tests!");
+    }
+
 	private IEnumerator WaitEnumerator() {
 		Debug.Log("We are now starting tests.");
 
@@ -39,14 +44,32 @@ public class TestButton : MonoBehaviour {
 
             TickController.Obj.Mode = TickController.TimeState.MaximumWarp;
 
+            HashSet<SimState> previousStates = new HashSet<SimState>();
+
 			RunCompleted = false;
 			while (RunCompleted == false) {
+                SimState currentState = new SimState
+                {
+                    Tablet = new RawTablet().SetState(MachineGrid.Obj.Input),
+                    GridX = MachineGrid.Obj.Input.gridVertexX,
+                    GridY = MachineGrid.Obj.Input.gridVertexY
+                };
+
+                if (previousStates.Contains(currentState))
+                {
+                    TestFailed();
+                    yield break;
+                } else
+                {
+                    previousStates.Add(currentState);
+                }
+
 				yield return null;
 			}
 			RunCompleted = false;
 
             if (!MachineGrid.Obj.Input.TabletEquals(Level.Obj.Evaluate(input))) {
-                Debug.Log("Input failed tests!");
+                TestFailed();
                 yield break;
             }
 		}
@@ -55,4 +78,28 @@ public class TestButton : MonoBehaviour {
 
 		yield return null;
 	}
+
+    public class SimState
+    {
+        public ITablet Tablet;
+        public int GridX;
+        public int GridY;
+
+        public override bool Equals(System.Object other)
+        {
+            SimState otherState = other as SimState;
+            if (otherState == null) return false;
+
+            return otherState.Tablet.Equals(Tablet)
+                && otherState.GridX.Equals(GridX)
+                && otherState.GridY.Equals(GridY);
+        }
+
+        public override int GetHashCode()
+        {
+            return Tablet.GetHashCode() * 17
+                + GridX.GetHashCode() * 17 * 17
+                + GridY.GetHashCode() * 17 * 17 * 17;
+        }
+    }
 }
