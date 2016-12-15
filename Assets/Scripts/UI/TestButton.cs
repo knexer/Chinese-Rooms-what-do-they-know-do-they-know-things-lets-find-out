@@ -47,28 +47,35 @@ public class TestButton : MonoBehaviour {
             HashSet<SimState> previousStates = new HashSet<SimState>();
 
 			RunCompleted = false;
-			while (RunCompleted == false) {
-                SimState currentState = new SimState
-                {
-                    Tablet = new RawTablet().SetState(MachineGrid.Obj.Input),
-                    GridX = MachineGrid.Obj.Input.GridVertexX,
-                    GridY = MachineGrid.Obj.Input.GridVertexY
-                };
+			while (RunCompleted == false)
+            {
+                yield return null;
 
-                if (previousStates.Contains(currentState))
+                if (RunCompleted == false)
                 {
-                    TestFailed();
-                    yield break;
-                } else
-                {
-                    previousStates.Add(currentState);
+                    SimState currentState = new SimState
+                    {
+                        Tablet = new RawTablet().SetState(MachineGrid.Obj.Input),
+                        GridX = MachineGrid.Obj.Input.GridVertexX,
+                        GridY = MachineGrid.Obj.Input.GridVertexY
+                    };
+
+                    if (previousStates.Contains(currentState))
+                    {
+                        Debug.Log("Cycle detected.");
+                        TestFailed();
+                        yield break;
+                    }
+                    else
+                    {
+                        previousStates.Add(currentState);
+                    }
                 }
-
-				yield return null;
 			}
 			RunCompleted = false;
 
             if (!MachineGrid.Obj.Input.TabletEquals(Level.Obj.Evaluate(input))) {
+                Debug.Log("Output doesn't equal expected output.");
                 TestFailed();
                 yield break;
             }
