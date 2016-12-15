@@ -110,6 +110,8 @@ public class GameTablet : MonoBehaviour, ITablet {
         // Check for pins
         if (NoFrontPins(gridVertexX, gridVertexY, direction))
         {
+            Vector2 oldPosition = MachineGrid.Obj.getVertexWorldPosition(gridVertexX, gridVertexY);
+
             // Do the move in the grid
             gridVertexX += Mathf.RoundToInt(direction.x);
             gridVertexY += Mathf.RoundToInt(direction.y);
@@ -117,7 +119,7 @@ public class GameTablet : MonoBehaviour, ITablet {
             // Animate the move
             direction.Scale(FindObjectOfType<MachineGrid>().GetCellSizeWorldSpace());
 
-            StartCoroutine(DoMove(direction, lengthOfTickSeconds));
+            StartCoroutine(DoMove(oldPosition, direction, lengthOfTickSeconds));
         }
         else
         {
@@ -253,10 +255,9 @@ public class GameTablet : MonoBehaviour, ITablet {
         return angle;
     }
 
-    IEnumerator DoMove(Vector2 delta, float lengthOfTickSeconds)
+    IEnumerator DoMove(Vector2 from, Vector2 delta, float lengthOfTickSeconds)
     {
         moveStopped = false;
-        Vector2 from = transform.position;
         float startTime = Time.time;
         while (Time.time < startTime + lengthOfTickSeconds)
         {
