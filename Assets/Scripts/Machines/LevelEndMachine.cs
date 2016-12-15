@@ -31,6 +31,14 @@ public class LevelEndMachine : VertexMachine
 
     protected override void Start()
     {
+        GridVertex upperRightVertex = MachineGrid.Obj.GridVertices[
+            MachineGrid.Obj.GridVertices.GetLength(0) - 2,
+            MachineGrid.Obj.GridVertices.GetLength(1) - 2].GetComponent<GridVertex>();
+        upperRightVertex.VertexMachine = this;
+        Vector3 position = upperRightVertex.transform.position;
+        position.z = 0.0f;
+        transform.position = position;
+
         TickController.ManipulateTickEvent += Manipulate;
     }
 
