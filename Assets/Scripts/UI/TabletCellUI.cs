@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TabletCellUI : MonoBehaviour, IPointerClickHandler {
+public class TabletCellUI : MonoBehaviour, IPointerClickHandler, ITabletCell {
 
     public Sprite eyeSymbolBase;
     public Sprite eyeSymbolFill;
@@ -21,36 +21,30 @@ public class TabletCellUI : MonoBehaviour, IPointerClickHandler {
 
     public bool isUserControlled = true;
     
-    public TabletCell.Symbols Symbol { get { return symbol; } }
-    public TabletCell.Colors Color { get { return color; } }
+    public TabletSymbol Symbol { get { return symbol; } set { symbol = value; UpdateImages(); } }
+    public TabletColor Color { get { return color; } set { color = value; UpdateImages(); } }
 
-    private TabletCell.Symbols symbol;
-    private TabletCell.Colors color;
+    private TabletSymbol symbol;
+    private TabletColor color;
 
     // Use this for initialization
     void Awake() {
-        symbol = TabletCell.Symbols.Dream;
-        color = TabletCell.Colors.None;
-        UpdateImages();
-    }
-
-    public void SetState(TabletCell.Symbols symbol, TabletCell.Colors color) {
-        this.symbol = symbol;
-        this.color = color;
+        symbol = TabletSymbol.Dream;
+        color = TabletColor.None;
         UpdateImages();
     }
 
     private void UpdateImages() {
         switch (symbol) {
-            case TabletCell.Symbols.Dream:
+            case TabletSymbol.Dream:
                 symbolBaseTarget.sprite = dreamSymbolBase;
                 symbolFillTarget.sprite = dreamSymbolFill;
                 break;
-            case TabletCell.Symbols.Eye:
+            case TabletSymbol.Eye:
                 symbolBaseTarget.sprite = eyeSymbolBase;
                 symbolFillTarget.sprite = eyeSymbolFill;
                 break;
-            case TabletCell.Symbols.Snake:
+            case TabletSymbol.Snake:
                 symbolBaseTarget.sprite = snakeSymbolBase;
                 symbolFillTarget.sprite = snakeSymbolFill;
                 break;
@@ -59,14 +53,14 @@ public class TabletCellUI : MonoBehaviour, IPointerClickHandler {
         }
 
         switch (color) {
-            case TabletCell.Colors.None:
+            case TabletColor.None:
                 symbolFillTarget.gameObject.SetActive(false);
                 break;
-            case TabletCell.Colors.Green:
+            case TabletColor.Green:
                 symbolFillTarget.gameObject.SetActive(true);
                 symbolFillTarget.color = green;
                 break;
-            case TabletCell.Colors.Blue:
+            case TabletColor.Blue:
                 symbolFillTarget.gameObject.SetActive(true);
                 symbolFillTarget.color = blue;
                 break;
@@ -83,28 +77,28 @@ public class TabletCellUI : MonoBehaviour, IPointerClickHandler {
 
         if (TabletCellModeToggle.CurrentCellMode == TabletCellModeToggle.CellMode.Color) {
             switch(color) {
-                case TabletCell.Colors.None:
-                    color = TabletCell.Colors.Green;
+                case TabletColor.None:
+                    color = TabletColor.Green;
                     break;
-                case TabletCell.Colors.Green:
-                    color = TabletCell.Colors.Blue;
+                case TabletColor.Green:
+                    color = TabletColor.Blue;
                     break;
-                case TabletCell.Colors.Blue:
-                    color = TabletCell.Colors.None;
+                case TabletColor.Blue:
+                    color = TabletColor.None;
                     break;
                 default:
                     throw new Exception("Unexpected enum value " + color);
             }
         } else if (TabletCellModeToggle.CurrentCellMode == TabletCellModeToggle.CellMode.Symbol) {
             switch (symbol) {
-                case TabletCell.Symbols.Dream:
-                    symbol = TabletCell.Symbols.Eye;
+                case TabletSymbol.Dream:
+                    symbol = TabletSymbol.Eye;
                     break;
-                case TabletCell.Symbols.Eye:
-                    symbol = TabletCell.Symbols.Snake;
+                case TabletSymbol.Eye:
+                    symbol = TabletSymbol.Snake;
                     break;
-                case TabletCell.Symbols.Snake:
-                    symbol = TabletCell.Symbols.Dream;
+                case TabletSymbol.Snake:
+                    symbol = TabletSymbol.Dream;
                     break;
                 default:
                     throw new Exception("Unexpected enum value " + symbol);

@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Level4 : Level {
 
-    public override TabletState Evaluate(TabletState input) {
-        TabletState output = new TabletState(input);
+    public override ITablet Evaluate(ITablet input) {
+        ITablet output = new RawTablet().SetState(input);
         output.TopRight.Symbol = output.TopLeft.Symbol;
-        output.TopRight.Color = TabletCell.Colors.Green;
+        output.TopRight.Color = TabletColor.Green;
         return output;
     }
 }

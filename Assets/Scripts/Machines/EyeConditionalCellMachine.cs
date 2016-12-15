@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EyeConditionalCellMachine : ConditionalCellMachine {
 	public override void CheckCondition() {
-		TabletCell tabletCell = GridCell.GetInput ();
+		GameTabletCell tabletCell = GridCell.GetInput ();
 		if (tabletCell == null) {
 			return;
 		}
-		if (tabletCell.Symbol == TabletCell.Symbols.Eye) {
+		if (tabletCell.Symbol == TabletSymbol.Eye) {
 			OnMeetsCondition ();
 		}
 	}

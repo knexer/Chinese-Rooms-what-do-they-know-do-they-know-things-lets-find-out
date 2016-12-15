@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TurnOnCellMachine : CellMachine {
 	public override void Manipulate(float tickDelta) {
-		TabletCell tabletCell = GridCell.GetInput ();
+		GameTabletCell tabletCell = GridCell.GetInput ();
 		if (tabletCell == null) {
 			return;
 		}
 		SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedGlow);
-		tabletCell.Color = TabletCell.Colors.Green;
+		tabletCell.Color = TabletColor.Green;
 	}
 
 	public override void OnPlace() {}

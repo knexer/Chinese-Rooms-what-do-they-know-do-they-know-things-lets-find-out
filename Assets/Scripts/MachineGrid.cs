@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MachineGrid : MonoBehaviour {
+
+    public static MachineGrid Obj { get; private set; }
+
     public int Width;
     public int Height;
     public GameObject GridCellPrefab;
@@ -11,7 +14,9 @@ public class MachineGrid : MonoBehaviour {
     public GameObject OutOfBoundsVertexPrefab;
 
     public Transform GridContainer;  
-    public Tablet CurrentInput;
+    public GameTablet CurrentInput;
+
+    public Vector2 CellSize { get; private set; }
 
     [HideInInspector]
     public GameObject[,] GridCells;
@@ -20,10 +25,15 @@ public class MachineGrid : MonoBehaviour {
 
     private void Awake()
     {
+        if (Obj != null)
+            Debug.LogError("Multiple MachineGrids in scene!");
+        Obj = this;
+
         GridCells = new GameObject[Width, Height];
         GridVertices = new GameObject[Width + 1, Height + 1];
 
         Vector3 cellSize = GridCellPrefab.GetComponent<BoxCollider2D>().size;
+        this.CellSize = new Vector2(cellSize.x, cellSize.y);
 
         for (int x = 0; x < GridCells.GetLength(0); x++)
         {
@@ -33,7 +43,7 @@ public class MachineGrid : MonoBehaviour {
                 GridCells[x, y].GetComponent<GridCell>().Register(x, y, this);
 
                 GridCells[x, y].transform.parent = GridContainer;
-                GridCells[x, y].transform.localPosition = cellSize / 2 + new Vector3(x * cellSize.x, y * cellSize.y);
+                GridCells[x, y].transform.localPosition = cellSize / 2 + new Vector3(x * CellSize.x, y * CellSize.y);
                 GridCells[x, y].transform.localScale = Vector3.one;
             }
         }
@@ -111,7 +121,7 @@ public class MachineGrid : MonoBehaviour {
         return new Vector2(transform.position.x + x * cellSize.x, transform.position.y + y * cellSize.y);
     }
 
-    public TabletCell GetInputAt(int x, int y) {
+    public GameTabletCell GetInputAt(int x, int y) {
         return CurrentInput.GetTabletPieceByFactoryPosition(x, y);
     }
 

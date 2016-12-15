@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class LevelThree : Level {
 
-    public override TabletState Evaluate(TabletState input) {
-        TabletState output = new TabletState(input);
+    public override ITablet Evaluate(ITablet input) {
+        ITablet output = new RawTablet().SetState(input);
         output.RotateCounterclockwise();
-        output.TopRight.Symbol = TabletCell.Symbols.Snake;
-        output.BottomRight.Symbol = TabletCell.Symbols.Snake;
+        output.TopRight.Symbol = TabletSymbol.Snake;
+        output.BottomRight.Symbol = TabletSymbol.Snake;
         return output;
     }
 }

@@ -4,21 +4,23 @@ using UnityEngine;
 using System.Linq;
 
 /** Tablet is the input to the room. It's a 4x4 grid. */
-public class Tablet : MonoBehaviour {
-    public float cellDistance;
-    public TabletCell TabletPiece;
-
+public class GameTablet : MonoBehaviour, ITablet {
+    public float SpriteOffset;
+    public GameTabletCell TabletCellPrefab;
     public Transform TabletCellContainer;
 
     [HideInInspector]
     public Mover.Direction MovementDirection = Mover.Direction.UP;
 
-	private TabletCell TopLeft;
-	private TabletCell TopRight;
-	private TabletCell BottomLeft;
-	private TabletCell BottomRight;
+    public ITabletCell TopLeft { get { return topLeft; } set { topLeft.SetState(value); } }
+    public ITabletCell TopRight { get { return topRight; } set { topRight.SetState(value); } }
+    public ITabletCell BottomLeft { get { return bottomLeft; } set { bottomLeft.SetState(value); } }
+    public ITabletCell BottomRight { get { return bottomRight; } set { bottomRight.SetState(value); } }
 
-    private MachineGrid Grid;
+    private GameTabletCell topLeft;
+    private GameTabletCell topRight;
+    private GameTabletCell bottomLeft;
+    private GameTabletCell bottomRight;
 
     private bool moveStopped = false;
 
@@ -37,9 +39,8 @@ public class Tablet : MonoBehaviour {
     void Start() {
         Reset();
         moveStopped = false;
-
-        Grid = FindObjectOfType<MachineGrid>();
-        Grid.CurrentInput = this;
+        
+        MachineGrid.Obj.CurrentInput = this;
         TickController.MoveTickEvent += TriggerMove;
         TickController.ResetTabletsEvent += Reset;
     }
@@ -57,19 +58,19 @@ public class Tablet : MonoBehaviour {
         transform.position = FindObjectOfType<MachineGrid>().getVertexWorldPosition(gridVertexX, gridVertexY);
         transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        if (TopLeft != null)
-            Destroy(TopLeft.gameObject);
-        if (TopRight != null)
-            Destroy(TopRight.gameObject);
-        if (BottomLeft != null)
-            Destroy(BottomLeft.gameObject);
-        if (BottomRight != null)
-            Destroy(BottomRight.gameObject);
+        if (topLeft != null)
+            Destroy(topLeft.gameObject);
+        if (topRight != null)
+            Destroy(topRight.gameObject);
+        if (bottomLeft != null)
+            Destroy(bottomLeft.gameObject);
+        if (bottomRight != null)
+            Destroy(bottomRight.gameObject);
 
-        TopLeft = NewTablet(-1, 1);
-        TopRight = NewTablet(1, 1);
-        BottomLeft = NewTablet(-1, -1);
-        BottomRight = NewTablet(1, -1);
+        topLeft = NewTablet(-1, 1);
+        topRight = NewTablet(1, 1);
+        bottomLeft = NewTablet(-1, -1);
+        bottomRight = NewTablet(1, -1);
         TickController.OutOfBoundEvent += () => TickController.Obj.SetSpeed(-1);
         InterruptMove();
     }
@@ -80,26 +81,26 @@ public class Tablet : MonoBehaviour {
     }
 
     /** Create a new tablet cell at the relative position of x, y. */
-	private TabletCell NewTablet(float x, 
+	private GameTabletCell NewTablet(float x, 
 								 float y, 
- 						     	 TabletCell.Colors color = TabletCell.Colors.None,
-		                         TabletCell.Symbols symbol = TabletCell.Symbols.Eye) {
-        var tablet = Instantiate(TabletPiece, transform, true);
+ 						     	 TabletColor color = TabletColor.None,
+		                         TabletSymbol symbol = TabletSymbol.Eye) {
+        var tablet = Instantiate(TabletCellPrefab, transform, true);
 		// TODO(emmax): set values
 
-		tablet.GetComponent<TabletCell>().Color = color;
-		tablet.GetComponent<TabletCell>().Symbol = symbol;
+		tablet.GetComponent<GameTabletCell>().Color = color;
+		tablet.GetComponent<GameTabletCell>().Symbol = symbol;
 
         tablet.transform.parent = TabletCellContainer;
-        tablet.transform.localPosition = new Vector3(x * cellDistance, y * cellDistance, 0);        
         tablet.transform.localScale = Vector3.one;
+        tablet.transform.localPosition = new Vector3(x * SpriteOffset, y * SpriteOffset, 0); 
 
         print("Added tablet piece at " + x + ", " + y);
         return tablet;
     }
 
     /** Create a new table at the relative position of x, y. */
-	private TabletCell NewTablet(int x, int y) {
+	private GameTabletCell NewTablet(int x, int y) {
         return NewTablet((float) x, (float) y);
     }
 
@@ -138,11 +139,11 @@ public class Tablet : MonoBehaviour {
                 gridVertexX += 2 * Mathf.RoundToInt(direction.x);
                 gridVertexY += 2 * Mathf.RoundToInt(direction.y);
 
-                TabletCell temp = TopRight;
-                TopRight = BottomRight;
-                BottomRight = BottomLeft;
-                BottomLeft = TopLeft;
-                TopLeft = temp;
+                GameTabletCell temp = topRight;
+                topRight = bottomRight;
+                bottomRight = bottomLeft;
+                bottomLeft = topLeft;
+                topLeft = temp;
             } else if (PinAtPosition(gridVertexX, gridVertexY, direction, 1, 1)
                 && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(gridVertexX, gridVertexY, direction, Mathf.RoundToInt(vector.x), Mathf.RoundToInt(-vector.y))))
             {
@@ -152,11 +153,11 @@ public class Tablet : MonoBehaviour {
                 gridVertexX += 2 * Mathf.RoundToInt(direction.x);
                 gridVertexY += 2 * Mathf.RoundToInt(direction.y);
 
-                TabletCell temp = TopRight;
-                TopRight = TopLeft;
-                TopLeft = BottomLeft;
-                BottomLeft = BottomRight;
-                BottomRight = temp;
+                GameTabletCell temp = topRight;
+                topRight = topLeft;
+                topLeft = bottomLeft;
+                bottomLeft = bottomRight;
+                bottomRight = temp;
             } else
             {
                 // There's a pin in the way, but still at least one pin in front of us; bounce back.
@@ -173,7 +174,9 @@ public class Tablet : MonoBehaviour {
         moveStopped = false;
         Vector2 gridPosition = new Vector2(gridVertexX, gridVertexY);
         Vector2 newGridPosition = gridPosition + (Vector2)(Quaternion.AngleAxis(AngleFromTo(direction, Vector2.up), Vector3.forward) * offset);
-        Vector2 origin = Grid.getVertexWorldPosition(Mathf.RoundToInt(newGridPosition.x), Mathf.RoundToInt(newGridPosition.y));
+        Vector2 origin = MachineGrid.Obj.getVertexWorldPosition(
+            Mathf.RoundToInt(newGridPosition.x), 
+            Mathf.RoundToInt(newGridPosition.y));
         
         float startTime = Time.time;
         Vector2 originalPosition = transform.position;
@@ -193,7 +196,9 @@ public class Tablet : MonoBehaviour {
 
         // set position and rotation to correct for drift
         Vector2 newPosition = gridPosition + direction * 2;
-        transform.position = Grid.getVertexWorldPosition(Mathf.RoundToInt(newPosition.x), Mathf.RoundToInt(newPosition.y));
+        transform.position = MachineGrid.Obj.getVertexWorldPosition(
+            Mathf.RoundToInt(newPosition.x), 
+            Mathf.RoundToInt(newPosition.y));
         transform.rotation = originalRotation * Quaternion.AngleAxis(angle, Vector3.forward);
 
         yield break;
@@ -220,14 +225,17 @@ public class Tablet : MonoBehaviour {
 
         // out of bounds check
         if (newGridPosition.x < 0
-            || newGridPosition.x > Grid.GridVertices.GetLength(0) - 1
+            || newGridPosition.x > MachineGrid.Obj.GridVertices.GetLength(0) - 1
             || newGridPosition.y < 0
-            || newGridPosition.y > Grid.GridVertices.GetLength(1) - 1)
+            || newGridPosition.y > MachineGrid.Obj.GridVertices.GetLength(1) - 1)
         {
             return false;
         }
 
-        VertexMachine machineAtPosition = Grid.GridVertices[Mathf.RoundToInt(newGridPosition.x), Mathf.RoundToInt(newGridPosition.y)].GetComponent<GridVertex>().VertexMachine;
+        VertexMachine machineAtPosition = MachineGrid.Obj.GridVertices[
+                Mathf.RoundToInt(newGridPosition.x), 
+                Mathf.RoundToInt(newGridPosition.y)]
+            .GetComponent<GridVertex>().VertexMachine;
 
         if (machineAtPosition == null)
         {
@@ -265,37 +273,37 @@ public class Tablet : MonoBehaviour {
     }
 
     /** Gets the piece that is on position x,y of the room floor. */
-	public TabletCell GetTabletPieceByFactoryPosition(int x, int y) {
+	public GameTabletCell GetTabletPieceByFactoryPosition(int x, int y) {
         int tabletX = x - gridCellX;
         int tabletY = y - gridCellY;
 		if (tabletX == 0 && tabletY == 0) {
-			return BottomLeft.GetComponent<TabletCell>();
+			return bottomLeft.GetComponent<GameTabletCell>();
 		} else if (tabletX == 0 && tabletY == 1) {
-			return TopLeft.GetComponent<TabletCell>();
+			return topLeft.GetComponent<GameTabletCell>();
 		} else if (tabletX == 1 && tabletY == 0) {
-			return BottomRight.GetComponent<TabletCell>();
+			return bottomRight.GetComponent<GameTabletCell>();
 		} else if (tabletX == 1 && tabletY == 1) {
-			return TopRight.GetComponent<TabletCell>();
+			return topRight.GetComponent<GameTabletCell>();
 		} else {
 			return null;
 		}
     }
 
-	public TabletCell[] GetAllPieces() {
-		TabletCell[] tablets = new TabletCell[4];
-		tablets [0] = TopLeft;
-		tablets [1] = TopRight;
-		tablets [2] = BottomLeft;
-		tablets [3] = BottomRight;
+	public GameTabletCell[] GetAllPieces() {
+		GameTabletCell[] tablets = new GameTabletCell[4];
+		tablets [0] = topLeft;
+		tablets [1] = topRight;
+		tablets [2] = bottomLeft;
+		tablets [3] = bottomRight;
 		return tablets;
 	}
 
-    public bool Equals(Tablet other)
+    public bool Equals(GameTablet other)
     {
-        bool equality_state = TopLeft.Equals(other.TopLeft);
-        equality_state &= TopRight.Equals(other.TopRight);
-        equality_state &= BottomLeft.Equals(other.BottomLeft);
-        equality_state &= BottomRight.Equals(other.BottomRight);
+        bool equality_state = topLeft.Equals(other.topLeft);
+        equality_state &= topRight.Equals(other.topRight);
+        equality_state &= bottomLeft.Equals(other.bottomLeft);
+        equality_state &= bottomRight.Equals(other.bottomRight);
         return equality_state;
     }
 }

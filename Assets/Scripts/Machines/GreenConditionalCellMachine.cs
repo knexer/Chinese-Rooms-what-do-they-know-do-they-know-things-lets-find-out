@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GreenConditionalCellMachine : ConditionalCellMachine {
 	public override void CheckCondition() {
-		TabletCell tabletCell = GridCell.GetInput ();
+		GameTabletCell tabletCell = GridCell.GetInput ();
 		if (tabletCell == null) {
 			return;
 		}
-		if (tabletCell.Color == TabletCell.Colors.Green) {
+		if (tabletCell.Color == TabletColor.Green) {
 			OnMeetsCondition ();
 		}
 	}

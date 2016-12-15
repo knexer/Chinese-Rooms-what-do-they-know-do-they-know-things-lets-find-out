@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class ToggleColorCellMachine : CellMachine {
 	public override void Manipulate(float tickDelta) {
-		TabletCell tabletCell = GridCell.GetInput ();
+		GameTabletCell tabletCell = GridCell.GetInput ();
 		if (tabletCell == null) {
 			return;
 		}
-		if (tabletCell.Color == TabletCell.Colors.Blue) {
+		if (tabletCell.Color == TabletColor.Blue) {
 			SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedGlow);
-			tabletCell.Color = TabletCell.Colors.Green;
+			tabletCell.Color = TabletColor.Green;
 		}
-		if (tabletCell.Color == TabletCell.Colors.Green) {
+		if (tabletCell.Color == TabletColor.Green) {
 			SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedGlow);
-			tabletCell.Color = TabletCell.Colors.Blue;
+			tabletCell.Color = TabletColor.Blue;
 		}
 	}
 

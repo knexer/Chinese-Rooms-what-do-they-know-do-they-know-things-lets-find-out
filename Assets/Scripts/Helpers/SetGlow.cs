@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class SetGlow : MonoBehaviour {
 
-  public TabletCell.Colors GlowColor;
+  public TabletColor GlowColor;
 
   public tk2dSprite GlowSprite;
 
   void Awake () {
     if (GlowSprite != null) {
       switch (GlowColor) {
-      case TabletCell.Colors.Blue:
+      case TabletColor.Blue:
         GlowSprite.color = Globals.Instance.BlueGlow;
         break;
-      case TabletCell.Colors.Green:
+      case TabletColor.Green:
         GlowSprite.color = Globals.Instance.GreenGlow;
         break;
       default:

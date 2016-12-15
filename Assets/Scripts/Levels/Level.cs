@@ -7,7 +7,7 @@ public abstract class Level : MonoBehaviour {
     public static Level Obj { get; private set; }
 
     public MachineSource[] availableMachines;
-    public Tablet[] testCases;
+    public GameTablet[] testCases;
 
     void Awake() {
         if (Obj != null) {
@@ -18,5 +18,5 @@ public abstract class Level : MonoBehaviour {
         Obj = this;
     }
 
-    public abstract TabletState Evaluate(TabletState input);
+    public abstract ITablet Evaluate(ITablet input);
 }

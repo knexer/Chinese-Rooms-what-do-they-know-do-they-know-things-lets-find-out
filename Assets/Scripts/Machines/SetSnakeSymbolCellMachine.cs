@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class SetSnakeSymbolCellMachine : CellMachine {
 	public override void Manipulate(float tickDelta) {
-		TabletCell tabletCell = GridCell.GetInput ();
+		GameTabletCell tabletCell = GridCell.GetInput ();
 		if (tabletCell == null) {
 			return;
 		}
 		SoundManager.Instance.PlaySound(SoundManager.SoundTypes.StampAppliedSymbol);
-		tabletCell.Symbol = TabletCell.Symbols.Snake;
+		tabletCell.Symbol = TabletSymbol.Snake;
 	}
 
 	public override void OnPlace() {}

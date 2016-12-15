@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class SnakeConditionalCellMachine : ConditionalCellMachine {
 	public override void CheckCondition() {
-		TabletCell tabletCell = GridCell.GetInput ();
+		GameTabletCell tabletCell = GridCell.GetInput ();
 		if (tabletCell == null) {
 			return;
 		}
-		if (tabletCell.Symbol == TabletCell.Symbols.Snake) {
+		if (tabletCell.Symbol == TabletSymbol.Snake) {
 			OnMeetsCondition ();
 		}
 	}

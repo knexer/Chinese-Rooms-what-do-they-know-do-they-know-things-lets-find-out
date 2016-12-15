@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class LevelTwo : Level {
 
-    public override TabletState Evaluate(TabletState input) {
-        TabletState output = new TabletState(input);
-        output.TopLeft.Symbol = TabletCell.Symbols.Eye;
-        output.BottomRight.Symbol = TabletCell.Symbols.Snake;
+    public override ITablet Evaluate(ITablet input) {
+        ITablet output = new RawTablet().SetState(input);
+        output.TopLeft.Symbol = TabletSymbol.Eye;
+        output.BottomRight.Symbol = TabletSymbol.Snake;
         return output;
     }
 }
