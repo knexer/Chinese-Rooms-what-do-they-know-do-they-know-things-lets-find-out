@@ -7,6 +7,12 @@ using System.Linq;
 [RequireComponent(typeof(GameTabletRenderer))]
 public class GameTabletMover : MonoBehaviour, ITablet {
 
+    public Color errorColor;
+    public tk2dSprite tabletBaseSprite;
+
+    public int startGridVertexX;
+    public int startGridVertexY;
+
     [HideInInspector]
     public Mover.Direction MovementDirection = Mover.Direction.UP;
 
@@ -24,9 +30,6 @@ public class GameTabletMover : MonoBehaviour, ITablet {
         set { GetComponent<GameTabletRenderer>().BottomRight.SetState(value); } }
 
     private bool moveStopped = false;
-
-    public int startGridVertexX;
-    public int startGridVertexY;
     
     public int GridCellX { get { return GridVertexX - 1; } }
     public int GridCellY { get { return GridVertexY - 1; } }
@@ -40,14 +43,28 @@ public class GameTabletMover : MonoBehaviour, ITablet {
         
         TickController.MoveTickEvent += TriggerMove;
         TickController.ResetTabletsEvent += Reset;
+        TestButton.TestFailed += SetErrorColor;
+        GlobalInput.InputChanged += OnGlobalInputChanged;
     }
 
     void OnDestroy() {
         TickController.MoveTickEvent -= TriggerMove;
         TickController.ResetTabletsEvent -= Reset;
+        TestButton.TestFailed -= SetErrorColor;
+        GlobalInput.InputChanged -= OnGlobalInputChanged;
+    }
+
+    private void OnGlobalInputChanged(ITablet state) {
+        if (TickController.Obj.Mode == TickController.TimeState.Stopped)
+            this.SetState(state);
+    }
+
+    private void SetErrorColor() {
+        tabletBaseSprite.color = errorColor;
     }
 
     private void Reset() {
+        tabletBaseSprite.color = Color.white;
         MovementDirection = Mover.Direction.UP;
 
         GridVertexX = startGridVertexX;
@@ -55,10 +72,7 @@ public class GameTabletMover : MonoBehaviour, ITablet {
         transform.position = MachineGrid.Obj.getVertexWorldPosition(GridVertexX, GridVertexY);
         transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        TopLeft.SetState(TabletSymbol.Dream, TabletColor.None);
-        TopRight.SetState(TabletSymbol.Dream, TabletColor.None);
-        BottomLeft.SetState(TabletSymbol.Dream, TabletColor.None);
-        BottomRight.SetState(TabletSymbol.Dream, TabletColor.None);
+        this.SetState(GlobalInput.InputTablet);
 
         TickController.OutOfBoundEvent += () => TickController.Obj.Pause();
         InterruptMove();

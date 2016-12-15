@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TabletCellUI : MonoBehaviour, IPointerClickHandler, ITabletCell {
-
     public Sprite eyeSymbolBase;
     public Sprite eyeSymbolFill;
     public Sprite dreamSymbolBase;
@@ -26,6 +25,8 @@ public class TabletCellUI : MonoBehaviour, IPointerClickHandler, ITabletCell {
 
     private TabletSymbol symbol;
     private TabletColor color;
+
+    public TabletUI parent;
 
     // Use this for initialization
     void Awake() {
@@ -106,5 +107,6 @@ public class TabletCellUI : MonoBehaviour, IPointerClickHandler, ITabletCell {
         }
 
         UpdateImages();
+        GlobalInput.InputTablet = parent;
     }
 }
