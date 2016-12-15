@@ -23,6 +23,13 @@ public class DraggableVertexMachine : DraggableMachine
 
     private void Update()
     {
+        if (TickController.Obj.Mode != TickController.TimeState.Stopped)
+        {
+            if (dragging)
+            {
+                AbortDrag();
+            }
+        }
         if (dragging) {
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector3(transform.position.x, transform.position.y, DraggableVertexMachine.DRAG_Z_DEPTH);
@@ -63,25 +70,42 @@ public class DraggableVertexMachine : DraggableMachine
         }
         else
         {
-            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.MachineDestroyed);
-            Destroy(this.gameObject);
+            AbortDrag();
         }
     }
 
-    public override void StartDrag() {
+    private void AbortDrag()
+    {
+        dragging = false;
+        wasDraggingLastFrame = false;
+        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.MachineDestroyed);
+        Destroy(this.gameObject);
+    }
+
+    public override void StartDrag()
+    {
+        GridVertex parentVertex = GetComponent<VertexMachine>().GridVertex;
+        // Can't pick up if it's currently running or paused.
+        if (TickController.Obj.Mode != TickController.TimeState.Stopped)
+        {
+            if (parentVertex == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            return;
+        }
+
         dragging = true;
         
         SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PickupMachine);
 
         // remove from whatever it's attached to
-        GridVertex closestVertex = grid.getClosestVertex(transform.position);
-        if (closestVertex != null
-            && closestVertex.VertexMachine != null
-            && Vector2.Distance(closestVertex.transform.position, transform.position) < 0.01f) {
-            if (closestVertex.VertexMachine == GetComponent<VertexMachine>()) {
-				closestVertex.VertexMachine.OnRemove ();
-                closestVertex.VertexMachine = null;
-            }
+        if (parentVertex != null)
+        {
+            parentVertex.VertexMachine.OnRemove();
+            parentVertex.VertexMachine = null;
         }
     }
 }
