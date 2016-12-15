@@ -32,6 +32,7 @@ public class TestButton : MonoBehaviour {
 				tablets[j].Symbol = (TabletSymbol)UnityEngine.Random.Range(0, Enum.GetValues(typeof(TabletSymbol)).Length);
 			}
             ITablet input = new RawTablet().SetState(MachineGrid.Obj.Input);
+            GlobalInput.InputTablet = input;
 
             TickController.Obj.Mode = TickController.TimeState.MaximumWarp;
 
