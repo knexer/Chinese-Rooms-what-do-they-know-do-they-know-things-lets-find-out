@@ -51,8 +51,8 @@ public class TestButton : MonoBehaviour {
                 SimState currentState = new SimState
                 {
                     Tablet = new RawTablet().SetState(MachineGrid.Obj.Input),
-                    GridX = MachineGrid.Obj.Input.gridVertexX,
-                    GridY = MachineGrid.Obj.Input.gridVertexY
+                    GridX = MachineGrid.Obj.Input.GridVertexX,
+                    GridY = MachineGrid.Obj.Input.GridVertexY
                 };
 
                 if (previousStates.Contains(currentState))
