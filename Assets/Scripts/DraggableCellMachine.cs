@@ -23,6 +23,13 @@ public class DraggableCellMachine : DraggableMachine
 
     private void Update()
     {
+        if (TickController.Obj.Mode != TickController.TimeState.Stopped)
+        {
+            if (dragging)
+            {
+                AbortDrag();
+            }
+        }
         if (dragging) {
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector3(transform.position.x, transform.position.y, DraggableCellMachine.DRAG_Z_DEPTH);
@@ -66,27 +73,42 @@ public class DraggableCellMachine : DraggableMachine
         }
         else
         {
-            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.MachineDestroyed);
-            Destroy(this.gameObject);
+            AbortDrag();
         }
     }
 
-    public override void StartDrag() {
+    private void AbortDrag()
+    {
+        dragging = false;
+        wasDraggingLastFrame = false;
+        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.MachineDestroyed);
+        Destroy(this.gameObject);
+    }
+
+    public override void StartDrag()
+    {
+        GridCell parentCell = GetComponent<CellMachine>().GridCell;
+        // Can't pick up if it's currently running or paused.
+        if (TickController.Obj.Mode != TickController.TimeState.Stopped)
+        {
+            if (parentCell == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            return;
+        }
+
         dragging = true;
 
         SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PickupMachine);
 
         // remove from whatever it's attached to
-        if (grid != null) {
-            GridCell closestCell = grid.getClosestCell(transform.position);
-            if (closestCell != null
-                && closestCell.CellMachine != null
-                && Vector2.Distance(closestCell.transform.position, transform.position) < 0.01f) {
-                if (closestCell.CellMachine == GetComponent<CellMachine>()) {
-					closestCell.CellMachine.OnRemove ();
-                    closestCell.CellMachine = null;
-                }
-            }
+        if (parentCell != null)
+        {
+            parentCell.CellMachine.OnRemove();
+            parentCell.CellMachine = null;
         }
     }
 }
