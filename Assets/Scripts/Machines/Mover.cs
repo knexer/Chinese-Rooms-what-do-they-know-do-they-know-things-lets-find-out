@@ -62,7 +62,9 @@ public class Mover : VertexMachine {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyUp(KeyCode.R) && gameObject.GetComponent<DraggableVertexMachine>().dragging)
+        if (Input.GetKeyUp(KeyCode.R)
+            && gameObject.GetComponent<DraggableVertexMachine>().dragging
+            && TickController.Obj.Mode == TickController.TimeState.Stopped)
         {
             SoundManager.Instance.PlaySound(SoundManager.SoundTypes.RotateMover);
             rotateClockwise();
@@ -71,7 +73,9 @@ public class Mover : VertexMachine {
 
     private void OnMouseOver()
     {
-        if (Input.GetKeyUp(KeyCode.R) && !gameObject.GetComponent<DraggableVertexMachine>().dragging)
+        if (Input.GetKeyUp(KeyCode.R)
+            && !gameObject.GetComponent<DraggableVertexMachine>().dragging
+            && TickController.Obj.Mode == TickController.TimeState.Stopped)
         {
             SoundManager.Instance.PlaySound(SoundManager.SoundTypes.RotateMover);
             rotateClockwise();
