@@ -33,9 +33,11 @@ public class DraggableVertexMachine : DraggableMachine
         if (dragging) {
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector3(transform.position.x, transform.position.y, DraggableVertexMachine.DRAG_Z_DEPTH);
-            Vector3 closestVertexPosition = grid.getClosestVertex(transform.position).transform.position;
+            GridVertex closestVertex = grid.getClosestVertex(transform.position);
+            Vector3 closestVertexPosition = closestVertex.transform.position;
 
-            if (Vector2.Distance(transform.position, closestVertexPosition) < distanceThreshold) {
+            if (Vector2.Distance(transform.position, closestVertexPosition) < distanceThreshold
+                && closestVertex.VertexMachine == null) {
                 closestVertexPosition.z = 0.0f;
                 transform.position = closestVertexPosition;                
             }

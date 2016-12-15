@@ -33,9 +33,11 @@ public class DraggableCellMachine : DraggableMachine
         if (dragging) {
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector3(transform.position.x, transform.position.y, DraggableCellMachine.DRAG_Z_DEPTH);
-            Vector3 closestCellPosition = grid.getClosestCell(transform.position).transform.position;
+            GridCell closestCell = grid.getClosestCell(transform.position);
+            Vector3 closestCellPosition = closestCell.transform.position;
 
-            if (Vector2.Distance(transform.position, closestCellPosition) < distanceThreshold) {
+            if (Vector2.Distance(transform.position, closestCellPosition) < distanceThreshold
+                && closestCell.CellMachine == null) {
                 closestCellPosition.z = 0.0f;
                 transform.position = closestCellPosition;
             }
