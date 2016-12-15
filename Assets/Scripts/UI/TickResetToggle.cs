@@ -8,7 +8,7 @@ public class TickResetToggle : MonoBehaviour {
     void Start() {
         GetComponent<Toggle>().onValueChanged.AddListener((bool isOn) => {
             if (isOn) {
-                TickController.Obj.SetSpeed(0);
+                TickController.Obj.Mode = TickController.TimeState.Running;
                 TickController.Obj.ResetTablets();
             }
         });

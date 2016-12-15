@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class TickSpeedToggle : MonoBehaviour {
 
-    public int speed;
+    public TickController.TimeState Mode;
     
 	void Start () {
         GetComponent<Toggle>().onValueChanged.AddListener((bool isOn) => {
             if (isOn)
-                TickController.Obj.SetSpeed(speed);
+                TickController.Obj.Mode = Mode;
         });
 	}
 }

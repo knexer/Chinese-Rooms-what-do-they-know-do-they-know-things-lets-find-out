@@ -1,4 +1,5 @@
-﻿﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,11 +22,17 @@ public class TickController : MonoBehaviour {
         OutOfBoundEvent();
     }
 
+    public float RunningSecondsPerTick;
+    public float FastForwardSecondsPerTick;
 
-    public float[] TicksPerSecond;
+    public TimeState Mode
+    {
+        get { return CurrentMode; }
+        set { NextMode = value; }
+    }
+    private TimeState CurrentMode = TimeState.Stopped;
+    private TimeState NextMode = TimeState.Stopped;
 
-    private int newSpeedIndex = -1;
-    private int speedIndex = -1;
     private float lastTickTimeSeconds = 0;
 
     void Awake() {
@@ -39,33 +46,59 @@ public class TickController : MonoBehaviour {
     }
 
     void Update() {
-        if (speedIndex >= 0) {
-            if (Time.time - lastTickTimeSeconds >= 1 / TicksPerSecond[speedIndex]){
-                speedIndex = newSpeedIndex;
-                if (speedIndex >= 0)
+        float secondsPerTick = SecondsPerTick();
+
+        if (!float.IsPositiveInfinity(secondsPerTick))
+        {
+            if (Time.time - lastTickTimeSeconds >= secondsPerTick)
+            {
+                ToNextMode();
+                secondsPerTick = SecondsPerTick();
+                if (!float.IsPositiveInfinity(secondsPerTick))
                 {
                     if (ManipulateTickEvent != null)
-                        ManipulateTickEvent(1 / TicksPerSecond[speedIndex]);
+                        ManipulateTickEvent(secondsPerTick);
                     if (MoveTickEvent != null)
-                        MoveTickEvent(1 / TicksPerSecond[speedIndex]);
+                        MoveTickEvent(secondsPerTick);
                     this.lastTickTimeSeconds = Time.time;
                 }
             }
-        } else if (newSpeedIndex >= 0) {
-            speedIndex = newSpeedIndex;
+        } else
+        {
+            ToNextMode();
+        }
+    }
+
+    private void ToNextMode()
+    {
+        if (NextMode == TimeState.Stopped && CurrentMode != TimeState.Stopped)
+        {
+            // TODO(taylor): reset stuff
+            ResetTablets();
+        }
+        CurrentMode = NextMode;
+    }
+
+    private float SecondsPerTick()
+    {
+        switch (Mode)
+        {
+            case TimeState.Stopped:
+            case TimeState.Paused:
+                return float.PositiveInfinity;
+            case TimeState.Running:
+                return RunningSecondsPerTick;
+            case TimeState.FastForward:
+                return FastForwardSecondsPerTick;
+            case TimeState.MaximumWarp:
+                return 0;
+            default:
+                throw new ArgumentException("Unexpected enum value " + Mode);
         }
     }
 
     void OnLevelWasLoaded() {
-        SetSpeed(0);
-    }
-
-    public int GetMaxSpeed() {
-        return TicksPerSecond.Length;
-    }
-
-    public void SetSpeed(int speed) {
-        newSpeedIndex = Mathf.Clamp(speed - 1, -1, GetMaxSpeed());
+        Stop();
     }
 
     public void ResetTablets() {
@@ -75,10 +108,24 @@ public class TickController : MonoBehaviour {
 
     public void Pause()
     {
-        SetSpeed(0);
+        Mode = TimeState.Paused;
+    }
+
+    public void Stop()
+    {
+        Mode = TimeState.Stopped;
     }
 
     void OnDestroy() {
         OutOfBoundEvent -= Pause;
+    }
+
+    public enum TimeState
+    {
+        Stopped,
+        Paused,
+        Running,
+        FastForward,
+        MaximumWarp
     }
 }

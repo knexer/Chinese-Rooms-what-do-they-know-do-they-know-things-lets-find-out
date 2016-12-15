@@ -71,7 +71,7 @@ public class GameTablet : MonoBehaviour, ITablet {
         topRight = NewTablet(1, 1);
         bottomLeft = NewTablet(-1, -1);
         bottomRight = NewTablet(1, -1);
-        TickController.OutOfBoundEvent += () => TickController.Obj.SetSpeed(-1);
+        TickController.OutOfBoundEvent += () => TickController.Obj.Pause();
         InterruptMove();
     }
     
