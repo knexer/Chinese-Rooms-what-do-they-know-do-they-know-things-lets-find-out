@@ -44,12 +44,19 @@ public class GameTabletMover : MonoBehaviour, ITablet {
         TickController.MoveTickEvent += TriggerMove;
         TickController.ResetTabletsEvent += Reset;
         TestButton.TestFailed += SetErrorColor;
+        GlobalInput.InputChanged += OnGlobalInputChanged;
     }
 
     void OnDestroy() {
         TickController.MoveTickEvent -= TriggerMove;
         TickController.ResetTabletsEvent -= Reset;
         TestButton.TestFailed -= SetErrorColor;
+        GlobalInput.InputChanged -= OnGlobalInputChanged;
+    }
+
+    private void OnGlobalInputChanged(ITablet state) {
+        if (TickController.Obj.Mode == TickController.TimeState.Stopped)
+            this.SetState(state);
     }
 
     private void SetErrorColor() {
@@ -65,10 +72,7 @@ public class GameTabletMover : MonoBehaviour, ITablet {
         transform.position = MachineGrid.Obj.getVertexWorldPosition(GridVertexX, GridVertexY);
         transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        TopLeft.SetState(TabletSymbol.Dream, TabletColor.None);
-        TopRight.SetState(TabletSymbol.Dream, TabletColor.None);
-        BottomLeft.SetState(TabletSymbol.Dream, TabletColor.None);
-        BottomRight.SetState(TabletSymbol.Dream, TabletColor.None);
+        this.SetState(GlobalInput.InputTablet);
 
         TickController.OutOfBoundEvent += () => TickController.Obj.Pause();
         InterruptMove();
