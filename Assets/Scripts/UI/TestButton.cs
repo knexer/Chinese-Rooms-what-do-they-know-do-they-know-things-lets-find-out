@@ -8,25 +8,16 @@ public class TestButton : MonoBehaviour {
     public const int NRuns = 20;
 
 	public static bool RunCompleted = false;
+    public static event Action TestFailed;
 
 	// Use this for initialization
 	void Start () {
 		GetComponent<Button> ().onClick.AddListener (StartTests);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	public void StartTests() {
 		StartCoroutine (WaitEnumerator ());
 	}
-
-    private void TestFailed()
-    {
-        Debug.Log("Input failed tests!");
-    }
 
 	private IEnumerator WaitEnumerator() {
 		Debug.Log("We are now starting tests.");
@@ -57,7 +48,8 @@ public class TestButton : MonoBehaviour {
 
                 if (previousStates.Contains(currentState))
                 {
-                    TestFailed();
+                    if (TestFailed != null)
+                        TestFailed();
                     yield break;
                 } else
                 {
@@ -69,7 +61,8 @@ public class TestButton : MonoBehaviour {
 			RunCompleted = false;
 
             if (!MachineGrid.Obj.Input.TabletEquals(Level.Obj.Evaluate(input))) {
-                TestFailed();
+                if (TestFailed != null)
+                    TestFailed();
                 yield break;
             }
 		}
