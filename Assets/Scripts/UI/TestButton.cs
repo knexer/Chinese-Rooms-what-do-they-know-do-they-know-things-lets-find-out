@@ -8,16 +8,22 @@ public class TestButton : MonoBehaviour {
     public const int NRuns = 20;
 
 	public static bool RunCompleted = false;
-    public static event Action TestFailed;
 
 	// Use this for initialization
 	void Start () {
 		GetComponent<Button> ().onClick.AddListener (StartTests);
 	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
 
 	public void StartTests() {
 		StartCoroutine (WaitEnumerator ());
 	}
+
+    public static event Action TestFailed;
 
 	private IEnumerator WaitEnumerator() {
 		Debug.Log("We are now starting tests.");
@@ -39,31 +45,36 @@ public class TestButton : MonoBehaviour {
             HashSet<SimState> previousStates = new HashSet<SimState>();
 
 			RunCompleted = false;
-			while (RunCompleted == false) {
-                SimState currentState = new SimState
-                {
-                    Tablet = new RawTablet().SetState(MachineGrid.Obj.Input),
-                    GridX = MachineGrid.Obj.Input.GridVertexX,
-                    GridY = MachineGrid.Obj.Input.GridVertexY
-                };
+			while (RunCompleted == false)
+            {
+                yield return null;
 
-                if (previousStates.Contains(currentState))
+                if (RunCompleted == false)
                 {
-                    if (TestFailed != null)
-                        TestFailed();
-                    yield break;
-                } else
-                {
-                    previousStates.Add(currentState);
+                    SimState currentState = new SimState
+                    {
+                        Tablet = new RawTablet().SetState(MachineGrid.Obj.Input),
+                        GridX = MachineGrid.Obj.Input.GridVertexX,
+                        GridY = MachineGrid.Obj.Input.GridVertexY
+                    };
+
+                    if (previousStates.Contains(currentState))
+                    {
+                        Debug.Log("Cycle detected.");
+                        if (TestFailed != null) TestFailed();
+                        yield break;
+                    }
+                    else
+                    {
+                        previousStates.Add(currentState);
+                    }
                 }
-
-				yield return null;
 			}
 			RunCompleted = false;
 
             if (!MachineGrid.Obj.Input.TabletEquals(Level.Obj.Evaluate(input))) {
-                if (TestFailed != null)
-                    TestFailed();
+                Debug.Log("Output doesn't equal expected output.");
+                if (TestFailed != null) TestFailed();
                 yield break;
             }
 		}
