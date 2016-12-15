@@ -16,8 +16,8 @@ public class OutOfBoundsVertexMachine : VertexMachine
         if (GridVertex.Grid.Input != null)
         {
             // is there a tile over us?
-            if (GridVertex.Grid.Input.gridVertexX == this.GridVertex.X
-                && GridVertex.Grid.Input.gridVertexY == this.GridVertex.Y)
+            if (GridVertex.Grid.Input.GridVertexX == this.GridVertex.X
+                && GridVertex.Grid.Input.GridVertexY == this.GridVertex.Y)
             {
                 TickController.Obj.TriggerOutOfBounds();
             }

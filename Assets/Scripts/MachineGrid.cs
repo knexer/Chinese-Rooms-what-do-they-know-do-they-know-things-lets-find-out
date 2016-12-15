@@ -14,7 +14,7 @@ public class MachineGrid : MonoBehaviour {
     public GameObject OutOfBoundsVertexPrefab;
 
     public Transform GridContainer;
-    public GameTablet Input;
+    public GameTabletMover Input;
 
     public Vector2 CellSize { get; private set; }
 
@@ -30,7 +30,7 @@ public class MachineGrid : MonoBehaviour {
         Obj = this;
 
         if (Input == null)
-            Input = FindObjectOfType<GameTablet>();
+            Input = FindObjectOfType<GameTabletMover>();
 
         GridCells = new GameObject[Width, Height];
         GridVertices = new GameObject[Width + 1, Height + 1];
@@ -129,7 +129,7 @@ public class MachineGrid : MonoBehaviour {
     }
 
 	public GridVertex GetTabletCenter() {
-		return GridVertices [Input.gridVertexX, Input.gridVertexY].GetComponent<GridVertex>();
+		return GridVertices [Input.GridVertexX, Input.GridVertexY].GetComponent<GridVertex>();
 	}
 
     // Use this for initialization

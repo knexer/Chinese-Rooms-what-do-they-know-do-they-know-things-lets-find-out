@@ -93,8 +93,8 @@ public class Mover : VertexMachine {
 		if (GridVertex.Grid.Input != null)
         {
             // is there a tile over us?
-            if (GridVertex.Grid.Input.gridVertexX == this.GridVertex.X
-                && GridVertex.Grid.Input.gridVertexY == this.GridVertex.Y
+            if (GridVertex.Grid.Input.GridVertexX == this.GridVertex.X
+                && GridVertex.Grid.Input.GridVertexY == this.GridVertex.Y
 				&& CanMove())
             {
                 GridVertex.Grid.Input.MovementDirection = facing;

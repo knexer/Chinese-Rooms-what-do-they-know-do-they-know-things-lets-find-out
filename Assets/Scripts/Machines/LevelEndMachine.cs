@@ -21,8 +21,8 @@ public class LevelEndMachine : VertexMachine
 
     protected override void Manipulate(float tickTime)
     {
-        if (this.GridVertex.X == MachineGrid.Obj.Input.gridVertexX 
-            && this.GridVertex.Y == MachineGrid.Obj.Input.gridVertexY)
+        if (this.GridVertex.X == MachineGrid.Obj.Input.GridVertexX 
+            && this.GridVertex.Y == MachineGrid.Obj.Input.GridVertexY)
         {
 			TickController.Obj.Pause();
 			TestButton.RunCompleted = true;
