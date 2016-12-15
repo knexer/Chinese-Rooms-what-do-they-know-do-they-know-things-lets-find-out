@@ -33,7 +33,7 @@ public class TestButton : MonoBehaviour {
 				tablets [j].Color = (TabletCell.Colors)Random.Range (0, 3);
 				tablets [j].Symbol = (TabletCell.Symbols)Random.Range (0, 3);
 			}
-			TickController.Obj.SetSpeed (1);
+            TickController.Obj.Mode = TickController.TimeState.FastForward;
 
 			RunCompleted = false;
 			while (RunCompleted == false) {

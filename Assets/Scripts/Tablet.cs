@@ -70,7 +70,7 @@ public class Tablet : MonoBehaviour {
         TopRight = NewTablet(1, 1);
         BottomLeft = NewTablet(-1, -1);
         BottomRight = NewTablet(1, -1);
-        TickController.OutOfBoundEvent += () => TickController.Obj.SetSpeed(-1);
+        TickController.OutOfBoundEvent += () => TickController.Obj.Pause();
         InterruptMove();
     }
     
