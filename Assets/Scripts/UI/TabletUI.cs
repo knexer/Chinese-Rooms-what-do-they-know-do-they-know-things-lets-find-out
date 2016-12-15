@@ -34,5 +34,7 @@ public class TabletUI : MonoBehaviour, ITablet
         topRight.parent = this;
         bottomLeft.parent = this;
         bottomRight.parent = this;
+
+        this.SetState(GlobalInput.InputTablet);
     }
 }
