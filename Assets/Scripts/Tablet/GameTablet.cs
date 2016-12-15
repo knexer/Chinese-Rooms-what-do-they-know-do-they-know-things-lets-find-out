@@ -40,7 +40,6 @@ public class GameTablet : MonoBehaviour, ITablet {
         Reset();
         moveStopped = false;
         
-        MachineGrid.Obj.CurrentInput = this;
         TickController.MoveTickEvent += TriggerMove;
         TickController.ResetTabletsEvent += Reset;
     }

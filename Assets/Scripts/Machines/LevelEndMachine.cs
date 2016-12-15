@@ -21,14 +21,9 @@ public class LevelEndMachine : VertexMachine
 
     protected override void Manipulate(float tickTime)
     {
-        if (((GridVertex.Grid.CurrentInput.gridVertexX == GridVertex.X - 1
-            && GridVertex.Grid.CurrentInput.gridVertexY == GridVertex.Y
-			&& GridVertex.Grid.CurrentInput.MovementDirection == Mover.Direction.RIGHT))
-			|| ((GridVertex.Grid.CurrentInput.gridVertexX == GridVertex.X
-				&& GridVertex.Grid.CurrentInput.gridVertexY == GridVertex.Y - 1
-				&& GridVertex.Grid.CurrentInput.MovementDirection == Mover.Direction.UP)))
+        if (this.GridVertex.X == MachineGrid.Obj.Input.gridVertexX 
+            && this.GridVertex.Y == MachineGrid.Obj.Input.gridVertexY)
         {
-            // just reset the thing, don't load the next level.
 			TickController.Obj.Pause();
 			TestButton.RunCompleted = true;
         }

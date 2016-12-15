@@ -28,7 +28,7 @@ public class TestButton : MonoBehaviour {
 			TickController.Obj.Pause();
 			TickController.Obj.ResetTablets ();
 
-			GameTabletCell[] tablets = FindObjectOfType<MachineGrid> ().CurrentInput.GetAllPieces ();
+			GameTabletCell[] tablets = MachineGrid.Obj.Input.GetAllPieces();
 			for (int j = 0; j < 4; j++) {
 				tablets [j].Color = (TabletColor)Random.Range (0, 3);
 				tablets [j].Symbol = (TabletSymbol)Random.Range (0, 3);

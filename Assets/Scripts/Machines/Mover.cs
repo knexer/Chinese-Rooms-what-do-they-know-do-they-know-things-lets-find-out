@@ -86,14 +86,14 @@ public class Mover : VertexMachine {
 
     protected override void Manipulate(float tickTime)
     {
-		if (GridVertex.Grid.CurrentInput != null)
+		if (GridVertex.Grid.Input != null)
         {
             // is there a tile over us?
-            if (GridVertex.Grid.CurrentInput.gridVertexX == this.GridVertex.X
-                && GridVertex.Grid.CurrentInput.gridVertexY == this.GridVertex.Y
+            if (GridVertex.Grid.Input.gridVertexX == this.GridVertex.X
+                && GridVertex.Grid.Input.gridVertexY == this.GridVertex.Y
 				&& CanMove())
             {
-                GridVertex.Grid.CurrentInput.MovementDirection = facing;
+                GridVertex.Grid.Input.MovementDirection = facing;
             }
         }
 		UnmeetAllConditionals ();

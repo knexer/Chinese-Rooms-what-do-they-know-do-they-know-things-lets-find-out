@@ -46,20 +46,19 @@ public class TickController : MonoBehaviour {
     }
 
     void Update() {
-        float secondsPerTick = SecondsPerTick();
-
-        if (!float.IsPositiveInfinity(secondsPerTick))
+        if (!float.IsPositiveInfinity(SecondsPerTick()))
         {
-            if (Time.time - lastTickTimeSeconds >= secondsPerTick)
+            if (Time.time - lastTickTimeSeconds >= SecondsPerTick())
             {
                 ToNextMode();
-                secondsPerTick = SecondsPerTick();
-                if (!float.IsPositiveInfinity(secondsPerTick))
+                if (!float.IsPositiveInfinity(SecondsPerTick()))
                 {
                     if (ManipulateTickEvent != null)
-                        ManipulateTickEvent(secondsPerTick);
-                    if (MoveTickEvent != null)
-                        MoveTickEvent(secondsPerTick);
+                        ManipulateTickEvent(SecondsPerTick());
+                    // Check Mode again in case any manipulators changed the speed
+                    ToNextMode();
+                    if (!float.IsPositiveInfinity(SecondsPerTick()) && MoveTickEvent != null)
+                        MoveTickEvent(SecondsPerTick());
                     this.lastTickTimeSeconds = Time.time;
                 }
             }
