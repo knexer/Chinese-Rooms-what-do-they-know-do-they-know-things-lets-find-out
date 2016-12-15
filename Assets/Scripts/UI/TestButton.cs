@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System;
 
 public class TestButton : MonoBehaviour {
+    public const int NRuns = 20;
+
 	public static bool RunCompleted = false;
 
 	// Use this for initialization
@@ -21,19 +24,20 @@ public class TestButton : MonoBehaviour {
 	}
 
 	private IEnumerator WaitEnumerator() {
-		Debug.Log ("We are now starting tests.");
-		//Level.Obj.
+		Debug.Log("We are now starting tests.");
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < NRuns; i++) {
 			TickController.Obj.Pause();
-			TickController.Obj.ResetTablets ();
+			TickController.Obj.ResetTablets();
 
-			GameTabletCell[] tablets = MachineGrid.Obj.Input.GetAllPieces();
+			GameTabletCell[] tablets = MachineGrid.Obj.Input.GetAllCells();
 			for (int j = 0; j < 4; j++) {
-				tablets [j].Color = (TabletColor)Random.Range (0, 3);
-				tablets [j].Symbol = (TabletSymbol)Random.Range (0, 3);
+				tablets[j].Color = (TabletColor)UnityEngine.Random.Range(0, Enum.GetValues(typeof(TabletColor)).Length);
+				tablets[j].Symbol = (TabletSymbol)UnityEngine.Random.Range(0, Enum.GetValues(typeof(TabletSymbol)).Length);
 			}
-            TickController.Obj.Mode = TickController.TimeState.FastForward;
+            ITablet input = new RawTablet().SetState(MachineGrid.Obj.Input);
+
+            TickController.Obj.Mode = TickController.TimeState.MaximumWarp;
 
 			RunCompleted = false;
 			while (RunCompleted == false) {
@@ -41,7 +45,14 @@ public class TestButton : MonoBehaviour {
 			}
 			RunCompleted = false;
 
+            if (!MachineGrid.Obj.Input.TabletEquals(Level.Obj.Evaluate(input))) {
+                Debug.Log("Input failed tests!");
+                yield break;
+            }
 		}
+
+        LevelManager.Obj.LoadNextLevel();
+
 		yield return null;
 	}
 }

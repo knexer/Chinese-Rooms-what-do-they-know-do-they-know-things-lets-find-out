@@ -45,10 +45,10 @@ public static class TabletExtensions {
     }
     
     public static ITablet SetState(this ITablet tablet, ITablet other) {
-        tablet.TopLeft = other.TopLeft;
-        tablet.TopRight = other.TopRight;
-        tablet.BottomLeft = other.BottomLeft;
-        tablet.BottomRight = other.BottomRight;
+        tablet.TopLeft.SetState(other.TopLeft);
+        tablet.TopRight.SetState(other.TopRight);
+        tablet.BottomLeft.SetState(other.BottomLeft);
+        tablet.BottomRight.SetState(other.BottomRight);
         return tablet;
     }
 
@@ -60,11 +60,11 @@ public static class TabletExtensions {
     }
 
     public static ITablet RotateCounterclockwise(this ITablet tablet) {
-        ITabletCell temp = tablet.TopLeft;
-        tablet.TopLeft = tablet.TopRight;
-        tablet.TopRight = tablet.BottomRight;
-        tablet.BottomRight = tablet.BottomLeft;
-        tablet.BottomLeft = temp;
+        ITabletCell temp = new RawTabletCell().SetState(tablet.TopLeft);
+        tablet.TopLeft.SetState(tablet.TopRight);
+        tablet.TopRight.SetState(tablet.BottomRight);
+        tablet.BottomRight.SetState(tablet.BottomLeft);
+        tablet.BottomLeft.SetState(temp);
         return tablet;
     }
 }

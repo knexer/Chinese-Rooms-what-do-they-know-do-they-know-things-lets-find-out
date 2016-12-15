@@ -288,7 +288,7 @@ public class GameTablet : MonoBehaviour, ITablet {
 		}
     }
 
-	public GameTabletCell[] GetAllPieces() {
+	public GameTabletCell[] GetAllCells() {
 		GameTabletCell[] tablets = new GameTabletCell[4];
 		tablets [0] = topLeft;
 		tablets [1] = topRight;
