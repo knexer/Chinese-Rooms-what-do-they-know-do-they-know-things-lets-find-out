@@ -18,7 +18,7 @@ public class TabletUI : MonoBehaviour, ITablet
     private TabletCellUI bottomLeft;
     private TabletCellUI bottomRight;
 
-    void Start() {
+    void Awake() {
         GetComponent<GridLayoutGroup>().startCorner = GridLayoutGroup.Corner.UpperLeft;
         GetComponent<GridLayoutGroup>().startAxis = GridLayoutGroup.Axis.Horizontal;
 

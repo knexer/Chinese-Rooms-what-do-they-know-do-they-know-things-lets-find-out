@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TabletCellUI : MonoBehaviour, IPointerClickHandler, ITabletCell {
+public class TabletCellUI : MonoBehaviour, ITabletCell {
     public Sprite eyeSymbolBase;
     public Sprite eyeSymbolFill;
     public Sprite dreamSymbolBase;
@@ -68,45 +68,5 @@ public class TabletCellUI : MonoBehaviour, IPointerClickHandler, ITabletCell {
             default:
                 throw new Exception("Unexpected enum value " + color);
         }
-    }
-
-    public void OnPointerClick(PointerEventData eventData) {
-        if (!isUserControlled)
-            return;
-
-        BlackBoxButton.Obj.HideOutput();
-
-        if (TabletCellModeToggle.CurrentCellMode == TabletCellModeToggle.CellMode.Color) {
-            switch(color) {
-                case TabletColor.None:
-                    color = TabletColor.Green;
-                    break;
-                case TabletColor.Green:
-                    color = TabletColor.Blue;
-                    break;
-                case TabletColor.Blue:
-                    color = TabletColor.None;
-                    break;
-                default:
-                    throw new Exception("Unexpected enum value " + color);
-            }
-        } else if (TabletCellModeToggle.CurrentCellMode == TabletCellModeToggle.CellMode.Symbol) {
-            switch (symbol) {
-                case TabletSymbol.Dream:
-                    symbol = TabletSymbol.Eye;
-                    break;
-                case TabletSymbol.Eye:
-                    symbol = TabletSymbol.Snake;
-                    break;
-                case TabletSymbol.Snake:
-                    symbol = TabletSymbol.Dream;
-                    break;
-                default:
-                    throw new Exception("Unexpected enum value " + symbol);
-            }
-        }
-
-        UpdateImages();
-        GlobalInput.InputTablet = parent;
     }
 }
