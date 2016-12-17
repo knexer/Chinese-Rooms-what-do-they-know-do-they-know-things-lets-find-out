@@ -17,6 +17,9 @@ public class TickController : MonoBehaviour {
     public delegate void SignalHandler();
     public static event SignalHandler OutOfBoundEvent;
 
+    public delegate void ModeChangedHandler(TimeState newMode);
+    public static event ModeChangedHandler ModeChangedEvent;
+
     public void TriggerOutOfBounds()
     {
         OutOfBoundEvent();
@@ -75,6 +78,9 @@ public class TickController : MonoBehaviour {
             // TODO(taylor): reset stuff
             ResetTablets();
         }
+
+        if (CurrentMode != NextMode && ModeChangedEvent != null)
+            ModeChangedEvent(NextMode);
         CurrentMode = NextMode;
     }
 

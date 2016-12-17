@@ -6,7 +6,15 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class SimRunningUIMask : MonoBehaviour {
 	
-	void Update () {
-        GetComponent<Image>().enabled = TickController.Obj.Mode != TickController.TimeState.Stopped;
+	void Start() {
+        TickController.ModeChangedEvent += UpdateVisibility;
 	}
+
+    void OnDestroy() {
+        TickController.ModeChangedEvent -= UpdateVisibility;
+    }
+
+    private void UpdateVisibility(TickController.TimeState Mode) {
+        GetComponent<Image>().enabled = Mode != TickController.TimeState.Stopped;
+    }
 }
