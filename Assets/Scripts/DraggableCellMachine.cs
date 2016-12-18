@@ -23,7 +23,7 @@ public class DraggableCellMachine : DraggableMachine
 
     private void Update()
     {
-        if (TickController.Obj.Mode != TickController.TimeState.Stopped)
+        if (TickController.Obj.IsRunning())
         {
             if (dragging)
             {
@@ -91,26 +91,18 @@ public class DraggableCellMachine : DraggableMachine
     {
         GridCell parentCell = GetComponent<CellMachine>().GridCell;
         // Can't pick up if it's currently running or paused.
-        if (TickController.Obj.Mode != TickController.TimeState.Stopped)
-        {
+        if (TickController.Obj.IsRunning()) {
             if (parentCell == null)
-            {
                 Destroy(gameObject);
-                return;
+        } else {
+            dragging = true;
+            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PickupMachine);
+
+            // remove from whatever it's attached to
+            if (parentCell != null) {
+                parentCell.CellMachine.OnRemove();
+                parentCell.CellMachine = null;
             }
-
-            return;
-        }
-
-        dragging = true;
-
-        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PickupMachine);
-
-        // remove from whatever it's attached to
-        if (parentCell != null)
-        {
-            parentCell.CellMachine.OnRemove();
-            parentCell.CellMachine = null;
         }
     }
 }

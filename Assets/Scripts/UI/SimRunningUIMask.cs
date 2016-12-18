@@ -8,6 +8,7 @@ public class SimRunningUIMask : MonoBehaviour {
 	
 	void Start() {
         TickController.ModeChangedEvent += UpdateVisibility;
+        UpdateVisibility(TickController.Obj.Mode);
 	}
 
     void OnDestroy() {
@@ -15,6 +16,6 @@ public class SimRunningUIMask : MonoBehaviour {
     }
 
     private void UpdateVisibility(TickController.TimeState Mode) {
-        GetComponent<Image>().enabled = Mode != TickController.TimeState.Stopped;
+        GetComponent<Image>().enabled = TickController.Obj.IsRunning();
     }
 }

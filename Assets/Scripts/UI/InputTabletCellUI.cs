@@ -46,7 +46,7 @@ public class InputTabletCellUI : MonoBehaviour, IPointerClickHandler {
                     throw new Exception("Unexpected enum value " + symbol);
             }
         }
-        
-        GlobalInput.InputTablet = GetComponent<TabletCellUI>().parent;
+
+        LevelStateManager.InputTablet = GetComponent<TabletCellUI>().parent;
     }
 }

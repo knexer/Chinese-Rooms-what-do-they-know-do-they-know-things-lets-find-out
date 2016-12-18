@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class GridVertex : MonoBehaviour
 {
-    [HideInInspector]
     public MachineGrid Grid { get; private set; }
-    [HideInInspector]
     public int X { get; private set; }
-    [HideInInspector]
     public int Y { get; private set; }
-
 
     public VertexMachine VertexMachine
     {
@@ -19,22 +15,11 @@ public class GridVertex : MonoBehaviour
     }
     private VertexMachine vertexMachine;
 
-    // Use this for initialization
-    void Start()
-    {
-    }
-
     public void Register(int X, int Y, MachineGrid Grid)
     {
         this.X = X;
         this.Y = Y;
         this.Grid = Grid;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public GridCell[] GetSurroundingCells()

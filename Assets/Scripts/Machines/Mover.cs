@@ -40,31 +40,24 @@ public class Mover : VertexMachine {
       Default,
       Conditional
     }
-
-	// Use this for initialization
+    
 	protected override void Start () {
-		TickController.ManipulateTickEvent += Manipulate;
+        base.Start();
 
-		// Initialize conditionals.
-		TopLeft = Conditionals.None;
+        // Initialize conditionals.
+        TopLeft = Conditionals.None;
 		TopRight = Conditionals.None;
 		BottomLeft = Conditionals.None;
 		BottomRight = Conditionals.None;
 
 		// Set to default arrow
 		UpdateImage();
-	}
-
-    protected override void OnDestroy()
-    {
-        TickController.ManipulateTickEvent -= Manipulate;
     }
-
-    // Update is called once per frame
+    
     void Update () {
         if (Input.GetKeyUp(KeyCode.R)
             && gameObject.GetComponent<DraggableVertexMachine>().dragging
-            && TickController.Obj.Mode == TickController.TimeState.Stopped)
+            && !TickController.Obj.IsRunning())
         {
             SoundManager.Instance.PlaySound(SoundManager.SoundTypes.RotateMover);
             rotateClockwise();
@@ -75,7 +68,7 @@ public class Mover : VertexMachine {
     {
         if (Input.GetKeyUp(KeyCode.R)
             && !gameObject.GetComponent<DraggableVertexMachine>().dragging
-            && TickController.Obj.Mode == TickController.TimeState.Stopped)
+            && !TickController.Obj.IsRunning())
         {
             SoundManager.Instance.PlaySound(SoundManager.SoundTypes.RotateMover);
             rotateClockwise();
@@ -90,14 +83,14 @@ public class Mover : VertexMachine {
 
     protected override void Manipulate(float tickTime)
     {
-		if (GridVertex.Grid.Input != null)
+		if (GridVertex.Grid.GridTablet != null)
         {
             // is there a tile over us?
-            if (GridVertex.Grid.Input.GridVertexX == this.GridVertex.X
-                && GridVertex.Grid.Input.GridVertexY == this.GridVertex.Y
+            if (GridVertex.Grid.GridTablet.GridVertexX == this.GridVertex.X
+                && GridVertex.Grid.GridTablet.GridVertexY == this.GridVertex.Y
 				&& CanMove())
             {
-                GridVertex.Grid.Input.MovementDirection = facing;
+                GridVertex.Grid.GridTablet.MovementDirection = facing;
             }
         }
 		UnmeetAllConditionals ();

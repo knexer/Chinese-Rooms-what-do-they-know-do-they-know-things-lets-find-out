@@ -44,5 +44,16 @@ public class GridCell : MonoBehaviour {
 		vertices [2] = Grid.GridVertices [X, Y].GetComponent<GridVertex>(); // Bottom left.
 		vertices [3] = Grid.GridVertices [X + 1, Y].GetComponent<GridVertex>(); // Bottom right.
 		return vertices;
-	}
+    }
+
+    public override bool Equals(object other) {
+        if (other is GridVertex)
+            return (other as GridVertex).X == this.X && (other as GridVertex).Y == this.Y;
+        else
+            return base.Equals(other);
+    }
+
+    public override int GetHashCode() {
+        return X.GetHashCode() * 8 + Y.GetHashCode();
+    }
 }

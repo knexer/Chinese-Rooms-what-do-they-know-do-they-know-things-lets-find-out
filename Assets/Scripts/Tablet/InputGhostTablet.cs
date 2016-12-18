@@ -7,14 +7,14 @@ public class InputGhostTablet : MonoBehaviour {
     
 	void Start () {
         Vector2 position = MachineGrid.Obj.getVertexWorldPosition(
-            MachineGrid.Obj.Input.startGridVertexX, MachineGrid.Obj.Input.startGridVertexY);
+            MachineGrid.Obj.GridTablet.startGridVertexX, MachineGrid.Obj.GridTablet.startGridVertexY);
         transform.position = new Vector3(position.x, position.y, transform.position.z);
 
-        GlobalInput.InputChanged += UpdateState;
+        LevelStateManager.InputChanged += UpdateState;
     }
 
     void OnDestroy() {
-        GlobalInput.InputChanged -= UpdateState;
+        LevelStateManager.InputChanged -= UpdateState;
     }
 
     private void UpdateState(ITablet state) {

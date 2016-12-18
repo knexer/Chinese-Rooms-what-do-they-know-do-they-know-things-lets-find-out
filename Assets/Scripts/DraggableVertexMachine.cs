@@ -23,13 +23,9 @@ public class DraggableVertexMachine : DraggableMachine
 
     private void Update()
     {
-        if (TickController.Obj.Mode != TickController.TimeState.Stopped)
-        {
-            if (dragging)
-            {
-                AbortDrag();
-            }
-        }
+        if (TickController.Obj.IsRunning() && dragging)
+            AbortDrag();
+
         if (dragging) {
             transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector3(transform.position.x, transform.position.y, DraggableVertexMachine.DRAG_Z_DEPTH);
@@ -44,9 +40,7 @@ public class DraggableVertexMachine : DraggableMachine
         }
 
         if (wasDraggingLastFrame && Input.GetMouseButtonUp(0))
-        {
             StopDrag();
-        }
 
         wasDraggingLastFrame = dragging;
     }
@@ -88,26 +82,18 @@ public class DraggableVertexMachine : DraggableMachine
     {
         GridVertex parentVertex = GetComponent<VertexMachine>().GridVertex;
         // Can't pick up if it's currently running or paused.
-        if (TickController.Obj.Mode != TickController.TimeState.Stopped)
-        {
+        if (TickController.Obj.IsRunning()) {
             if (parentVertex == null)
-            {
                 Destroy(gameObject);
-                return;
+        } else {
+            dragging = true;
+            SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PickupMachine);
+
+            // remove from whatever it's attached to
+            if (parentVertex != null) {
+                parentVertex.VertexMachine.OnRemove();
+                parentVertex.VertexMachine = null;
             }
-
-            return;
-        }
-
-        dragging = true;
-        
-        SoundManager.Instance.PlaySound(SoundManager.SoundTypes.PickupMachine);
-
-        // remove from whatever it's attached to
-        if (parentVertex != null)
-        {
-            parentVertex.VertexMachine.OnRemove();
-            parentVertex.VertexMachine = null;
         }
     }
 }

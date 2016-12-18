@@ -7,104 +7,56 @@ using System;
 public class TestButton : MonoBehaviour {
     public const int NRuns = 20;
 
-	public static bool RunCompleted = false;
+    private int remainingTests = 0;
 
 	// Use this for initialization
 	void Start () {
 		GetComponent<Button> ().onClick.AddListener (StartTests);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
 
 	public void StartTests() {
-		StartCoroutine (WaitEnumerator ());
+        remainingTests = NRuns;
+        TickController.ModeChangedEvent += StopTestsOnStop;
+        LevelStateManager.LevelCompletedEvent += CompleteTest;
+        RunTest();
 	}
 
-    public static event Action TestFailed;
-
-	private IEnumerator WaitEnumerator() {
-		Debug.Log("We are now starting tests.");
-
-		for (int i = 0; i < NRuns; i++) {
-			TickController.Obj.Pause();
-			TickController.Obj.ResetTablets();
-
-			GameTabletCell[] tablets = MachineGrid.Obj.Input.GetAllCells();
-			for (int j = 0; j < 4; j++) {
-				tablets[j].Color = (TabletColor)UnityEngine.Random.Range(0, Enum.GetValues(typeof(TabletColor)).Length);
-				tablets[j].Symbol = (TabletSymbol)UnityEngine.Random.Range(0, Enum.GetValues(typeof(TabletSymbol)).Length);
-			}
-            ITablet input = new RawTablet().SetState(MachineGrid.Obj.Input);
-            GlobalInput.InputTablet = input;
-
-            TickController.Obj.Mode = TickController.TimeState.MaximumWarp;
-
-            HashSet<SimState> previousStates = new HashSet<SimState>();
-
-			RunCompleted = false;
-			while (RunCompleted == false)
-            {
-                yield return null;
-
-                if (RunCompleted == false)
-                {
-                    SimState currentState = new SimState
-                    {
-                        Tablet = new RawTablet().SetState(MachineGrid.Obj.Input),
-                        GridX = MachineGrid.Obj.Input.GridVertexX,
-                        GridY = MachineGrid.Obj.Input.GridVertexY
-                    };
-
-                    if (previousStates.Contains(currentState))
-                    {
-                        Debug.Log("Cycle detected.");
-                        if (TestFailed != null) TestFailed();
-                        yield break;
-                    }
-                    else
-                    {
-                        previousStates.Add(currentState);
-                    }
-                }
-			}
-			RunCompleted = false;
-
-            if (!MachineGrid.Obj.Input.TabletEquals(Level.Obj.Evaluate(input))) {
-                Debug.Log("Output doesn't equal expected output.");
-                if (TestFailed != null) TestFailed();
-                yield break;
-            }
-		}
-
-        LevelManager.Obj.LoadNextLevel();
-
-		yield return null;
-	}
-
-    public class SimState
-    {
-        public ITablet Tablet;
-        public int GridX;
-        public int GridY;
-
-        public override bool Equals(System.Object other)
-        {
-            SimState otherState = other as SimState;
-            if (otherState == null) return false;
-
-            return otherState.Tablet.Equals(Tablet)
-                && otherState.GridX.Equals(GridX)
-                && otherState.GridY.Equals(GridY);
+    private void CompleteTest(bool success) {
+        if (success) {
+            remainingTests--;
+            if (remainingTests <= 0)
+                LevelManager.Obj.LoadNextLevel();
+            else
+                RunTest();
+        } else {
+            ResetTests();
         }
+    }
 
-        public override int GetHashCode()
-        {
-            return Tablet.GetHashCode() * 17
-                + GridX.GetHashCode() * 17 * 17
-                + GridY.GetHashCode() * 17 * 17 * 17;
+    private void RunTest() {
+        TickController.ModeChangedEvent -= StopTestsOnStop;
+        TickController.Obj.Stop(); // Don't want our own stop call to reset the tests
+        TickController.ModeChangedEvent += StopTestsOnStop;
+
+        GameTabletCell[] tablets = MachineGrid.Obj.GridTablet.GetAllCells();
+        for (int j = 0; j < 4; j++) {
+            tablets[j].Color = (TabletColor)UnityEngine.Random.Range(0, Enum.GetValues(typeof(TabletColor)).Length);
+            tablets[j].Symbol = (TabletSymbol)UnityEngine.Random.Range(0, Enum.GetValues(typeof(TabletSymbol)).Length);
         }
+        ITablet input = new RawTablet().SetState(MachineGrid.Obj.GridTablet);
+        LevelStateManager.InputTablet = input;
+        
+        TickController.Obj.Mode = TickController.TimeState.MaximumWarp;
+    }
+
+    private void StopTestsOnStop(TickController.TimeState mode) {
+        if (!TickController.Obj.IsRunning())
+            ResetTests();
+    }
+
+    private void ResetTests() {
+        remainingTests = 0;
+        LevelStateManager.LevelCompletedEvent -= CompleteTest;
+        TickController.ModeChangedEvent -= StopTestsOnStop;
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 [RequireComponent(typeof(GameTabletRenderer))]
 public class GameTabletMover : MonoBehaviour, ITablet {
 
+    public Color successColor;
     public Color errorColor;
     public tk2dSprite tabletBaseSprite;
 
@@ -43,24 +44,23 @@ public class GameTabletMover : MonoBehaviour, ITablet {
         
         TickController.MoveTickEvent += TriggerMove;
         TickController.ResetTabletsEvent += Reset;
-        TestButton.TestFailed += SetErrorColor;
-        GlobalInput.InputChanged += OnGlobalInputChanged;
+        LevelStateManager.InputChanged += OnGlobalInputChanged;
+        LevelStateManager.LevelCompletedEvent += SetLevelCompletedColor;
     }
 
     void OnDestroy() {
         TickController.MoveTickEvent -= TriggerMove;
         TickController.ResetTabletsEvent -= Reset;
-        TestButton.TestFailed -= SetErrorColor;
-        GlobalInput.InputChanged -= OnGlobalInputChanged;
+        LevelStateManager.InputChanged -= OnGlobalInputChanged;
+        LevelStateManager.LevelCompletedEvent -= SetLevelCompletedColor;
     }
 
     private void OnGlobalInputChanged(ITablet state) {
-        if (TickController.Obj.Mode == TickController.TimeState.Stopped)
-            this.SetState(state);
+        this.SetState(state);
     }
 
-    private void SetErrorColor() {
-        tabletBaseSprite.color = errorColor;
+    private void SetLevelCompletedColor(bool success) {
+        tabletBaseSprite.color = success ? successColor : errorColor;
     }
 
     private void Reset() {
@@ -72,9 +72,7 @@ public class GameTabletMover : MonoBehaviour, ITablet {
         transform.position = MachineGrid.Obj.getVertexWorldPosition(GridVertexX, GridVertexY);
         transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        this.SetState(GlobalInput.InputTablet);
-
-        TickController.OutOfBoundEvent += () => TickController.Obj.Pause();
+        this.SetState(LevelStateManager.InputTablet);
         InterruptMove();
     }
     

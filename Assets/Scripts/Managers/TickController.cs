@@ -14,16 +14,8 @@ public class TickController : MonoBehaviour {
     public delegate void ResetTabletsEventHandler();
     public static event ResetTabletsEventHandler ResetTabletsEvent;
 
-    public delegate void SignalHandler();
-    public static event SignalHandler OutOfBoundEvent;
-
     public delegate void ModeChangedHandler(TimeState newMode);
     public static event ModeChangedHandler ModeChangedEvent;
-
-    public void TriggerOutOfBounds()
-    {
-        OutOfBoundEvent();
-    }
 
     public float RunningSecondsPerTick;
     public float FastForwardSecondsPerTick;
@@ -31,7 +23,7 @@ public class TickController : MonoBehaviour {
     public TimeState Mode
     {
         get { return CurrentMode; }
-        set { NextMode = value; }
+        set { NextMode = value; if (NextMode == TimeState.Stopped) ToNextMode(); }
     }
     private TimeState CurrentMode = TimeState.Stopped;
     private TimeState NextMode = TimeState.Stopped;
@@ -45,7 +37,6 @@ public class TickController : MonoBehaviour {
         }
 
         Obj = this;
-        OutOfBoundEvent += Pause;
     }
 
     void Update() {
@@ -79,9 +70,11 @@ public class TickController : MonoBehaviour {
             ResetTablets();
         }
 
-        if (CurrentMode != NextMode && ModeChangedEvent != null)
-            ModeChangedEvent(NextMode);
-        CurrentMode = NextMode;
+        if (CurrentMode != NextMode) {
+            CurrentMode = NextMode;
+            if (ModeChangedEvent != null)
+                ModeChangedEvent(Mode);
+        }
     }
 
     private float SecondsPerTick()
@@ -106,7 +99,7 @@ public class TickController : MonoBehaviour {
         Stop();
     }
 
-    public void ResetTablets() {
+    private void ResetTablets() {
         if (ResetTabletsEvent != null)
             ResetTabletsEvent();
     }
@@ -121,10 +114,10 @@ public class TickController : MonoBehaviour {
         Mode = TimeState.Stopped;
     }
 
-    void OnDestroy() {
-        OutOfBoundEvent -= Pause;
+    public bool IsRunning() {
+        return Mode != TimeState.Stopped;
     }
-
+    
     public enum TimeState
     {
         Stopped,

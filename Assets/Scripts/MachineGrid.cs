@@ -13,7 +13,7 @@ public class MachineGrid : MonoBehaviour {
     public VertexMachine OutOfBoundsVertexPrefab;
 
     public Transform GridContainer;
-    public GameTabletMover Input;
+    public GameTabletMover GridTablet;
 
     public Vector2 CellSize { get; private set; }
 
@@ -28,8 +28,8 @@ public class MachineGrid : MonoBehaviour {
             Debug.LogError("Multiple MachineGrids in scene!");
         Obj = this;
 
-        if (Input == null)
-            Input = FindObjectOfType<GameTabletMover>();
+        if (GridTablet == null)
+            GridTablet = FindObjectOfType<GameTabletMover>();
 
         GridCells = new GridCell[Width, Height];
         GridVertices = new GridVertex[Width + 1, Height + 1];
@@ -75,7 +75,6 @@ public class MachineGrid : MonoBehaviour {
                 }
             }
         }
-        print(" Assigned Vertex at 0, 0: " + GridVertices[0, 0].GetComponent<GridVertex>().VertexMachine);
     }
 
     public Vector2 GetCellSizeWorldSpace()
@@ -116,20 +115,10 @@ public class MachineGrid : MonoBehaviour {
     }
 
     public GameTabletCell GetInputAt(int x, int y) {
-        return Input.GetTabletPieceByFactoryPosition(x, y);
+        return GridTablet.GetTabletPieceByFactoryPosition(x, y);
     }
 
 	public GridVertex GetTabletCenter() {
-		return GridVertices [Input.GridVertexX, Input.GridVertexY].GetComponent<GridVertex>();
-	}
-
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		return GridVertices [GridTablet.GridVertexX, GridTablet.GridVertexY].GetComponent<GridVertex>();
 	}
 }

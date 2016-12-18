@@ -6,10 +6,14 @@ using UnityEngine;
 public class OutputTabletUI : MonoBehaviour {
     
 	void Start() {
-        UpdateOutput(GlobalInput.InputTablet);
-        GlobalInput.InputChanged += UpdateOutput;
+        UpdateOutput(LevelStateManager.InputTablet);
+        LevelStateManager.InputChanged += UpdateOutput;
 	}
 	
+    void OnDestroy() {
+        LevelStateManager.InputChanged -= UpdateOutput;
+    }
+
 	void UpdateOutput(ITablet Input) {
         GetComponent<TabletUI>().SetState(Level.Obj.Evaluate(Input));
     }

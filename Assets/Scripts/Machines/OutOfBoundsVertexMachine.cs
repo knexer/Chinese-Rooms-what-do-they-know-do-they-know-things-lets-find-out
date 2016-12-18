@@ -5,36 +5,14 @@ using UnityEngine;
 
 public class OutOfBoundsVertexMachine : VertexMachine
 {
-
-    protected override void Start()
-    {
-        TickController.ManipulateTickEvent += Manipulate;
-    }
-
     protected override void Manipulate(float tickTime)
     {
-        if (GridVertex.Grid.Input != null)
-        {
-            // is there a tile over us?
-            if (GridVertex.Grid.Input.GridVertexX == this.GridVertex.X
-                && GridVertex.Grid.Input.GridVertexY == this.GridVertex.Y)
-            {
-                TickController.Obj.TriggerOutOfBounds();
-            }
-        }
+        if (GridVertex.Grid.GridTablet != null
+            && GridVertex.Grid.GridTablet.GridVertexX == this.GridVertex.X
+            && GridVertex.Grid.GridTablet.GridVertexY == this.GridVertex.Y)
+                LevelStateManager.LevelCompleted();
     }
 
-    protected override void OnDestroy()
-    {
-    }
-
-    public override void OnPlace()
-    {
-        return;
-    }
-
-    public override void OnRemove()
-    {
-        return;
-    }
+    public override void OnPlace() { }
+    public override void OnRemove() { }
 }

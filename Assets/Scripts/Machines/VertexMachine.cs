@@ -5,10 +5,14 @@ using UnityEngine;
 public abstract class VertexMachine : MonoBehaviour
 {
     public GridVertex GridVertex { get; set; }
+    
+	protected virtual void Start() {
+        TickController.ManipulateTickEvent += Manipulate;
+    }
 
-    // Use this for initialization
-	protected abstract void Start();
-    protected abstract void OnDestroy();
+    protected virtual void OnDestroy() {
+        TickController.ManipulateTickEvent -= Manipulate;
+    }
 
     protected abstract void Manipulate(float tickTime);
 
