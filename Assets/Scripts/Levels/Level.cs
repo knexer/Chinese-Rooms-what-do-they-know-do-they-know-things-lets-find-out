@@ -6,7 +6,7 @@ public abstract class Level : MonoBehaviour {
 
     public static Level Obj { get; private set; }
 
-    public MachineSource[] availableMachines;
+    public MachineType[] availableMachines;
     public GameTabletMover[] testCases;
 
     void Awake() {
