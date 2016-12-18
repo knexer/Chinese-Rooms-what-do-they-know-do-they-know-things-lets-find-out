@@ -12,8 +12,6 @@ public class TabletCellUI : MonoBehaviour, ITabletCell {
     public Sprite dreamSymbolFill;
     public Sprite snakeSymbolBase;
     public Sprite snakeSymbolFill;
-    public Color green;
-    public Color blue;
 
     public Image symbolBaseTarget;
     public Image symbolFillTarget;
@@ -59,11 +57,11 @@ public class TabletCellUI : MonoBehaviour, ITabletCell {
                 break;
             case TabletColor.Green:
                 symbolFillTarget.gameObject.SetActive(true);
-                symbolFillTarget.color = green;
+                symbolFillTarget.color = Globals.Instance.GreenGlow;
                 break;
             case TabletColor.Blue:
                 symbolFillTarget.gameObject.SetActive(true);
-                symbolFillTarget.color = blue;
+                symbolFillTarget.color = Globals.Instance.BlueGlow;
                 break;
             default:
                 throw new Exception("Unexpected enum value " + color);

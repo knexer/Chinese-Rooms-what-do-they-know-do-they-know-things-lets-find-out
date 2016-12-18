@@ -16,12 +16,28 @@ public class GameTabletRenderer : MonoBehaviour, ITablet {
     public GameTabletCell topRight { get; private set; }
     public GameTabletCell bottomLeft { get; private set; }
     public GameTabletCell bottomRight { get; private set; }
-    
+
+    private GameTabletCell originalTopLeft;
+    private GameTabletCell originalTopRight;
+    private GameTabletCell originalBottomLeft;
+    private GameTabletCell originalBottomRight;
+
     void Awake() {
         topLeft = NewTablet(-1, 1);
         topRight = NewTablet(1, 1);
         bottomLeft = NewTablet(-1, -1);
         bottomRight = NewTablet(1, -1);
+
+        originalTopLeft = topLeft;
+        originalTopRight = topRight;
+        originalBottomLeft = bottomLeft;
+        originalBottomRight = bottomRight;
+
+        TickController.ResetTabletsEvent += ResetRotation;
+    }
+
+    void OnDestroy() {
+        TickController.ResetTabletsEvent -= ResetRotation;
     }
 
     /** Create a new tablet cell at the relative position of x, y. */
@@ -44,5 +60,20 @@ public class GameTabletRenderer : MonoBehaviour, ITablet {
         tablets[2] = bottomLeft;
         tablets[3] = bottomRight;
         return tablets;
+    }
+
+    public void RotateReferencesCounterclockwise() {
+        GameTabletCell temp = topLeft;
+        topLeft = topRight;
+        topRight = bottomRight;
+        bottomRight = bottomLeft;
+        bottomLeft = temp;
+    }
+
+    private void ResetRotation() {
+        topLeft = originalTopLeft;
+        topRight = originalTopRight;
+        bottomLeft = originalBottomLeft;
+        bottomRight = originalBottomRight;
     }
 }

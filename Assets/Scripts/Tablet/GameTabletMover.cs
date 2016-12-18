@@ -118,7 +118,7 @@ public class GameTabletMover : MonoBehaviour, ITablet {
                 GridVertexX += 2 * Mathf.RoundToInt(direction.x);
                 GridVertexY += 2 * Mathf.RoundToInt(direction.y);
 
-                this.RotateCounterclockwise();
+                GetComponent<GameTabletRenderer>().RotateReferencesCounterclockwise();
             } else if (PinAtPosition(GridVertexX, GridVertexY, direction, 1, 1)
                 && offsetBlacklist.TrueForAll((vector) => !PinAtPosition(GridVertexX, GridVertexY, direction, Mathf.RoundToInt(vector.x), Mathf.RoundToInt(-vector.y))))
             {
@@ -128,9 +128,9 @@ public class GameTabletMover : MonoBehaviour, ITablet {
                 GridVertexX += 2 * Mathf.RoundToInt(direction.x);
                 GridVertexY += 2 * Mathf.RoundToInt(direction.y);
 
-                this.RotateCounterclockwise();
-                this.RotateCounterclockwise();
-                this.RotateCounterclockwise();
+                GetComponent<GameTabletRenderer>().RotateReferencesCounterclockwise();
+                GetComponent<GameTabletRenderer>().RotateReferencesCounterclockwise();
+                GetComponent<GameTabletRenderer>().RotateReferencesCounterclockwise();
             } else
             {
                 // There's a pin in the way, but still at least one pin in front of us; bounce back.
